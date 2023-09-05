@@ -1,0 +1,387 @@
+---
+title: "Function documentation"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r development, include=FALSE}
+library(testthat)
+```
+
+```{r development-load}
+# Load already included functions if relevant
+pkgload::load_all(export_all = FALSE)
+```
+
+<!--
+ For each fo the function you need, add FUSEN chunk through the Rstudio add-in " add {fusen} chunks"
+ -->
+# estimate_sample
+    
+```{r function-estimate_sample}
+#' estimate_sample
+#' 
+#' A function to estimate sample size for UNHCR Corporate survey
+#' 
+#' The function conveniently:  
+#' 
+#'   * Map the UNHCR statistical category to the sampling universe category to 
+#'        be considered for the survey
+#'        
+#'   * Provides sample size based on simple random sampling approach
+#'   
+#'   * Offer potential approach for stratification based on nationality, gender 
+#'       and age
+#'       
+#'   * Output basic frequency table that can be used for survey 
+#'       post-stratification
+#'     
+#' 
+#' @param country_asylum_iso3c Character value with the ISO-3 character code of the Country of Asylum
+#' @param year Numeric value of the year (for instance 2022). 
+#'             If the data is not yet available for that year 
+#'             (aka still in the mid year reporting stage),
+#'              it will automatically fall back on the previous year
+#' @param pop_type Vector of character values.  Possible population types :
+#' 
+#'            *  RAS  - aka REF+ASY+OIP, Refugees, Asylum-seeker and other in 
+#'              Need of International Protection -  "Pillar-1-Refugee"
+#'              
+#'            * STA: Stateless Persons --  "Pillar-2-Stateless"
+#' 
+#'            * IDP: Internally displaced Persons   -  "Pillar-4-IDP" 
+#' 
+#'            * REP (RET+ROC): Returned Refugees & IDPs - "Pillar-3-Reintegration"    
+#' 
+#'            * OOC: Other of Concerns         
+#' 
+#' @param e is tolerable margin of error (integer or float, e.g. 5, 2.5)
+#' @param ci (optional) is confidence level for establishing a confidence 
+#'            interval using z-score (defaults to 95; restricted to 80, 85,
+#'             90, 95 or 99 as input)
+#' @param p (optional) is anticipated response distribution (defaults to 0.5;
+#'             takes value between 0 and 1 as input)  
+#' @param over (optional) is desired oversampling proportion (defaults to 0; 
+#'               takes value between 0 and 1 as input)
+#' 
+#' 
+#' @importFrom ForcedDisplacementStat
+#' @importFrom sampler rsampcalc
+#' @importFrom stats power.prop.test
+#' @importFrom purrr pmap_dbl pluck
+#' 
+#' @return list with function output
+#' 
+#' @export
+estimate_sample <- function(year ,
+                             country_asylum_iso3c,
+                            e, # margin of error 
+                            ci,  #s confidence level
+                            p , # anticipated response distribution 
+                            over  ## desired oversampling proportion
+                            ){
+  
+  
+  ctrylabel <- ForcedDisplacementStat::reference |> 
+    dplyr::filter(iso_3 == country_asylum_iso3c ) |> 
+    dplyr::distinct(ctryname) |> 
+    dplyr::pull()
+  
+
+  ## Compiling the full sample universe for that category... 
+  
+  
+  
+  
+  
+  
+  demographics1 <- ForcedDisplacementStat::demographics |>
+    dplyr::left_join( ForcedDisplacementStat::reference |> 
+                 dplyr::select(UNHCRBureau, iso_3),  
+               by = c("CountryAsylumCode" = "iso_3")) |> 
+    dplyr::filter(CountryAsylumCode  == country_asylum_iso3c &
+             Year == year ) |>
+    
+    # &Population.type  %in% as.vector(pop_type)
+    
+     dplyr::mutate ( totGen = FemaleTotal +MaleTotal,
+             totbreak = Female04 + Female511 + Female1217 + 
+               Female1859 + Female60ormore + FemaleUnknown +
+               Male04 + Male511 + Male1217 + Male1859 +
+               Male60ormore + MaleUnknown,
+             
+             hasbreak = ifelse(Total - totGen == 0, "yes", "no" ))
+  
+  ## Check if fall back is needed.. 
+  if(nrow(demographics1) == 0) { 
+    year <- year -1 
+    demographics1 <- ForcedDisplacementStat::demographics |>
+      left_join( ForcedDisplacementStat::reference |> 
+                   select(UNHCRBureau, iso_3),  
+                 by = c("CountryAsylumCode" = "iso_3")) |> 
+      filter(CountryAsylumCode  == country_asylum_iso3c &
+               Year == year &
+               Population.type  %in% as.vector(pop_type)) |>
+      
+      mutate ( totGen = FemaleTotal +MaleTotal,
+               totbreak = Female04 + Female511 + Female1217 + 
+                 Female1859 + Female60ormore + FemaleUnknown +
+                 Male04 + Male511 + Male1217 + Male1859 +
+                 Male60ormore + MaleUnknown,
+               
+               hasbreak = ifelse(Total - totGen == 0, "yes", "no" ))
+    
+    }
+  
+   
+  
+  
+## Load popdata.unhcr.org export...
+#asr_stateless_2019 <- read_delim(paste0(mainDirroot,"/data/asr-stateless-2019.csv"), ";", escape_double = FALSE, trim_ws = TRUE)
+#asr_other_2019 <- read_delim(paste0(mainDirroot,"/data/asr-other-2019.csv"), ";", escape_double = FALSE, trim_ws = TRUE)
+#asr_stateless_2019 <- read_delim(paste0(mainDirroot,"/data/asr-stateless-2019.csv"), ";", escape_double = FALSE, trim_ws = TRUE)
+#asr_stateless_2019 <- merge(x = asr_stateless_2019, y = reference, by.x = "asylum", by.y = "UNHCRcode")
+#america.stateless <- asr_stateless_2019[ asr_stateless_2019$SUBREGION %in% c("Caribbean", "Central America",
+#                                                                             "Northern America", "South America" ),  ]
+
+#asr_rsd_2019 <- read_delim(paste0(mainDirroot,"/data/asr-rsd-2019.csv"), ";", escape_double = FALSE, trim_ws = TRUE)
+#asr_returnees_2019 <- read_delim(paste0(mainDirroot,"/data/asr-returnees-2019.csv"), ";", escape_double = FALSE, trim_ws = TRUE)
+#asr_refugees_2019 <- read_delim(paste0(mainDirroot,"/data/asr-refugees-2019.csv"), ";", escape_double = FALSE, trim_ws = TRUE)
+#asr_idp_2019 <- read_delim(paste0(mainDirroot,"/data/asr-idp-2019.csv"), ";", escape_double = FALSE, trim_ws = TRUE)
+#asr_demographics_2019 <- read_delim(paste0(mainDirroot,"/data/asr-demographics-2019.csv"), ";", escape_double = FALSE, trim_ws = TRUE)
+asr_demographics_2019 <- read_delim("data/asr-demographics-2019.csv", ";", escape_double = FALSE, trim_ws = TRUE)
+
+demographics <- asr_demographics_2019
+#names(reference)
+#names(demographics)
+
+demographics.ref <- merge(x = demographics, y = reference, by.x = "asylum", by.y = "UNHCRcode")
+#names(demographics.ref)
+## Subset our region
+america.demographics <- demographics.ref[ demographics.ref$SUBREGION %in% c("Caribbean",
+                                                                            "Central America",
+                                                                            "Northern America",
+                                                                            "South America" ),  ]
+
+## Create population per pillar
+america.demographics$poppilar <- as.character(america.demographics$populationType)
+#levels(as.factor(america.demographics$populationType))
+
+america.demographics$poppilar[america.demographics$poppilar %in% c("ASY","OOC","REF")] <- "Pillar-1-Refugee"
+america.demographics$poppilar[america.demographics$poppilar %in% c("STA")] <- "Pillar-2-Stateless"
+america.demographics$poppilar[america.demographics$poppilar %in% c("RET","ROC")] <- "Pillar-3-Reintegration"
+america.demographics$poppilar[america.demographics$poppilar %in% c("IDP")] <- "Pillar-4-IDP"
+
+levels(as.factor(america.demographics$poppilar))
+
+## need to create a new var where we aggregate small carribean countries
+america.demographics$ctryname2 <- america.demographics$ctrynam
+america.demographics$ctryname2[america.demographics$asylum %in% c("BVI", "ANT", "LCA", "GRN", "STK", "TCI", "BAR", "SXM", "AIA", "HAI", "BHS",
+        "VCT", "CAY", "JAM", "CUB")] <- "Other Caribean"
+
+america.sample <- america.demographics %>%
+  as_tibble() %>%
+  select(ctryname2, SUBREGION, poppilar, total) %>%
+  arrange(ctryname2, poppilar, SUBREGION) %>%
+  group_by(ctryname2, poppilar, SUBREGION) %>%
+  summarise(total = sum(total, na.rm =  TRUE) )
+
+## Remove when less than 100 person in the frame
+america.sample <- america.sample[ america.sample$total > 100, ]
+
+
+
+america.sample$min.sample.size.Ci90.Er10 <- 0
+america.sample$mid.sample.size.Ci95.Er5 <- 0
+america.sample$max.sample.size.Ci95.Er3 <- 0
+
+for (i in (1:nrow(america.sample))) {
+  # i <- 3
+  N1 <- as.integer(america.sample[ i , c("total")])
+  america.sample[ i , c("min.sample.size.Ci90.Er10")] <- sampler::rsampcalc(N = N1, e = 10, ci = 90, p = 0.5, over = 0.1)
+  america.sample[ i , c("mid.sample.size.Ci95.Er5")] <- rsampcalc(N = N1, e = 5, ci = 95, p = 0.5, over = 0.1)
+  america.sample[ i , c("max.sample.size.Ci95.Er3")] <- rsampcalc(N = N1, e = 3, ci = 95, p = 0.5, over = 0.1)
+
+}
+america.sample <- america.sample[order(america.sample$total, decreasing = TRUE), ]
+write.csv(america.sample, "data/americasample.csv", row.names = FALSE)
+
+
+# Output required sample size based on different assumption
+samplesize <- tidyr::crossing( e = c(3, 5, 10),
+                               ci = c(90, 95), 
+                               p = c(0.5, 0.3),
+                               over = c(0.1, 0.2, 0.3)) |>
+              dplyr::mutate(
+                n =  purrr::pmap_dbl(., 
+                                  ~{ sampler::rsampcalc(N = N1, 
+                                                        e = ..1, 
+                                                        ci = ..2, 
+                                                        p = ..3, 
+                                                        over = ..3 ) |>
+                        # Safely get or set an element deep within a nested data structure              
+                        purrr::pluck("n") |>
+                        # Rounding
+                        ceiling() } 
+                        )
+                        ) 
+
+
+# Output power calculations under different scenario...
+powercalc <- tidyr::crossing(sig = .05, 
+                             power = c(.8, .9), 
+                             eff = c(.05, .1, .15)) |>
+              dplyr::mutate(
+                n =  purrr::pmap_dbl(., 
+                                  ~{ stats::power.prop.test(p1 = .5, 
+                                                            p2 = .5 + ..3, 
+                                                            power = ..2, 
+                                                            sig.level = ..1) |>
+                        # Safely get or set an element deep within a nested data structure              
+                        purrr::pluck("n") |>
+                        # Rounding
+                        ceiling() } 
+                        )
+                        ) 
+
+  res <- list( samplesize = samplesize,
+               powercalc = powercalc)
+
+    
+}
+```
+  
+```{r example-estimate_sample}
+samp <- estimate_sample( year = 2022,
+                 country_asylum_iso3c = "COL",
+                 pop_type = c("RAS","STA", "IDP", "REP", "OOC"),
+                 e = 5, # margin of error 
+                 ci = 95,  #s confidence level
+                 p  = 0.5, # anticipated response distribution 
+                 over = 0.2 ## desired oversampling proportion
+                  )
+```
+  
+```{r tests-estimate_sample}
+test_that("estimate_sample works", {
+  expect_true(inherits(estimate_sample, "function")) 
+})
+```
+  
+
+
+
+<!--
+ below is a default chunk to create and document your run_app function
+-->
+
+# run_app
+
+
+<!--
+Create a chunk for the core of the function
+
+- The chunk needs to be named `function` at least
+- It contains the code of a documented function
+- The chunk can also be named `function-my_function` to make it easily
+findable in your Rmd
+- Let the `@examples` part empty, and use the next `examples` chunk instead to present reproducible examples
+
+After inflating the template
+
+-  This function code will automatically be added in a new file in the "R/" directory
+-->
+    
+```{r function-run_app}
+#' Run the Shiny Application
+#'
+#' @param ... arguments to pass to golem_opts.
+#' See `?golem::get_golem_options` for more details.
+#' @inheritParams shiny::shinyApp
+#'
+#' @export
+#' @importFrom shiny shinyApp
+#' @importFrom golem with_golem_options
+run_app <- function(
+    onStart = NULL,
+    options = list(),
+    enableBookmarking = NULL,
+    uiPattern = "/",
+    ...
+) {
+  with_golem_options(
+    app = shinyApp(
+      ui = app_ui,
+      server = app_server,
+      onStart = onStart,
+      options = options,
+      enableBookmarking = enableBookmarking,
+      uiPattern = uiPattern
+    ),
+    golem_opts = list(...)
+  )
+}
+
+```
+
+<!--
+Create a chunk with an example of use for your function
+
+- The chunk needs to be named `examples` at least
+- It contains working examples of your function
+- The chunk is better be named `examples-my_median` to be handled
+correctly when inflated as a vignette
+
+After inflating the template
+
+-  This example will automatically be added in the '@examples' part of our function above in the "R/" directory
+- This example will automatically be added in the vignette created from this Rmd template
+-->
+
+```{r example-run_app}
+# run_app()
+```
+
+<!--
+Create a chunk with a test of use for your function
+
+- The chunk needs to be named `tests` at least
+- It contains working tests of your function
+- The chunk is better be named `tests-my_median` to be handled
+correctly when inflated as a vignette
+
+After inflating the template
+
+-  This test code will automatically be added in the "tests/testthat/" directory
+-->
+ 
+```{r tests-run_app}
+# test_that("run_app works", {
+#   expect_true(inherits(run_app, "function")) 
+# })
+```
+  
+
+
+
+<!--
+ Once you have created your back office functions , run the next chunk to install and package them
+
+# There can be development actions
+
+Create a chunk with 'development' actions
+
+- The chunk needs to be named `development` or `dev`
+- It contains functions that are used for package development only
+- Note that you may want to store most of these functions in the 0-dev_history.Rmd file
+
+These are only included in the present flat template file, their content will not be part of the package anywhere else.
+-->
+
+```{r development-inflate, eval=FALSE}
+# Run but keep eval=FALSE to avoid infinite loop
+# Execute in the console directly
+fusen::inflate(flat_file = "dev/function_documentation.Rmd", vignette_name = "Development")
+```
+
