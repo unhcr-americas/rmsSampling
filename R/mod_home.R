@@ -16,7 +16,8 @@ mod_home_ui <- function(id) {
 		  ### Get the name for your tool
 		  p(
 		    tags$span("RMS ", style = "font-size: 60px"),
-		    tags$span("Sampling", style = "font-size: 5-px")
+		    tags$span("Sampling", style = "font-size: 45px"),
+		    tags$span("(-> in dev -not yet working)", style = "font-size: 25px")
 		  ),
 		  br(),
 		  ### Then a short explainer
@@ -34,15 +35,11 @@ mod_home_ui <- function(id) {
 		     the expected precision goals and the sampling technique. ",
 		    style = "font-size: 20px"),
 		  br(),
-		  p( " ",
-		     #
-		     style = "font-size: 20px"),
-		  br(),
 		  p( "Using information already available from Official Statistics for each country,
 		     based on the confirmation of sampling assumptions, this app will
 		     provide estimates of required sample size and generate a summary report
-		     to inform the prepatation of the survey",
-		     style = "font-size: 20px"),
+		     to inform the preparation of the survey",
+		     style = "font-size: 16px"),
 		  p(tags$i( class = "fa fa-github"),
 		    "App built with ",
 		    tags$a(href="https://edouard-legoupil.github.io/graveler/",

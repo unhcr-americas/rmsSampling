@@ -65,6 +65,11 @@ method can apply:
 As an output they can generate a report to document the appropriate
 sampling approach by country.
 
+## Usage
+
+This App is still under development - the work in progress version is
+available here: <https://rstudio.unhcr.org/rmsSampling/>
+
 ## Installation
 
 You can install the development version of rmsSampling like so:
