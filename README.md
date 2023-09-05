@@ -71,5 +71,5 @@ You can install the development version of rmsSampling like so:
 
 ``` r
 install.packages("pak")
-pak::pkg_install("edouard-legoupil/msSampling")  
+pak::pkg_install("unhcr-americas/rmsSampling")  
 ```
