@@ -34,6 +34,7 @@ fusen::inflate(flat_file = "dev/function_documentation.Rmd", vignette_name = "De
 # checkhelper::print_globals()
 
 ## Build the html package documentation for your utilities functions
+
 pkgdown::build_site()
 
 

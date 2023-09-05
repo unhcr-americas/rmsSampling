@@ -20,24 +20,42 @@ knitr::opts_chunk$set(
 
 The goal of {rmsSampling} is to ease the implementation of the RMS Sampling guidance
 
-User are guided through a workflow:
- * Select the country so that the last population statistics aggregated by group are pulled
-     * RAS  - aka REF+ASY+OIP, Refugees, Asylum-seeker and other in     Need of International Protection -  "Pillar-1-Refugee"
-     * STA: Stateless Persons --  "Pillar-2-Stateless"
-     * IDP: Internally displaced Persons   -  "Pillar-4-IDP" 
-     * REP (RET+ROC): Returned Refugees & IDPs - "Pillar-3-Reintegration"    
-     * OOC: Other of Concerns        
+
+## A guided workflow
+
+User are guided through a workflow:  
+
+ * Select the country so that the last population statistics aggregated by group are pulled  
  
-Then for each group a specific tab will be available with a series of conditional questions to confirm wether one the 7 potential sampling method can apply: 
- * Flag population groups with less than 5,000 individuals, to confirm if there is really budget to implement a sampling strategy
- * Request user to  indicate if a reliable registration group list is available for each population group
- * Check size of the country to confirm if the implementation area is small (allowing for __Simple Random Sampling without stratification__)
- * Check if disaggregation by geographic location are available within the countries  (allowing for __Simple Random Sampling within strata__)
- * Check breakdown by country of Origin to confirm if potential stratification by country of orgin would make sense for Refugee and Asylum Seekers? (allowing for __multiple Stage Cluster Sampling__)
- * Check if budget and time is available to conduct a list exercise (allowing for either __Probability Proportion to Size__ or __Adaptive Cluster Sampling__)
- * Check if the population tend to gather to a certain location on a specific day time? (allowing for a __Location Time Sampling__)
- * Check if the community if well connected and is there is adequate time to conduct a formative survey to identify the sees and prepare coupons? (allowing for a __Respondent Driven Sampling__)
- * ask for expected margin of errors, level of confidence and sample power.
+     * RAS  - aka REF+ASY+OIP, Refugees, Asylum-seeker and other in Need of International Protection -  "Pillar-1-Refugee"  
+     
+     * STA: Stateless Persons --  "Pillar-2-Stateless" 
+     
+     * IDP: Internally displaced Persons   -  "Pillar-4-IDP"  
+     
+     * REP (RET+ROC): Returned Refugees & IDPs - "Pillar-3-Reintegration"  
+     
+     * OOC: Other of Concerns         
+ 
+Then for each group a specific tab will be available with a series of conditional questions to confirm wether one the 7 potential sampling method can apply:   
+
+ * Flag population groups with less than 5,000 individuals, to confirm if there is really budget to implement a sampling strategy  
+ 
+ * Request user to  indicate if a reliable registration group list is available for each population group  
+ 
+ * Check size of the country to confirm if the implementation area is small (allowing for __Simple Random Sampling without stratification__) 
+ 
+ * Check if disaggregation by geographic location are available within the countries  (allowing for __Simple Random Sampling within strata__)  
+ * Check breakdown by country of Origin to confirm if potential stratification by country of orgin would make sense for Refugee and Asylum Seekers?  (allowing for __multiple Stage Cluster Sampling__)  
+ 
+ * Check if budget and time is available to conduct a list exercise (allowing for either __Probability Proportion to Size__ or __Adaptive Cluster Sampling__)  
+ 
+ * Check if the population tend to gather to a certain location on a specific day time? (allowing for a __Location Time Sampling__) 
+ 
+ * Check if the community if well connected and is there is adequate time to conduct a formative survey to identify the sees and prepare coupons? (allowing for a __Respondent Driven Sampling__)  
+ 
+ * ask for expected margin of errors, level of confidence and sample power. 
+ 
  
  As an output they can generate a report to document the appropriate sampling approach by country.
 
@@ -50,27 +68,3 @@ install.packages("pak")
 pak::pkg_install("edouard-legoupil/msSampling")  
 ```
 
-## Example
-
-This is a basic example which shows you how to solve a common problem:
-
-```{r example}
-library(rmsSampling)
-## basic example code
-```
-
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
-
-```{r cars}
-summary(cars)
-```
-
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this.
-
-You can also embed plots, for example:
-
-```{r pressure, echo = FALSE}
-plot(pressure)
-```
-
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.

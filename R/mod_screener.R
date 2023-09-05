@@ -36,10 +36,10 @@ mod_screener_ui <- function(id) {
               checkboxInput(
                 inputId = ns("availablereg"),
                 label = "I confirm that there is an up to date and complete registration list of the population group available.
-          		    ‘Up to date‘ refers to a database which reflects the current population in the
+          		    -Up to date- refers to a database which reflects the current population in the
           		  country. If the size or demographic composition of the population group has
           		  changed more than 10% since the last registration, it cannot be considered up to
-          		  date.  ‘Complete’ refers to a database which contains registration information for 80% or
+          		  date.  -Complete- refers to a database which contains registration information for 80% or
           		  more of the total population group."
               ),
               checkboxInput(
