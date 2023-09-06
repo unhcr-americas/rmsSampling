@@ -20,7 +20,8 @@ body <- function() {
       mod_home_ui("home_ui_1"),
       mod_configure_ui("configure_ui_1"),
       mod_assumptions_ui("assumptions_ui_1"),
-      mod_summary_ui("summary_ui_1")
+      mod_summary_ui("summary_ui_1"),
+      mod_report_ui("report_ui_1")
     )
   )
 }

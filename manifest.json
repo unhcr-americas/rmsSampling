@@ -900,6 +900,34 @@
         "Built": "R 4.3.0; ; 2023-04-25 05:06:14 UTC; unix"
       }
     },
+    "countrycode": {
+      "Source": "CRAN",
+      "Repository": "https://cloud.r-project.org",
+      "description": {
+        "Type": "Package",
+        "Package": "countrycode",
+        "Title": "Convert Country Names and Country Codes",
+        "Version": "1.5.0",
+        "Authors@R": "c(person(given = \"Vincent\",\nfamily = \"Arel-Bundock\",\nrole = c(\"aut\", \"cre\"),\nemail = \"vincent.arel-bundock@umontreal.ca\",\ncomment = c(ORCID = \"0000-0003-2042-7063\")),\nperson(given = \"CJ\",\nfamily = \"Yetman\",\nrole = \"ctb\",\nemail = \"cj@cjyetman.com\",\ncomment = c(ORCID = \"0000-0001-5099-9500\")),\nperson(given = \"Nils\",\nfamily = \"Enevoldsen\",\nrole = \"ctb\",\nemail = \"nils@wlonk.com\",\ncomment = c(ORCID = \"0000-0001-7195-4117\")),\nperson(given = \"Samuel\",\nfamily = \"Meichtry\",\nrole = \"ctb\",\nemail = \"samuel.meichtry@bj.admin.ch\",\ncomment = c(ORCID = \"0000-0003-2165-791X\")))",
+        "Description": "Standardize country names, convert them into one of 40\ndifferent coding schemes, convert between coding schemes, and assign\nregion descriptors.",
+        "License": "GPL-3",
+        "URL": "https://vincentarelbundock.github.io/countrycode/",
+        "BugReports": "https://github.com/vincentarelbundock/countrycode/issues",
+        "Depends": "R (>= 2.10)",
+        "Suggests": "eurostat, testthat, tibble, utf8",
+        "Encoding": "UTF-8",
+        "LazyData": "yes",
+        "LazyLoad": "yes",
+        "RoxygenNote": "7.2.3.9000",
+        "NeedsCompilation": "no",
+        "Packaged": "2023-05-30 13:47:07 UTC; vincent",
+        "Author": "Vincent Arel-Bundock [aut, cre]\n(<https://orcid.org/0000-0003-2042-7063>),\nCJ Yetman [ctb] (<https://orcid.org/0000-0001-5099-9500>),\nNils Enevoldsen [ctb] (<https://orcid.org/0000-0001-7195-4117>),\nSamuel Meichtry [ctb] (<https://orcid.org/0000-0003-2165-791X>)",
+        "Maintainer": "Vincent Arel-Bundock <vincent.arel-bundock@umontreal.ca>",
+        "Repository": "CRAN",
+        "Date/Publication": "2023-05-30 14:40:06 UTC",
+        "Built": "R 4.3.1; ; 2023-09-04 15:42:12 UTC; unix"
+      }
+    },
     "cpp11": {
       "Source": "CRAN",
       "Repository": "https://cloud.r-project.org",
@@ -3416,6 +3444,36 @@
         "Built": "R 4.3.1; x86_64-pc-linux-gnu; 2023-08-15 13:25:19 UTC; unix"
       }
     },
+    "refugees": {
+      "Source": "CRAN",
+      "Repository": "https://cloud.r-project.org",
+      "description": {
+        "Package": "refugees",
+        "Type": "Package",
+        "Title": "UNHCR Refugee Population Statistics Database",
+        "Version": "2022.12.1",
+        "Authors@R": "c(person(given = \"Hisham\",\nfamily = \"Galal\",\nemail = \"galal@unhcr.org\",\nrole = c(\"aut\", \"cre\")),\nperson(given = \"Ahmadou\",\nfamily = \"Dicko\",\nemail = \"mail@ahmadoudicko.com\",\nrole = \"ctb\"),\nperson(\"UNHCR\",\nrole = \"cph\"))",
+        "Description": "The Refugee Population Statistics Database published by\nThe Office of The United Nations High Commissioner for Refugees (UNHCR)\ncontains information about forcibly displaced populations\nspanning more than 70 years of statistical activities.\nIt covers displaced populations such as refugees, asylum-seekers and\ninternally displaced people, including their demographics.\nStateless people are also included, most of who have never been displaced.\nThe database also reflects the different types of solutions\nfor displaced populations such as repatriation or resettlement.\nMore information on the data and methodology can be found on\nthe UNHCR Refugee Data Finder <https://www.unhcr.org/refugee-statistics/>.",
+        "URL": "https://populationstatistics.github.io/refugees/,\nhttps://github.com/PopulationStatistics/refugees",
+        "BugReports": "https://github.com/PopulationStatistics/refugees/issues",
+        "License": "CC BY 4.0",
+        "LazyData": "true",
+        "LazyDataCompression": "xz",
+        "Depends": "R (>= 3.5)",
+        "Imports": "tibble (>= 3.2.0)",
+        "Suggests": "testthat (>= 3.1.0)",
+        "RoxygenNote": "7.2.3",
+        "Encoding": "UTF-8",
+        "Config/testthat/edition": "3",
+        "NeedsCompilation": "no",
+        "Packaged": "2023-08-15 13:53:50 UTC; GALAL",
+        "Author": "Hisham Galal [aut, cre],\nAhmadou Dicko [ctb],\nUNHCR [cph]",
+        "Maintainer": "Hisham Galal <galal@unhcr.org>",
+        "Repository": "CRAN",
+        "Date/Publication": "2023-08-16 13:12:05 UTC",
+        "Built": "R 4.3.1; ; 2023-08-23 01:32:02 UTC; unix"
+      }
+    },
     "rematch": {
       "Source": "CRAN",
       "Repository": "https://cloud.r-project.org",
@@ -3655,11 +3713,11 @@
         "Version": "0.0.900",
         "Authors@R": "c(\nperson(\"Edouard\", \"Legoupil\", , \"legoupil@unhcr.org\", role = c(\"aut\", \"cre\")),\nperson(\"UNHCR\", role = \"cph\")\n)",
         "Maintainer": "Edouard Legoupil <legoupil@unhcr.org>",
-        "Description": "A shinyApp to support the sampling strategy description for the Result monitoring survey based on existing guidance.",
+        "Description": "A shinyApp to support the sampling strategy description for\nthe Result monitoring survey based on existing guidance.",
         "License": "MIT + file LICENSE",
         "URL": "https://github.com/unhcr-americas/rmsSampling",
-        "Imports": "config,\ngolem,\nshiny,\nshinydashboard,\ntidyverse,\nunhcrshiny",
-        "Remotes": "edouard-legoupil/ForcedDisplacementStat,\nedouard-legoupil/unhcrshiny",
+        "Imports": "config,\ncountrycode,\ndplyr,\nggplot2,\ngolem,\npurrr,\nrefugees,\nscales,\nshiny,\nshinydashboard,\nstringr,\ntidyr,\ntidyverse,\nunhcrshiny,\nunhcrthemes",
+        "Remotes": "edouard-legoupil/unhcrshiny",
         "Encoding": "UTF-8",
         "LazyData": "true",
         "RoxygenNote": "7.2.3.9000"
@@ -4056,6 +4114,59 @@
         "RemoteSha": "0.7.2"
       }
     },
+    "showtext": {
+      "Source": "CRAN",
+      "Repository": "https://cloud.r-project.org",
+      "description": {
+        "Package": "showtext",
+        "Type": "Package",
+        "Title": "Using Fonts More Easily in R Graphs",
+        "Version": "0.9-6",
+        "Date": "2023-05-03",
+        "Author": "Yixuan Qiu and authors/contributors of the\nincluded software. See file AUTHORS for details.",
+        "Maintainer": "Yixuan Qiu <yixuan.qiu@cos.name>",
+        "Description": "Making it easy to use various types of fonts ('TrueType',\n'OpenType', Type 1, web fonts, etc.) in R graphs, and supporting most output\nformats of R graphics including PNG, PDF and SVG. Text glyphs will be converted\ninto polygons or raster images, hence after the plot has been created, it no\nlonger relies on the font files. No external software such as 'Ghostscript' is\nneeded to use this package.",
+        "Depends": "sysfonts (>= 0.7.1), showtextdb (>= 2.0)",
+        "Imports": "grDevices",
+        "Suggests": "knitr, rmarkdown, prettydoc, curl, jsonlite",
+        "SystemRequirements": "zlib, libpng, FreeType",
+        "URL": "https://github.com/yixuan/showtext",
+        "BugReports": "https://github.com/yixuan/showtext/issues",
+        "License": "Apache License (>= 2.0)",
+        "Copyright": "see file COPYRIGHTS",
+        "VignetteBuilder": "knitr, rmarkdown",
+        "RoxygenNote": "7.2.3",
+        "NeedsCompilation": "yes",
+        "Packaged": "2023-05-03 14:05:53 UTC; qyx",
+        "Repository": "CRAN",
+        "Date/Publication": "2023-05-03 15:50:02 UTC",
+        "Built": "R 4.3.1; x86_64-pc-linux-gnu; 2023-08-15 13:21:15 UTC; unix"
+      }
+    },
+    "showtextdb": {
+      "Source": "CRAN",
+      "Repository": "https://cloud.r-project.org",
+      "description": {
+        "Package": "showtextdb",
+        "Type": "Package",
+        "Title": "Font Files for the 'showtext' Package",
+        "Version": "3.0",
+        "Date": "2020-05-31",
+        "Author": "Yixuan Qiu and authors/contributors of the included fonts. See file\nAUTHORS for details.",
+        "Maintainer": "Yixuan Qiu <yixuan.qiu@cos.name>",
+        "Description": "Providing font files that can be used by the 'showtext' package.",
+        "Imports": "sysfonts (>= 0.7), utils",
+        "Suggests": "curl",
+        "License": "Apache License (>= 2.0)",
+        "Copyright": "see file COPYRIGHTS",
+        "RoxygenNote": "7.1.0",
+        "NeedsCompilation": "no",
+        "Packaged": "2020-06-04 04:05:01 UTC; qyx",
+        "Repository": "CRAN",
+        "Date/Publication": "2020-06-04 08:10:02 UTC",
+        "Built": "R 4.3.0; ; 2023-04-25 05:05:53 UTC; unix"
+      }
+    },
     "sourcetools": {
       "Source": "CRAN",
       "Repository": "https://cloud.r-project.org",
@@ -4169,6 +4280,32 @@
         "Repository": "CRAN",
         "Date/Publication": "2023-05-23 07:50:02 UTC",
         "Built": "R 4.3.1; x86_64-pc-linux-gnu; 2023-08-15 13:21:21 UTC; unix"
+      }
+    },
+    "sysfonts": {
+      "Source": "CRAN",
+      "Repository": "https://cloud.r-project.org",
+      "description": {
+        "Package": "sysfonts",
+        "Type": "Package",
+        "Title": "Loading Fonts into R",
+        "Version": "0.8.8",
+        "Date": "2022-03-13",
+        "Author": "Yixuan Qiu and authors/contributors of the\nincluded fonts. See file AUTHORS for details.",
+        "Maintainer": "Yixuan Qiu <yixuan.qiu@cos.name>",
+        "Description": "Loading system fonts and Google Fonts\n<https://fonts.google.com/> into R, in order to\nsupport other packages such as 'R2SWF' and 'showtext'.",
+        "Suggests": "curl, jsonlite",
+        "Copyright": "see file COPYRIGHTS",
+        "SystemRequirements": "zlib, libpng, FreeType",
+        "URL": "https://github.com/yixuan/sysfonts",
+        "BugReports": "https://github.com/yixuan/sysfonts/issues",
+        "License": "GPL-2",
+        "RoxygenNote": "7.1.2",
+        "NeedsCompilation": "yes",
+        "Packaged": "2022-03-13 12:44:14 UTC; qyx",
+        "Repository": "CRAN",
+        "Date/Publication": "2022-03-13 13:40:02 UTC",
+        "Built": "R 4.3.0; x86_64-pc-linux-gnu; 2023-04-25 05:05:50 UTC; unix"
       }
     },
     "systemfonts": {
@@ -4520,6 +4657,46 @@
         "Packaged": "2023-08-16 08:53:15 UTC; edouard",
         "Author": "Tariku Girma [aut, cre],\nEdouard Legoupil [aut]",
         "Built": "R 4.3.1; ; 2023-08-16 08:53:15 UTC; unix"
+      }
+    },
+    "unhcrthemes": {
+      "Source": "github",
+      "Repository": null,
+      "description": {
+        "Package": "unhcrthemes",
+        "Type": "Package",
+        "Title": "UNHCR Templates for Ggplot and Colour Palettes",
+        "Version": "0.1.0",
+        "Authors@R": "c(person(\"Cedric\", \"Vidonne\",\nemail = \"cedric@vidonne.me\",\nrole = c(\"aut\", \"cre\")),\nperson(\"Ahmadou\", \"Dicko\",\nemail = \"mail@ahmadoudicko.com\",\nrole = \"ctb\"))",
+        "Description": "Color palettes and themes for plots based on UNHCR brand book.",
+        "License": "MIT + file LICENSE",
+        "Encoding": "UTF-8",
+        "URL": "https://github.com/vidonne/unhcrthemes,\nhttps://vidonne.github.io/unhcrthemes/",
+        "BugReports": "https://github.com/vidonne/unhcrthemes/issues",
+        "Depends": "R (>= 3.5)",
+        "Imports": "ggplot2, scales, colorspace, showtext, sysfonts, systemfonts,\nragg",
+        "RoxygenNote": "7.2.3",
+        "Suggests": "rmarkdown, knitr, ggtext, ggforce, directlabels, treemapify,\nlubridate, tidyverse",
+        "VignetteBuilder": "knitr",
+        "Config/Needs/website": "vidonne/unhcrtemplate",
+        "Config/testthat/edition": "3",
+        "LazyData": "true",
+        "NeedsCompilation": "no",
+        "Packaged": "2023-04-25 15:45:30 UTC; edouard",
+        "Author": "Cedric Vidonne [aut, cre],\nAhmadou Dicko [ctb]",
+        "Maintainer": "Cedric Vidonne <cedric@vidonne.me>",
+        "Built": "R 4.3.0; ; 2023-04-25 15:45:30 UTC; unix",
+        "RemoteType": "github",
+        "RemoteHost": "api.github.com",
+        "RemoteRepo": "unhcrthemes",
+        "RemoteUsername": "vidonne",
+        "RemotePkgRef": "vidonne/unhcrthemes",
+        "RemoteRef": "HEAD",
+        "RemoteSha": "f7d371ffcab25ccf40265c2eeb164d2c32f8a625",
+        "GithubRepo": "unhcrthemes",
+        "GithubUsername": "vidonne",
+        "GithubRef": "HEAD",
+        "GithubSHA1": "f7d371ffcab25ccf40265c2eeb164d2c32f8a625"
       }
     },
     "urlchecker": {
@@ -4990,16 +5167,22 @@
       "checksum": "7446f39309f1b2a01cce9c3fd3b66432"
     },
     ".RData": {
-      "checksum": "61a65c3062a97a6adf319aedc2b961b6"
+      "checksum": "d3892b20ba83bfa021f20345e023cace"
     },
     "app.R": {
       "checksum": "d02a4feeb3ce4382f3a637a776010d52"
     },
     "DESCRIPTION": {
-      "checksum": "50e03add8aef16636c9fdd89d68e1a13"
+      "checksum": "0543c52358733a77b3b8022076ee5f52"
     },
     "dev/01_dev.R": {
       "checksum": "332d8a319f02d5b65c26af7eb89fad7a"
+    },
+    "dev/apptes.R": {
+      "checksum": "6035ad91263cf4e35cc6e4c52acad782"
+    },
+    "dev/config_attachment.yaml": {
+      "checksum": "a7efc9ea3e81f3b8936c1353cdbbf252"
     },
     "dev/function_documentation.Rmd": {
       "checksum": "48377f20f4b6980ea6178b2cb5ae55d0"
@@ -5050,7 +5233,7 @@
       "checksum": "939934ffc01a2bed928c47fbbf18d89a"
     },
     "docs/index.html": {
-      "checksum": "a54dba48947cf450a6e60a9d342a155f"
+      "checksum": "c0fc73db0b0a2332fa536eff751eed5e"
     },
     "docs/LICENSE-text.html": {
       "checksum": "ee685726ee52a5680090c982af1c01cd"
@@ -5065,7 +5248,7 @@
       "checksum": "9c627b6b2c41322b8f362fac07a2ae5a"
     },
     "docs/pkgdown.yml": {
-      "checksum": "97cf418d277d75fd90b22418f0f1286a"
+      "checksum": "0055790534b78c2d89281658a82c4aea"
     },
     "docs/reference/figures/README-pressure-1.png": {
       "checksum": "4f581a7b27557b49e652da5e346475ff"
@@ -5077,7 +5260,7 @@
       "checksum": "969a1ebe5adcd7e1dc498b06c8f5bab9"
     },
     "docs/search.json": {
-      "checksum": "384bf7ba27038ed60b23db2aa070a974"
+      "checksum": "27d2668af7be73da9477321fe7b46af9"
     },
     "docs/sitemap.xml": {
       "checksum": "1282b4a631a08958ba7f6ff415ade860"
@@ -5098,19 +5281,19 @@
       "checksum": "db153f001c7c98594f4a6e64193fbf8a"
     },
     "NAMESPACE": {
-      "checksum": "9738094d4a85bc127de4f294da45753e"
+      "checksum": "dbaf476eb28ca37323ffb039ba69c843"
     },
     "R/app_config.R": {
       "checksum": "59e140f90cdd374e1451cf475a114158"
     },
     "R/app_server.R": {
-      "checksum": "cdf8a9bf77a07d2a92e70f398ba94e59"
+      "checksum": "12c680b7f27c128f0fdd7d8288ad0c8f"
     },
     "R/app_ui.R": {
-      "checksum": "b854cd1959a92d899d790ac141568d98"
+      "checksum": "44d070d17a136392e8fc5889ae337b76"
     },
     "R/body.R": {
-      "checksum": "c048b2b6910302d9af13998f808e2dc1"
+      "checksum": "c7387bdf88b4c784c8ef44903cabdeb3"
     },
     "R/globals.R": {
       "checksum": "eef9469cd2f91bbefa241e9a4c51dd35"
@@ -5119,19 +5302,19 @@
       "checksum": "289be7bd6b2afb3ef8bdd7525e01f162"
     },
     "R/mod_assumptions.R": {
-      "checksum": "995884a389ef9a13c36c858be86b2f74"
+      "checksum": "ef7f12988bbb4710513425ee3601a421"
     },
     "R/mod_configure.R": {
-      "checksum": "fb5a6b4c97d3889c8417f12b840cab53"
+      "checksum": "0ef6eca2883dd36d49a6df34b525417a"
     },
     "R/mod_home.R": {
-      "checksum": "533165cf5b9cd9b801335a217049be35"
+      "checksum": "c27fd3f7ed4e4033037a6f13ff715433"
     },
     "R/mod_screener.R": {
-      "checksum": "bf66e3a809e77df2858f362003da10ed"
+      "checksum": "1d3b7b10b348af1dd025812c6c21b9b8"
     },
     "R/mod_summary.R": {
-      "checksum": "990f75b3a343958f31c5a1b1460531ee"
+      "checksum": "0bb5aef96eb47aed6d807e340ee1d04f"
     },
     "R/run_app.R": {
       "checksum": "fd38fc337ac1f8193961122646581804"
@@ -5140,10 +5323,10 @@
       "checksum": "5f5f9f1b5e7172c5229d3900665685eb"
     },
     "README.md": {
-      "checksum": "a8a7a426b099621d68cb357ffdee582b"
+      "checksum": "acf521d4ec8f4b5123543737085284c1"
     },
     "README.Rmd": {
-      "checksum": "94e5ee445c4012f476874bb8d739554f"
+      "checksum": "50f151a2a662222992cd9a4d68ace44d"
     }
   },
   "users": null

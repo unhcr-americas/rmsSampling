@@ -22,51 +22,49 @@ mod_assumptions_ui <- function(id) {
 		    h2('Decision Tree'),
 		    p("The RMS sampling decision tree serves as a methodological framework for
 RMS quality assurance as well as being a tool to decide on most appropriate methodological approaches."),
-		    p("Answer the questions in each box to determine which sampling method is
-		    most appropriate for your RMS based on the country context for each population group included"),
-		    p(" For a broader overview of non probabilistic sampling approaches, you may consult: ",
-		      tags$a(href="https://comparativemigrationstudies.springeropen.com/articles/10.1186/s40878-016-0044-9/tables/1",
-		             "Ref1"),
-		      ", ",
-		      tags$a(href="https://www.questionpro.com/blog/non-probability-sampling",
-		             "Ref2"),
-		      " or ",
-		      tags$a(href="https://www150.statcan.gc.ca/n1/edu/power-pouvoir/ch13/nonprob/5214898-eng.htm",
-		             "Ref2"),
-		      ". ")
+		    p("Answer the questions below to determine which sampling method is
+		    most appropriate for your RMS based on the country context for each population group included")#,
+		    # p(" For a broader overview of non probabilistic sampling approaches, you may consult: ",
+		    #   tags$a(href="https://comparativemigrationstudies.springeropen.com/articles/10.1186/s40878-016-0044-9/tables/1",
+		    #          "Ref1"),
+		    #   ", ",
+		    #   tags$a(href="https://www.questionpro.com/blog/non-probability-sampling",
+		    #          "Ref2"),
+		    #   " or ",
+		    #   tags$a(href="https://www150.statcan.gc.ca/n1/edu/power-pouvoir/ch13/nonprob/5214898-eng.htm",
+		    #          "Ref2"),
+		    #  ". ")
 		  )
 		),
 
-		tabsetPanel(type = "tabs",
-
-		         #   div(
-		          #
-  		            tabPanel(title= "Pillar-1-Refugee",id = ns("target_ras"),
+		fluidRow(
+		  shinydashboard::box(
+		    title = paste0("Sampling Assessment Questions") ,
+		    #  status = "primary",
+		    status = "info",
+		    solidHeader = FALSE,
+		    collapsible = TRUE,
+		    #background = "light-blue",
+		    width = 12,
+	    	tabsetPanel(type = "tabs",
+  		            tabPanel(title= "Pillar-1-Refugee",
+  		                     id = ns("target_ras"),
   		                     mod_screener_ui(ns("screener_ui_1"), thisgroup = "RAS")),
-		          #  ),
-		         #   div(
-		          #
-  		            tabPanel(title= "Pillar-2-Stateless",id = ns("target_sta"),
+  		            tabPanel(title= "Pillar-2-Stateless",
+  		                     id = ns("target_sta"),
 		                     mod_screener_ui(ns("screener_ui_2"), thisgroup = "STA")),
-# 		            ),
-# 		            div(
-#
-  		            tabPanel(title= "Pillar-3-Reintegration", id = ns("target_ret"),
+  		            tabPanel(title= "Pillar-3-Reintegration",
+  		                     id = ns("target_ret"),
   		                     mod_screener_ui(ns("screener_ui_3"), thisgroup = "RET") ),
-		            # ),
-		            # div(
-		            #
-  		            tabPanel(title= "Pillar-4-IDP",id = ns("target_idp"),
+  		            tabPanel(title= "Pillar-4-IDP",
+  		                     id = ns("target_idp"),
   		                     mod_screener_ui(ns("screener_ui_4") , thisgroup = "IDP") ),
-		            # ),
-		            # div(
-		            #
-		              tabPanel(title= "Other People with and for whom UNHCR works", id = ns("target_ooc"),
+		              tabPanel(title= "Other People with and for whom UNHCR works",
+		                       id = ns("target_ooc"),
 		                     mod_screener_ui(ns("screener_ui_5"), thisgroup = "OOC") )
-		           # )
-
 		) ## End Tabset
-
+		)
+	)
 
 	)
 }
@@ -82,28 +80,32 @@ mod_assumptions_server <- function(input, output, session, AppReactiveValue) {
 
 
 	callModule(mod_screener_server, "screener_ui_1", AppReactiveValue, thisgroup = "RAS")
-	callModule(mod_screener_server, "screener_ui_1", AppReactiveValue, thisgroup = "STA")
-	callModule(mod_screener_server, "screener_ui_4", AppReactiveValue, thisgroup = "RET")
-	callModule(mod_screener_server, "screener_ui_2", AppReactiveValue, thisgroup = "IDP")
-	callModule(mod_screener_server, "screener_ui_3", AppReactiveValue, thisgroup = "OOC")
+	callModule(mod_screener_server, "screener_ui_2", AppReactiveValue, thisgroup = "STA")
+	callModule(mod_screener_server, "screener_ui_3", AppReactiveValue, thisgroup = "RET")
+	callModule(mod_screener_server, "screener_ui_4", AppReactiveValue, thisgroup = "IDP")
+	callModule(mod_screener_server, "screener_ui_5", AppReactiveValue, thisgroup = "OOC")
 
-	## Display conditionnally....
+	## Display conditionally....
 	observeEvent(AppReactiveValue$show_ras, {
 	  if(isTRUE(AppReactiveValue$show_ras)) {
-	   golem::invoke_js("show", paste0("#", ns("target_ras")))
+	    showTab(inputId = "tabs", target = "Pillar-1-Refugee")
+	 #  golem::invoke_js("show", paste0("#", ns("target_ras")))
 	    # golem::invoke_js("show", paste0("#", ns("screener_ui_1")))
 	  } else {
-	  golem::invoke_js("hide", paste0("#", ns("target_ras")))
+	    hideTab(inputId = "tabs", target = "Pillar-1-Refugee")
+	 # golem::invoke_js("hide", paste0("#", ns("target_ras")))
 	    #  golem::invoke_js("hide", paste0("#", ns("screener_ui_1")))
 	  }
 	})
 
 	observeEvent(AppReactiveValue$show_sta, {
 	  if(isTRUE(AppReactiveValue$show_sta)) {
-	    golem::invoke_js("show", paste0("#", ns("target_sta")))
+	    showTab(inputId = "tabs", target = "Pillar-2-Stateless")
+	    #  golem::invoke_js("show", paste0("#", ns("target_sta")))
 	   # golem::invoke_js("show", paste0("#", ns("screener_ui_2")))
 	  } else {
-	   golem::invoke_js("hide", paste0("#", ns("target_sta")))
+	    hideTab(inputId = "tabs", target = "Pillar-2-Stateless")
+	    #   golem::invoke_js("hide", paste0("#", ns("target_sta")))
 	    # golem::invoke_js("hide", paste0("#", ns("screener_ui_2")))
 	  }
 	})
@@ -111,10 +113,12 @@ mod_assumptions_server <- function(input, output, session, AppReactiveValue) {
 
 	observeEvent(AppReactiveValue$show_ret, {
 	  if(isTRUE(AppReactiveValue$show_ret)) {
-	   golem::invoke_js("show", paste0("#", ns("target_ret")))
+	    showTab(inputId = "tabs", target = "Pillar-3-Reintegration")
+	    #  golem::invoke_js("show", paste0("#", ns("target_ret")))
 	    # golem::invoke_js("show", paste0("#", ns("screener_ui_3")))
 	  } else {
-	   golem::invoke_js("show", paste0("#", ns("target_ret")))
+	    hideTab(inputId = "tabs", target = "Pillar-3-Reintegration")
+	    #   golem::invoke_js("show", paste0("#", ns("target_ret")))
 	     #golem::invoke_js("show", paste0("#", ns("screener_ui_3")))
 	  }
 	})
@@ -122,20 +126,24 @@ mod_assumptions_server <- function(input, output, session, AppReactiveValue) {
 
 	observeEvent(AppReactiveValue$show_idp, {
 	  if(isTRUE(AppReactiveValue$show_idp)) {
-	 golem::invoke_js("show", paste0("#", ns("target_idp")))
+	    showTab(inputId = "tabs", target = "Pillar-4-IDP")
+	    #  golem::invoke_js("show", paste0("#", ns("target_idp")))
 	    #   golem::invoke_js("show", paste0("#", ns("screener_ui_4")))
 	  } else {
-	   golem::invoke_js("hide", paste0("#", ns("target_idp")))
+	    hideTab(inputId = "tabs", target = "Pillar-4-IDP")
+	    #  golem::invoke_js("hide", paste0("#", ns("target_idp")))
 	   #  golem::invoke_js("hide", paste0("#", ns("screener_ui_4")))
 	  }
 	})
 
 	observeEvent(AppReactiveValue$show_ooc, {
 	  if(isTRUE(AppReactiveValue$show_ooc)) {
-	   golem::invoke_js("show", paste0("#", ns("target_ooc")))
+	    showTab(inputId = "tabs", target = "Other People with and for whom UNHCR works")
+	    #  golem::invoke_js("show", paste0("#", ns("target_ooc")))
 	    # golem::invoke_js("show", paste0("#", ns("screener_ui_5")))
 	  } else {
-	   golem::invoke_js("hide", paste0("#", ns("target_ooc")))
+	    hideTab(inputId = "tabs", target = "Other People with and for whom UNHCR works")
+	    #  golem::invoke_js("hide", paste0("#", ns("target_ooc")))
 	    # golem::invoke_js("hide", paste0("#", ns("screener_ui_5")))
 	  }
 	})

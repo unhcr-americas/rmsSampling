@@ -84,4 +84,5 @@ app_server <- function(input, output, session) {
   callModule(mod_configure_server, "configure_ui_1", AppReactiveValue)
   callModule(mod_assumptions_server, "assumptions_ui_1", AppReactiveValue)
   callModule(mod_summary_server, "summary_ui_1", AppReactiveValue)
+  callModule(mod_report_server, "report_ui_1", AppReactiveValue)
 }

@@ -92,11 +92,11 @@ population without interviewing everyone."),
 		      column(
 		        width = 8,
 		        actionButton(inputId = ns("showplot"),
-		                     label = "Display the sampling niverse"),
+		                     label = "Click here to Display Sampling Universe"),
 		        hr(),
 		        plotOutput(outputId = ns("universe"),
 		                   width = "100%",
-		                   height = "550px")
+		                   height = "500px")
 		        )
 		    )
 
@@ -116,12 +116,44 @@ mod_configure_server <- function(input, output, session, AppReactiveValue) {
 
 	observeEvent(eventExpr = input$country,{
 	  AppReactiveValue$country <- input$country
+
+	  ## Conditionally filter the choices for the pillar
+	  univ <-
+	    refugees::population |>
+	    dplyr::filter(year == 2022 &
+	                    coa ==  AppReactiveValue$country ) |>
+	    dplyr::mutate(
+	      ras = rowSums(
+	        dplyr::across(c("refugees","asylum_seekers","oip")), na.rm=TRUE), #refugees + asylum_seekers + oip,
+	      ret = rowSums(
+	        dplyr::across(c("returned_refugees","returned_idps")), na.rm=TRUE) ) |> #returned_refugees + returned_idps)
+	    dplyr::summarise(RAS = sum(ras, na.rm = TRUE),
+	                     STA = sum(stateless, na.rm = TRUE),
+	                     RET = sum(ret, na.rm = TRUE),
+	                     IDP = sum(idps, na.rm = TRUE),
+	                     OOC = sum(ooc, na.rm = TRUE), .by = coa)  |>
+	    tidyr::pivot_longer(cols =  c(RAS, STA, RET, IDP, OOC )) |>
+	    dplyr::mutate(name2 = dplyr::recode( name,
+	                                         "RAS" = "Pillar-1- Refugee, Asylum Seeker & Other in Need of International Protection" ,
+	                                         "STA" = "Pillar-2- Stateless",
+	                                         "RET" = "Pillar-3- Returnees",
+	                                         "IDP" = "Pillar-4- Internally Displaced Persons",
+	                                         "OOC" = "Other People with and for whom UNHCR works"
+	    )  ) |>
+	    dplyr::mutate(name2 = factor(name2, levels = c(
+	      "Other People with and for whom UNHCR works",
+	      "Pillar-4- Internally Displaced Persons",
+	      "Pillar-3- Returnees" ,
+	      "Pillar-2- Stateless",
+	      "Pillar-1- Refugee, Asylum Seeker & Other in Need of International Protection"))) |>
+	    dplyr::filter(value > 0)
+
 	})
 
 	observeEvent(eventExpr = input$poptype, {
 	  AppReactiveValue$poptype <- input$poptype
 
-	  ## Based on selection show or hid screening questions..
+	  ## Based on selection, set flag to show or hide screening questions..
 	   if( any(AppReactiveValue$poptype %in% c("RAS"))) {
 	      AppReactiveValue$show_ras <- TRUE
 	    } else  if( any( !(AppReactiveValue$poptype %in% c("RAS"))))  {
@@ -161,47 +193,75 @@ mod_configure_server <- function(input, output, session, AppReactiveValue) {
 	  #  )
 
 	  univ <-
-	  refugees::population |>
-	  dplyr::filter(year == 2022 &
-	                  coa ==  AppReactiveValue$country ) |>
-	  #  coa ==  "PAN" ) |>
-	  dplyr::mutate(
-	    ras = rowSums(
-	      dplyr::across(c("refugees","asylum_seekers","oip")), na.rm=TRUE), #refugees + asylum_seekers + oip,
-	    ret = rowSums(
-	      dplyr::across(c("returned_refugees","returned_idps")), na.rm=TRUE) ) |> #returned_refugees + returned_idps)
-	  dplyr::summarise(RAS = sum(ras, na.rm = TRUE),
-	                   STA = sum(stateless, na.rm = TRUE),
-	                   RET = sum(ret, na.rm = TRUE),
-	                   IDP = sum(idps, na.rm = TRUE),
-	                   OOC = sum(ooc, na.rm = TRUE), .by = coa)
+	    refugees::population |>
+	    dplyr::filter(year == 2022 &
+	                    coa ==  AppReactiveValue$country ) |>
+	    dplyr::mutate(
+	      ras = rowSums(
+	        dplyr::across(c("refugees","asylum_seekers","oip")), na.rm=TRUE), #refugees + asylum_seekers + oip,
+	      ret = rowSums(
+	        dplyr::across(c("returned_refugees","returned_idps")), na.rm=TRUE) ) |> #returned_refugees + returned_idps)
+	    dplyr::summarise(RAS = sum(ras, na.rm = TRUE),
+	                     STA = sum(stateless, na.rm = TRUE),
+	                     RET = sum(ret, na.rm = TRUE),
+	                     IDP = sum(idps, na.rm = TRUE),
+	                     OOC = sum(ooc, na.rm = TRUE), .by = coa)
 
 	  ## inject in appreactive value the universe to assess then the sample
+	  univ2 <- univ |>
+	    tidyr::pivot_longer(cols =  c(RAS, STA, RET, IDP, OOC )) |>
+	    dplyr::mutate(name2 = dplyr::recode( name,
+	                                         "RAS" = "Pillar-1- Refugee, Asylum Seeker & Other in Need of International Protection" ,
+	                                         "STA" = "Pillar-2- Stateless",
+	                                         "RET" = "Pillar-3- Returnees",
+	                                         "IDP" = "Pillar-4- Internally Displaced Persons",
+	                                         "OOC" = "Other People with and for whom UNHCR works"
+	    )  ) |>
+	    dplyr::mutate(name2 = factor(name2, levels = c(
+	                       "Other People with and for whom UNHCR works",
+	                       "Pillar-4- Internally Displaced Persons",
+	                       "Pillar-3- Returnees" ,
+	                       "Pillar-2- Stateless",
+	                       "Pillar-1- Refugee, Asylum Seeker & Other in Need of International Protection")))
 
 	  ## get a chart to summarise
-	  AppReactiveValue$universe <- univ |>
-	  tidyr::pivot_longer(cols =  c(RAS, STA, RET, IDP, OOC )) |>
-	  dplyr::mutate(name2 = dplyr::recode( name,
-	                                       "RAS" = "Pillar-1- Refugee, Asylum Seeker & Other in Need of International Protection" ,
-	                                       "STA" = "Pillar-2- Stateless",
-	                                       "RET" = "Pillar-3- Returnees",
-	                                       "IDP" = "Pillar-4- Internally Displaced Persons",
-	                                       "OOC" = "Other People with and for whom UNHCR works"
-	  )  ) |>
-	  ggplot2::ggplot(
-	    ggplot2::aes(value, reorder(name2, value))) +
-	  ggplot2::geom_col(fill = unhcrthemes::unhcr_pal(n = 1, "pal_blue"),
+	  AppReactiveValue$universe <-
+	    ggplot2::ggplot( data = univ2,
+	    ggplot2::aes(value,  name2 )) +
+	    ggplot2::geom_col(fill = unhcrthemes::unhcr_pal(n = 1, "pal_blue"),
 	                    width = 0.8) +
-	  ggplot2::geom_text(
-	    ggplot2::aes(label = scales::label_comma()(value)),
-	    hjust = -0.2) +
+
+
+	    ## Position label differently in the bar in white - outside bar in black
+	    ggplot2::geom_text(
+	      data = subset(univ2, value < max(value) / 1.5),
+	      ggplot2::aes(
+	        x = value,
+	        y = name2,
+	        label =   scales::label_comma()(value)),
+	      hjust = -0.1 ,  vjust = 0.5,  colour = "black", size = 6
+	    ) +
+	    ggplot2::geom_text(
+	      data = subset(univ2, value >= max(value) / 1.5),
+	      ggplot2::aes(
+	        x = value,
+	        y = name2,
+	        label =   scales::label_comma()(value)),
+	      hjust = 1.1 , vjust = 0.5,  colour = "white"   ) +
+
+
 	  ggplot2::scale_y_discrete(labels = function(x) stringr::str_wrap(x, width = 30)) +
 	  ggplot2::scale_x_continuous(expand =
 	                                ggplot2::expansion(mult = c(0, 0.1))) +
-	  ggplot2::labs(title = "Sampling Universe",
-	                subtitle = paste0( AppReactiveValue$country, " | 2022"),
+	  ggplot2::labs(title = "Sampling Universe for the survey",
+	                subtitle = paste0( countrycode::countrycode(
+	                                      AppReactiveValue$country,
+	                                      origin = 'unhcr',
+	                                      destination = 'country.name')
+	                                   , " | 2022"),
 	                caption = "Source: UNHCR Refugee Data Finder") +
-	  unhcrthemes::theme_unhcr(font_size = 18,
+	  unhcrthemes::theme_unhcr(font_size = 20,
+	                           rel_small = 6/9,
 	                           grid = FALSE,
 	                           axis = FALSE,
 	                           axis_title = FALSE,

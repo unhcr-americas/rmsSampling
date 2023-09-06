@@ -53,6 +53,8 @@ golem::run_dev()
 # graveler::level_up(name = "assumptions")
 # graveler::level_up(name = "screener")
 # graveler::level_up(name = "summary")
+# graveler::level_up(name = "estimate")
+# graveler::level_up(name = "report")
 
 
 ### Deploy the app ----------

@@ -276,6 +276,16 @@ test_that("estimate_sample works", {
  below is a default chunk to create and document your run_app function
 -->
 
+```{r}
+# usethis::use_rmarkdown_template(
+#   template_name = "Sample_Design_Report",
+#   template_dir = NULL,
+#   template_description = "Sample Design Report",
+#   template_create_dir = TRUE
+# )
+```
+
+
 # run_app
 
 

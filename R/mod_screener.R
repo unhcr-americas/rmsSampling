@@ -14,18 +14,9 @@ mod_screener_ui <- function(id, thisgroup) {
   ns <- NS(id)
   golem::activate_js()
   tabItem(tabName = "screener",
-          fluidRow(
-            shinydashboard::box(
-              title = paste0("Screening Questions for ", thisgroup) ,
-              #  status = "primary",
-              status = "info",
-              solidHeader = FALSE,
-              collapsible = TRUE,
-              #background = "light-blue",
-              width = 12,
               fluidRow(
                 shinydashboard::box(
-                  title = "Initial Check - Tick to confirm if correct",
+                  title = paste0("Initial Check for ", thisgroup,"- Tick to confirm if correct"),
                   #  status = "primary",
                   status = "info",
                   solidHeader = FALSE,
@@ -191,8 +182,7 @@ mod_screener_ui <- function(id, thisgroup) {
                       placeholder = TRUE
                     ))
                   )
-                )
-              )
+
             )
 
       ) ##End fluid row)

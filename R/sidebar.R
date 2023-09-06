@@ -14,7 +14,8 @@ sidebar <- function() {
       shinydashboard::menuItem("About",tabName = "home",icon = icon("bookmark")),
       shinydashboard::menuItem("Configure Country",tabName = "configure",icon = icon("globe")),
       shinydashboard::menuItem("Set Assumptions",tabName = "assumptions",icon = icon("gears")),
-      shinydashboard::menuItem("Estimate Size",tabName = "summary",icon = icon("chalkboard-user"))
+      shinydashboard::menuItem("Estimate Size",tabName = "summary",icon = icon("chalkboard-user")),
+      shinydashboard::menuItem("Get Sampling Report",tabName = "report",icon = icon("file-signature"))
 
       # - add more - separated by a comma!
       ## For icon search on https://fontawesome.com/search?o=r&m=free - filter on free
