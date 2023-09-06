@@ -10,165 +10,192 @@
 #' @import shinydashboard
 #' @keywords internal
 
-mod_screener_ui <- function(id) {
+mod_screener_ui <- function(id, thisgroup) {
   ns <- NS(id)
-  tabItem(
-    tabName = "screener",
-    fluidRow(
-      shinydashboard::box(
-        title = "Screening Questions",
-        #  status = "primary",
-        status = "info",
-        solidHeader = FALSE,
-        collapsible = TRUE,
-        #background = "light-blue",
-        width = 12,
-        fluidRow(
-          shinydashboard::box(
-            title = "Initial Check - thick to confirm if correct",
-            #  status = "primary",
-            status = "info",
-            solidHeader = FALSE,
-            collapsible = TRUE,
-            #background = "light-blue",
-            width = 6,
-            fluidRow(
-              checkboxInput(
-                inputId = ns("availablereg"),
-                label = "I confirm that there is an up to date and complete registration list of the population group available.
+  golem::activate_js()
+  tabItem(tabName = "screener",
+          fluidRow(
+            shinydashboard::box(
+              title = paste0("Screening Questions for ", thisgroup) ,
+              #  status = "primary",
+              status = "info",
+              solidHeader = FALSE,
+              collapsible = TRUE,
+              #background = "light-blue",
+              width = 12,
+              fluidRow(
+                shinydashboard::box(
+                  title = "Initial Check - Tick to confirm if correct",
+                  #  status = "primary",
+                  status = "info",
+                  solidHeader = FALSE,
+                  collapsible = TRUE,
+                  #background = "light-blue",
+                  width = 6,
+                  fluidRow(
+                    checkboxInput(
+                      inputId = ns("availablereg"),
+                      label = "I confirm that there is an up to date and complete registration list of the population group available.
           		    -Up to date- refers to a database which reflects the current population in the
           		  country. If the size or demographic composition of the population group has
           		  changed more than 10% since the last registration, it cannot be considered up to
           		  date.  -Complete- refers to a database which contains registration information for 80% or
-          		  more of the total population group."
-              ),
-              checkboxInput(
-                inputId = ns("lessthan5000"),
-                label = "The population group is smaller than 5,000 individuals,
-          		  but the operations still want to use probabilistic sampling and confirm it as the has
-          		  the resource, boh in terms of budget and time  to proceed with a
-                probabilistic approach for this population group"
-              )
+          		  more of the total population group."),
 
-            )
-          ),
-          shinydashboard::box(
-            title = "Population Accessibility",
-            #  status = "primary",
-            status = "info",
-            solidHeader = FALSE,
-            collapsible = FALSE,
-            #background = "light-blue",
-            width = 6,
-            fluidRow(
-              radioButtons(
-                inputId = ns("traceable"),
-                label = "Is the population group traceable?
-      		  Traceable refers to population groups whose homes can be located or who can be
-      		reached via telephone",
-                choices =  c("Known (in camps)" = "known",
-                             "Partially known" = "partknown",
-                             "Unknown" = "unknown")   ),
-              radioButtons(
-                inputId = ns("spread"),
-                label = "What is Geographic distribution (i.e. concentration) of that population group in the country?",
-                choices =  c(
-                  "Found only within a small area (for instance only a few villages, cities, or camps easily accessible by vehicle or on foot)" = "small",
-                  "Scattered - spread out within the country" = "scattered",
-                  "Concentrated within a bounded area(s) - live within
-      		a geographic area with clearly identified boundaries, such as towns, villages,
-      		neighbourhoods, settlements, camps or other geographic areas for which specific
-      		boundaries can be clearly identified by a field team" = "concentrated",
-                             "Both - some area of known concentration together with more scaterred situation" = "both") )
+                ## using div so that we can use invoke_js to display conditionally
+                    div(
+                      id = ns("target_lessthan5000"),
+                      checkboxInput(
+                        inputId = ns("lessthan5000"),
+                        label = "The population group is smaller than 5,000 individuals,
+              		  but the operations still want to use probabilistic sampling and confirm it as the has
+              		  the resource, boh in terms of budget and time  to proceed with a
+                    probabilistic approach for this population group")
+                    )
+                  )
+                ),
+                shinydashboard::box(
+                  title = "Population Accessibility",
+                  #  status = "primary",
+                  status = "info",
+                  solidHeader = FALSE,
+                  collapsible = FALSE,
+                  #background = "light-blue",
+                  width = 6,
+                  fluidRow(
+                    div(
+                     id = ns("target_traceable"),
+                     radioButtons(
+                      inputId = ns("traceable"),
+                      label = "Is the population group traceable?
+        		  Traceable refers to population groups whose homes can be located or who can be
+        		reached via telephone",
+                      choices =  c(
+                        "Unknown" = "unknown"   ,
+                        "Known (in camps or with regular registration verification)" = "known",
+                        "Only Partially known (less than 80% of Population Group)" = "partknown")
+                    )
+                  ),
+                  div(
+                    id = ns("target_spread"),
+                    radioButtons(
+                      inputId = ns("spread"),
+                      label = "What is Geographic distribution (i.e. concentration) of that population group in the country?",
+                      choices =  c(
 
-            )
-          ),
-          shinydashboard::box(
-            title = "Disaggregaion Requirement",
-            #  status = "primary",
-            status = "info",
-            solidHeader = FALSE,
-            collapsible = TRUE,
-            #background = "light-blue",
-            width = 12,
-            fluidRow(
+                        "Scattered - spread out within the country" = "scattered",
 
-              checkboxInput(
-                inputId = ns("strata"),
-                label = "The operation would like to benefit from statistically reliable disaggregation
-                and is considering sample Stratification (aka setting up strata).
-      		  Strata are distinct subgroups of the target population. Each population group
-      		can  be further split into different strata. For example, RAS and IDPs may be
-      		divided  into two distinct subgroups, or stratum: 1. RAS living in camps;
-      		2. RAS living  outside of camps, or 1. Rural IDPs; 2. Urban IDPs,"
-              ),
-              ## If - display what Stratification could make sense based on available disaggregation within ASR
-              ## Location - Nationality - Gender - location type
-            )
-          ),
-          shinydashboard::box(
-            title = "Additional details",
-            #  status = "primary",
-            status = "info",
-            solidHeader = FALSE,
-            collapsible = TRUE,
-            #background = "light-blue",
-            width = 12,
-            fluidRow(
-              checkboxInput(
-                inputId = ns("budget"),
-                label = "There is specific budget and time available to conduct a
+                        "Found only within a small area (for instance only a few
+                        villages, cities, or camps easily accessible by
+                        vehicle or on foot)" = "small",
+
+                        "Concentrated within a bounded area(s) - live within
+        		a geographic area with clearly identified boundaries, such as towns, villages,
+        		neighbourhoods, settlements, camps or other geographic areas for which specific
+        		boundaries can be clearly identified by a field team" = "concentrated",
+
+
+                        "Both - some area of known concentration together with
+                        more scaterred situation" = "both"
+                      )
+                    )
+                  ))
+                ),
+                shinydashboard::box(
+                  title = "Disaggregation Requirement",
+                  #  status = "primary",
+                  status = "info",
+                  solidHeader = FALSE,
+                  collapsible = TRUE,
+                  #background = "light-blue",
+                  width = 12,
+                  fluidRow(
+                    div(
+                     id = ns("target_strata"),
+                     checkboxInput(
+                      inputId = ns("strata"),
+                      label = "The operation would like to benefit from statistically
+                      reliable disaggregation
+                  and is considering sample Stratification (aka setting up strata).
+        		  Strata are distinct subgroups of the target population. Each population group
+        		can  be further split into different strata. For example, RAS and IDPs may be
+        		divided  into two distinct subgroups, or stratum: 1. RAS living in camps;
+        		2. RAS living  outside of camps, or 1. Rural IDPs; 2. Urban IDPs,"
+                    )
+                  )
+                  ## If - display what Stratification could make sense based on available disaggregation within ASR
+                  ## Location - Nationality - Gender - location type)
+                 )
+                ),
+                shinydashboard::box(
+                    title = "Additional details",
+                    #  status = "primary",
+                    status = "info",
+                    solidHeader = FALSE,
+                    collapsible = TRUE,
+                    #background = "light-blue",
+                    width = 12,
+                    fluidRow(
+                      div(
+                        id = ns("target_budget"),
+                        checkboxInput(
+                          inputId = ns("budget"),
+                          label = "There is specific budget and time available to conduct a
                 listing exercise in addition of survey data collection.
                 A household listing exercise can be used to construct a sampling frame but is time
       		consuming and expensive. A listing exercise requires either listing agents that count
       		every household within the specified boundary and create a list of all eligible
       		households or a system that calls automatically people (Random Digital Dial) and
       		gather basic information on them through Interactive Voice Response (IVR) or a Chatbot."
-              ),
-         checkboxInput(
-                inputId = ns("gather"),
-                label = "The population tend to gather at a certain location on a specific day/time?
+                        )
+                      ),
+                      div(
+                        id = ns("target_gather"),
+                        checkboxInput(
+                          inputId = ns("gather"),
+                          label = "The population tend to gather at a certain location on a specific day/time?
       		  The population may habitually gather for certain ceremonies, festivities, or events
       that are well known. In case these are known in advance and all population
       members have the possibility to be present at the location, these days and times
       can be opportunities to survey the population and. For example, the population
-      might gather for a humanitarian distribution or a registration exercise."
-              ),
-              checkboxInput(
-                inputId = ns("network"),
-                label = "The population a well-connected community, where people tend to know each others"
-              ),
-
-              checkboxInput(
-                inputId = ns("expert"),
-                label = "There is adequate time and expertise to carry out a
+      might gather for a humanitarian distribution or a registration exercise."  )
+                      ),
+                      div(
+                        id = ns("target_network"),
+                        checkboxInput(
+                          inputId = ns("network"),
+                          label = "The population a well-connected community, where people tend to know each others")
+                      )
+                      ,
+                      div(
+                        id = ns("target_expert"),
+                        checkboxInput(
+                          inputId = ns("expert"),
+                          label = "There is adequate time and expertise to carry out a
       		  Respondent Driven Sampling (RDS) approach, which entails conducting a
-      formative survey to identify seeds and prepare RDS coupons?"	)
-
-
+      formative survey to identify seeds and prepare RDS coupons?"
+                        )
+                      )
+                    )
+                  ),
+                  shinydashboard::box(
+                    title = paste0("Recommended Sampling Approach for ", thisgroup),
+                    #  status = "primary",
+                    status = "primary",
+                    solidHeader = TRUE,
+                    collapsible = FALSE,
+                    #background = "light-blue",
+                    width = 12,
+                    fluidRow(verbatimTextOutput(
+                      outputId = ns("sampling"),
+                      placeholder = TRUE
+                    ))
+                  )
+                )
+              )
             )
-          ),
-          shinydashboard::box(
-            title = "RecommendedSampling Approach",
-            #  status = "primary",
-            status = "primary",
-            solidHeader = TRUE,
-            collapsible = FALSE,
-            #background = "light-blue",
-            width = 12,
-            fluidRow(
-                verbatimTextOutput( outputId = ns("sampling"),
-                                    placeholder = TRUE)
-            )
-          )
 
-
-
-
-            )
-          )
-        ) ##End fluid row
-      )
+      ) ##End fluid row)
 }
 
 #' Module Server
@@ -243,11 +270,11 @@ street or a public building.
     gather = NULL  ,
     network = NULL  ,
     expert = NULL  ,
-    sampling = "Answe Screening questions"  ,
+    sampling = "We are not yet able to define the adequate sampling approach"  ,
     ## conditional display
     show_lessthan5000 = FALSE  ,
-    show_traceable= FALSE  ,
-    show_spread= FALSE  ,
+    show_traceable= TRUE  ,
+    show_spread= TRUE  ,
     show_strata= FALSE  ,
     show_budget= FALSE  ,
     show_gather = FALSE  ,
@@ -260,214 +287,190 @@ street or a public building.
   # availablereg ####
   observeEvent(eventExpr = input$availablereg, {
     reactLocal$availablereg <- input$availablereg
-
-    reactLocal$sampling <- dplyr::case_when(
-      reactLocal$availablereg == FALSE & reactLocal$traceable %in% c("unknown" ) ~ nonprob,
-      reactLocal$availablereg == TRUE & reactLocal$spread %in% c("concentrated") ~ srs,
-      reactLocal$budget == TRUE & reactLocal$spread %in% c("concentrated") == TRUE ~ ppswalk,
-      reactLocal$traceable %in% c("partknown", "known") ~ ppsframe,
-      reactLocal$strata == TRUE ~ srsstrata,
-      reactLocal$budget == TRUE & reactLocal$spread %in% c("scattered") ~ acs,
-      reactLocal$gather == TRUE ~ lts,
-      reactLocal$expert == TRUE ~ rds,
-      TRUE ~ "We are not yet able to define the adequate sampling approach")
-
     if( reactLocal$availablereg == TRUE) {
-      reactLocal$show_lessthan5000 <- TRUE
+     # reactLocal$show_lessthan5000 <- TRUE
+      # reactLocal$show_traceable <- TRUE
+      # reactLocal$show_spread <- TRUE
+       reactLocal$show_strata <- TRUE
+    } else if( reactLocal$availablereg == FALSE) {
+      #reactLocal$show_traceable <- FALSE
+      #reactLocal$show_spread <- FALSE
+      reactLocal$show_strata <- FALSE
+
     }
+
   })
 
   # lessthan5000 ####
   observeEvent(eventExpr = input$lessthan5000, {
     reactLocal$lessthan5000 <- input$lessthan5000
-
-    reactLocal$sampling <- dplyr::case_when(
-      reactLocal$availablereg == FALSE & reactLocal$traceable %in% c("unknown" ) ~ nonprob,
-      reactLocal$availablereg == TRUE & reactLocal$spread %in% c("concentrated") ~ srs,
-      reactLocal$budget == TRUE & reactLocal$spread %in% c("concentrated") == TRUE ~ ppswalk,
-      reactLocal$traceable %in% c("partknown", "known") ~ ppsframe,
-      reactLocal$strata == TRUE ~ srsstrata,
-      reactLocal$budget == TRUE & reactLocal$spread %in% c("scattered") ~ acs,
-      reactLocal$gather == TRUE ~ lts,
-      reactLocal$expert == TRUE ~ rds,
-      TRUE ~ "We are not yet able to define the adequate sampling approach")
-
-
-    if( reactLocal$availablereg == TRUE) {
-      reactLocal$show_traceable <- TRUE
-      reactLocal$show_spread <- TRUE
-      # reactLocal$show_strata <- TRUE
-      # reactLocal$show_budget <- TRUE
-      # reactLocal$show_gather <- TRUE
-      # reactLocal$show_network <- TRUE
-      # reactLocal$show_expert <- TRUE
-    }
+    # if( reactLocal$show_lessthan5000 == TRUE) {
+    #   reactLocal$show_traceable <- TRUE
+    #   reactLocal$show_spread <- TRUE
+    #   # reactLocal$show_strata <- TRUE
+    #   # reactLocal$show_budget <- TRUE
+    #   # reactLocal$show_gather <- TRUE
+    #   # reactLocal$show_network <- TRUE
+    #   # reactLocal$show_expert <- TRUE
+    # }
   })
+
   observeEvent(reactLocal$show_lessthan5000, {
+    #browser()
     if(isTRUE(reactLocal$show_lessthan5000)) {
-      golem::invoke_js("show", paste0("#", ns("lessthan5000")))
+      golem::invoke_js("show", paste0("#", ns("target_lessthan5000")))
     } else {
-      golem::invoke_js("hide", paste0("#", ns("lessthan5000")))
+      golem::invoke_js("hide", paste0("#", ns("target_lessthan5000")))
     }
   })
 
   # traceable ####
   observeEvent(eventExpr = input$traceable, {
     reactLocal$traceable <- input$traceable
-    reactLocal$sampling <- dplyr::case_when(
-      reactLocal$availablereg == FALSE & reactLocal$traceable %in% c("unknown" ) ~ nonprob,
-      reactLocal$availablereg == TRUE & reactLocal$spread %in% c("concentrated") ~ srs,
-      reactLocal$budget == TRUE & reactLocal$spread %in% c("concentrated") == TRUE ~ ppswalk,
-      reactLocal$traceable %in% c("partknown", "known") ~ ppsframe,
-      reactLocal$strata == TRUE ~ srsstrata,
-      reactLocal$budget == TRUE & reactLocal$spread %in% c("scattered") ~ acs,
-      reactLocal$gather == TRUE ~ lts,
-      reactLocal$expert == TRUE ~ rds,
-      TRUE ~ "We are not yet able to define the adequate sampling approach")
-
+    # if( reactLocal$availablereg == TRUE &
+    #     !(reactLocal$spread =="small") &
+    #     input$traceable == "unknown") {
+    #   # reactLocal$show_lessthan5000 <- TRUE
+    #   reactLocal$show_gather <- TRUE
+    # }
   })
   observeEvent(reactLocal$show_traceable, {
     if(isTRUE(reactLocal$show_traceable)) {
-      golem::invoke_js("show", paste0("#", ns("traceable")))
+      golem::invoke_js("show", paste0("#", ns("target_traceable")))
     } else {
-      golem::invoke_js("hide", paste0("#", ns("traceable")))
+      golem::invoke_js("hide", paste0("#", ns("target_traceable")))
     }
   })
 
   # spread ####
   observeEvent(eventExpr = input$spread, {
     reactLocal$spread <- input$spread
-    reactLocal$sampling <- dplyr::case_when(
-      reactLocal$availablereg == FALSE & reactLocal$traceable %in% c("unknown" ) ~ nonprob,
-      reactLocal$availablereg == TRUE & reactLocal$spread %in% c("concentrated") ~ srs,
-      reactLocal$budget == TRUE & reactLocal$spread %in% c("concentrated") == TRUE ~ ppswalk,
-      reactLocal$traceable %in% c("partknown", "known") ~ ppsframe,
-      reactLocal$strata == TRUE ~ srsstrata,
-      reactLocal$budget == TRUE & reactLocal$spread %in% c("scattered") ~ acs,
-      reactLocal$gather == TRUE ~ lts,
-      reactLocal$expert == TRUE ~ rds,
-      TRUE ~ "We are not yet able to define the adequate sampling approach")
+    # if( reactLocal$availablereg == TRUE &
+    #     !(reactLocal$spread =="small")  &
+    #     input$traceable == "unknown") {
+    #   # reactLocal$show_lessthan5000 <- TRUE
+    #   reactLocal$show_gather <- TRUE
+    # }
   })
   observeEvent(reactLocal$show_spread, {
     if(isTRUE(reactLocal$show_spread)) {
-      golem::invoke_js("show", paste0("#", ns("spread")))
+      golem::invoke_js("show", paste0("#", ns("target_spread")))
     } else {
-      golem::invoke_js("hide", paste0("#", ns("spread")))
+      golem::invoke_js("hide", paste0("#", ns("target_spread")))
     }
   })
 
   # strata ####
   observeEvent(eventExpr = input$strata, {
     reactLocal$strata <- input$strata
-    reactLocal$sampling <- dplyr::case_when(
-      reactLocal$availablereg == FALSE & reactLocal$traceable %in% c("unknown" ) ~ nonprob,
-      reactLocal$availablereg == TRUE & reactLocal$spread %in% c("concentrated") ~ srs,
-      reactLocal$budget == TRUE & reactLocal$spread %in% c("concentrated") == TRUE ~ ppswalk,
-      reactLocal$traceable %in% c("partknown", "known") ~ ppsframe,
-      reactLocal$strata == TRUE ~ srsstrata,
-      reactLocal$budget == TRUE & reactLocal$spread %in% c("scattered") ~ acs,
-      reactLocal$gather == TRUE ~ lts,
-      reactLocal$expert == TRUE ~ rds,
-      TRUE ~ "We are not yet able to define the adequate sampling approach")
   })
   observeEvent(reactLocal$show_strata, {
     if(isTRUE(reactLocal$show_strata)) {
-      golem::invoke_js("show", paste0("#", ns("strata")))
+      golem::invoke_js("show", paste0("#", ns("target_strata")))
     } else {
-      golem::invoke_js("hide", paste0("#", ns("strata")))
+      golem::invoke_js("hide", paste0("#", ns("target_strata")))
     }
   })
 
   # budget ####
   observeEvent(eventExpr = input$budget, {
     reactLocal$budget <- input$budget
-    reactLocal$sampling <- dplyr::case_when(
-      reactLocal$availablereg == FALSE & reactLocal$traceable %in% c("unknown" ) ~ nonprob,
-      reactLocal$availablereg == TRUE & reactLocal$spread %in% c("concentrated") ~ srs,
-      reactLocal$budget == TRUE & reactLocal$spread %in% c("concentrated") == TRUE ~ ppswalk,
-      reactLocal$traceable %in% c("partknown", "known") ~ ppsframe,
-      reactLocal$strata == TRUE ~ srsstrata,
-      reactLocal$budget == TRUE & reactLocal$spread %in% c("scattered") ~ acs,
-      reactLocal$gather == TRUE ~ lts,
-      reactLocal$expert == TRUE ~ rds,
-      TRUE ~ "We are not yet able to define the adequate sampling approach")
   })
   observeEvent(reactLocal$show_budget, {
     if(isTRUE(reactLocal$show_budget)) {
-      golem::invoke_js("show", paste0("#", ns("budget")))
+      golem::invoke_js("show", paste0("#", ns("target_budget")))
     } else {
-      golem::invoke_js("hide", paste0("#", ns("budget")))
+      golem::invoke_js("hide", paste0("#", ns("target_budget")))
     }
   })
 
   # gather ####
   observeEvent(eventExpr = input$gather, {
     reactLocal$gather <- input$gather
-    reactLocal$sampling <- dplyr::case_when(
-      reactLocal$availablereg == FALSE & reactLocal$traceable %in% c("unknown" ) ~ nonprob,
-      reactLocal$availablereg == TRUE & reactLocal$spread %in% c("concentrated") ~ srs,
-      reactLocal$budget == TRUE & reactLocal$spread %in% c("concentrated") == TRUE ~ ppswalk,
-      reactLocal$traceable %in% c("partknown", "known") ~ ppsframe,
-      reactLocal$strata == TRUE ~ srsstrata,
-      reactLocal$budget == TRUE & reactLocal$spread %in% c("scattered") ~ acs,
-      reactLocal$gather == TRUE ~ lts,
-      reactLocal$expert == TRUE ~ rds,
-      TRUE ~ "We are not yet able to define the adequate sampling approach")
+    if( reactLocal$gather == FALSE) {
+      reactLocal$show_network <- FALSE
+    } else if ( reactLocal$gather == TRUE) {
+      reactLocal$show_network <- TRUE
+    }
   })
   observeEvent(reactLocal$show_gather, {
     if(isTRUE(reactLocal$show_gather)) {
-      golem::invoke_js("show", paste0("#", ns("gather")))
+      golem::invoke_js("show", paste0("#", ns("target_gather")))
     } else {
-      golem::invoke_js("hide", paste0("#", ns("gather")))
+      golem::invoke_js("hide", paste0("#", ns("target_gather")))
     }
   })
 
   # network ####
   observeEvent(eventExpr = input$network, {
     reactLocal$network <- input$network
-    reactLocal$sampling <- dplyr::case_when(
-      reactLocal$availablereg == FALSE & reactLocal$traceable %in% c("unknown" ) ~ nonprob,
-      reactLocal$availablereg == TRUE & reactLocal$spread %in% c("concentrated") ~ srs,
-      reactLocal$budget == TRUE & reactLocal$spread %in% c("concentrated") == TRUE ~ ppswalk,
-      reactLocal$traceable %in% c("partknown", "known") ~ ppsframe,
-      reactLocal$strata == TRUE ~ srsstrata,
-      reactLocal$budget == TRUE & reactLocal$spread %in% c("scattered") ~ acs,
-      reactLocal$gather == TRUE ~ lts,
-      reactLocal$expert == TRUE ~ rds,
-      TRUE ~ "We are not yet able to define the adequate sampling approach")
+
+    if( reactLocal$network == TRUE) {
+      reactLocal$show_expert <- TRUE
+    } else if ( reactLocal$network == FALSE) {
+      reactLocal$show_expert <- FALSE
+    }
+
   })
   observeEvent(reactLocal$show_network, {
     if(isTRUE(reactLocal$show_network)) {
-      golem::invoke_js("show", paste0("#", ns("network")))
+      golem::invoke_js("show", paste0("#", ns("target_network")))
     } else {
-      golem::invoke_js("hide", paste0("#", ns("network")))
+      golem::invoke_js("hide", paste0("#", ns("target_network")))
     }
   })
 
   # expert ####
   observeEvent(eventExpr = input$expert, {
     reactLocal$expert <- input$expert
-    reactLocal$sampling <- dplyr::case_when(
-      reactLocal$availablereg == FALSE & reactLocal$traceable %in% c("unknown" ) ~ nonprob,
-      reactLocal$availablereg == TRUE & reactLocal$spread %in% c("concentrated") ~ srs,
-      reactLocal$budget == TRUE & reactLocal$spread %in% c("concentrated") == TRUE ~ ppswalk,
-      reactLocal$traceable %in% c("partknown", "known") ~ ppsframe,
-      reactLocal$strata == TRUE ~ srsstrata,
-      reactLocal$budget == TRUE & reactLocal$spread %in% c("scattered") ~ acs,
-      reactLocal$gather == TRUE ~ lts,
-      reactLocal$expert == TRUE ~ rds,
-      TRUE ~ "We are not yet able to define the adequate sampling approach")
   })
   observeEvent(reactLocal$show_expert, {
     if(isTRUE(reactLocal$show_expert)) {
-      golem::invoke_js("show", paste0("#", ns("expert")))
+      golem::invoke_js("show", paste0("#", ns("target_expert")))
     } else {
-      golem::invoke_js("hide", paste0("#", ns("expert")))
+      golem::invoke_js("hide", paste0("#", ns("target_expert")))
     }
   })
 
-  ### Adequate sampling options based on decision tree #####
+  # Adequate Sampling Options #####
   output$sampling <- renderText({
+
+    validate(
+      need(isTruthy( reactLocal$sampling),
+           message = "We are not yet able to define the adequate sampling approach")
+    )
+
+    # based on decision tree
+      #  reactLocal$lessthan5000 == TRUE  &
+      #   reactLocal$spread  %in% c("unknown" ) *
+      #   reactLocal$strata == TRUE  &
+      #   reactLocal$show_budget == TRUE  &
+      #   reactLocal$show_gather == TRUE  &
+      #   reactLocal$show_expert  == TRUE
+
+    reactLocal$sampling <- dplyr::case_when(
+      # nonprob
+     ( reactLocal$availablereg == FALSE &
+        reactLocal$traceable %in% c("unknown" ) )  ~ nonprob,
+      # srs
+      (reactLocal$availablereg == TRUE &
+         reactLocal$spread %in% c("concentrated") ) ~ srs,
+      # ppswalk
+      (reactLocal$budget == TRUE &
+         reactLocal$spread %in% c("concentrated")) == TRUE ~ ppswalk,
+      # ppsframe
+      reactLocal$traceable %in% c("partknown", "known") ~ ppsframe,
+      # srsstrata
+      reactLocal$strata == TRUE ~ srsstrata,
+      # acs
+     ( reactLocal$budget == TRUE &
+         reactLocal$spread %in% c("scattered")) ~ acs,
+      # lts
+      reactLocal$gather == TRUE ~ lts,
+     # rds
+      reactLocal$expert == TRUE ~ rds,
+      TRUE ~ "We are not yet able to define the adequate sampling approach")
+
     ## Display it on the GUI
     reactLocal$sampling
     ## get this recorded in the main app reactive value

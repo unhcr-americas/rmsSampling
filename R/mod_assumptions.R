@@ -13,6 +13,7 @@
 
 mod_assumptions_ui <- function(id) {
 	ns <- NS(id)
+	golem::activate_js()
 	tabItem(
 		tabName = "assumptions",
 		fluidRow(
@@ -37,17 +38,33 @@ RMS quality assurance as well as being a tool to decide on most appropriate meth
 		),
 
 		tabsetPanel(type = "tabs",
-		            tabPanel(title= "Refugees & Asylum Seeker",
-		                     mod_screener_ui(ns("screener_ui_1") )),
 
-		            tabPanel(title= "IDPS",
-		                     mod_screener_ui(ns("screener_ui_2") ) ),
+		         #   div(
+		          #
+  		            tabPanel(title= "Pillar-1-Refugee",id = ns("target_ras"),
+  		                     mod_screener_ui(ns("screener_ui_1"), thisgroup = "RAS")),
+		          #  ),
+		         #   div(
+		          #
+  		            tabPanel(title= "Pillar-2-Stateless",id = ns("target_sta"),
+		                     mod_screener_ui(ns("screener_ui_2"), thisgroup = "STA")),
+# 		            ),
+# 		            div(
+#
+  		            tabPanel(title= "Pillar-3-Reintegration", id = ns("target_ret"),
+  		                     mod_screener_ui(ns("screener_ui_3"), thisgroup = "RET") ),
+		            # ),
+		            # div(
+		            #
+  		            tabPanel(title= "Pillar-4-IDP",id = ns("target_idp"),
+  		                     mod_screener_ui(ns("screener_ui_4") , thisgroup = "IDP") ),
+		            # ),
+		            # div(
+		            #
+		              tabPanel(title= "Other People with and for whom UNHCR works", id = ns("target_ooc"),
+		                     mod_screener_ui(ns("screener_ui_5"), thisgroup = "OOC") )
+		           # )
 
-		            tabPanel(title= "Other of Concerns",
-		                     mod_screener_ui(ns("screener_ui_3") ) ) ,
-
-		            tabPanel(title= "Returnees",
-		                     mod_screener_ui(ns("screener_ui_4") ) )
 		) ## End Tabset
 
 
@@ -65,9 +82,63 @@ mod_assumptions_server <- function(input, output, session, AppReactiveValue) {
 
 
 	callModule(mod_screener_server, "screener_ui_1", AppReactiveValue, thisgroup = "RAS")
+	callModule(mod_screener_server, "screener_ui_1", AppReactiveValue, thisgroup = "STA")
+	callModule(mod_screener_server, "screener_ui_4", AppReactiveValue, thisgroup = "RET")
 	callModule(mod_screener_server, "screener_ui_2", AppReactiveValue, thisgroup = "IDP")
 	callModule(mod_screener_server, "screener_ui_3", AppReactiveValue, thisgroup = "OOC")
-	callModule(mod_screener_server, "screener_ui_4", AppReactiveValue, thisgroup = "RET")
+
+	## Display conditionnally....
+	observeEvent(AppReactiveValue$show_ras, {
+	  if(isTRUE(AppReactiveValue$show_ras)) {
+	   golem::invoke_js("show", paste0("#", ns("target_ras")))
+	    # golem::invoke_js("show", paste0("#", ns("screener_ui_1")))
+	  } else {
+	  golem::invoke_js("hide", paste0("#", ns("target_ras")))
+	    #  golem::invoke_js("hide", paste0("#", ns("screener_ui_1")))
+	  }
+	})
+
+	observeEvent(AppReactiveValue$show_sta, {
+	  if(isTRUE(AppReactiveValue$show_sta)) {
+	    golem::invoke_js("show", paste0("#", ns("target_sta")))
+	   # golem::invoke_js("show", paste0("#", ns("screener_ui_2")))
+	  } else {
+	   golem::invoke_js("hide", paste0("#", ns("target_sta")))
+	    # golem::invoke_js("hide", paste0("#", ns("screener_ui_2")))
+	  }
+	})
+
+
+	observeEvent(AppReactiveValue$show_ret, {
+	  if(isTRUE(AppReactiveValue$show_ret)) {
+	   golem::invoke_js("show", paste0("#", ns("target_ret")))
+	    # golem::invoke_js("show", paste0("#", ns("screener_ui_3")))
+	  } else {
+	   golem::invoke_js("show", paste0("#", ns("target_ret")))
+	     #golem::invoke_js("show", paste0("#", ns("screener_ui_3")))
+	  }
+	})
+
+
+	observeEvent(AppReactiveValue$show_idp, {
+	  if(isTRUE(AppReactiveValue$show_idp)) {
+	 golem::invoke_js("show", paste0("#", ns("target_idp")))
+	    #   golem::invoke_js("show", paste0("#", ns("screener_ui_4")))
+	  } else {
+	   golem::invoke_js("hide", paste0("#", ns("target_idp")))
+	   #  golem::invoke_js("hide", paste0("#", ns("screener_ui_4")))
+	  }
+	})
+
+	observeEvent(AppReactiveValue$show_ooc, {
+	  if(isTRUE(AppReactiveValue$show_ooc)) {
+	   golem::invoke_js("show", paste0("#", ns("target_ooc")))
+	    # golem::invoke_js("show", paste0("#", ns("screener_ui_5")))
+	  } else {
+	   golem::invoke_js("hide", paste0("#", ns("target_ooc")))
+	    # golem::invoke_js("hide", paste0("#", ns("screener_ui_5")))
+	  }
+	})
 
 	##
 

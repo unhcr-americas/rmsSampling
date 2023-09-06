@@ -1,7 +1,7 @@
 #' The application User-Interface
-#' 
+#'
 #' This function is internally used to manage the UI entry point
-#' 
+#'
 #' @param request Internal parameter for `{shiny}`.
 #'     DO NOT REMOVE.
 #' @import shiny
@@ -23,6 +23,7 @@ app_ui <- function() {
     golem_add_external_resources()
   )
   shinydashboard::dashboardPage(
+
     header(),
     sidebar(),
     body(  )

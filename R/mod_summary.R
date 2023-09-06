@@ -19,18 +19,17 @@ mod_summary_ui <- function(id) {
 		  column(
 		    width = 12,
 		    h2('Estimate Size'),
-		    p("Sampling describes the selection of a subset of individuals or households from a population of
-		interest in a controlled way that allows us to make generalisations about the characteristics of that
-		population without interviewing everyone."),
-		    p("Before embarking on your Result Monitoring Survey, it is therefore essential
-		to have a complete and sound Means of Verification (MoV) table that clearly
-		defines not only the indicators, but also the popuation group for which survey-based data is required.")
+		    p("The way a sample is drawn has major implications for the usability and usefulness of survey data,
+and careful sample size calculations can lead to considerably more efficient designs and cost savings
+than ad-hoc and poorly thought through designs."),
+		    p("However, it is important to note that the sample size is not always the main
+driver of cost, and a larger population does not necessarily require a higher sample size.")
 		  )
 		),
 
 		fluidRow(
 		  shinydashboard::box(
-		    title = "Sample Parameters",
+		    title = "Sample Parameters - Precision Goals",
 		    #  status = "primary",
 		    status = "info",
 		    solidHeader = FALSE,
