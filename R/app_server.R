@@ -14,7 +14,7 @@ app_server <- function(input, output, session) {
     poptype = NULL,
     universe =     ggplot2::ggplot() +
       ggplot2::annotate("text", x = 1, y = 1, size = 11,
-                        label = "Sampling universe" ) +
+                        label = "A sampling universe refers to the total population \nfrom which a sample is drawn for a survey." ) +
       ggplot2::theme_void(),
 
     show_ras = NULL,

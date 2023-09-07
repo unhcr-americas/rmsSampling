@@ -22,7 +22,7 @@ mod_screener_ui <- function(id, thisgroup) {
                   solidHeader = FALSE,
                   collapsible = TRUE,
                   #background = "light-blue",
-                  width = 6,
+                  width = 12,
                   fluidRow(
                     checkboxInput(
                       inputId = ns("availablereg"),
@@ -42,7 +42,21 @@ mod_screener_ui <- function(id, thisgroup) {
               		  but the operations still want to use probabilistic sampling and confirm it as the has
               		  the resource, boh in terms of budget and time  to proceed with a
                     probabilistic approach for this population group")
+                    ),
+                ## Chec budget
+                  div(
+                    id = ns("target_budget"),
+                    checkboxInput(
+                      inputId = ns("budget"),
+                      label = "There is specific budget and time available to conduct a
+                  listing exercise in addition of survey data collection.
+                  A household listing exercise can be used to construct a sampling frame but is time
+        		consuming and expensive. A listing exercise requires either listing agents that count
+        		every household within the specified boundary and create a list of all eligible
+        		households or a system that calls automatically people (Random Digital Dial) and
+        		gather basic information on them through Interactive Voice Response (IVR) or a Chatbot."
                     )
+                  )
                   )
                 ),
                 shinydashboard::box(
@@ -52,7 +66,7 @@ mod_screener_ui <- function(id, thisgroup) {
                   solidHeader = FALSE,
                   collapsible = FALSE,
                   #background = "light-blue",
-                  width = 6,
+                  width = 12,
                   fluidRow(
                     div(
                      id = ns("target_traceable"),
@@ -119,7 +133,7 @@ mod_screener_ui <- function(id, thisgroup) {
                  )
                 ),
                 shinydashboard::box(
-                    title = "Additional details",
+                    title = "Follow up questions in the absence of sampling frame...",
                     #  status = "primary",
                     status = "info",
                     solidHeader = FALSE,
@@ -127,19 +141,6 @@ mod_screener_ui <- function(id, thisgroup) {
                     #background = "light-blue",
                     width = 12,
                     fluidRow(
-                      div(
-                        id = ns("target_budget"),
-                        checkboxInput(
-                          inputId = ns("budget"),
-                          label = "There is specific budget and time available to conduct a
-                listing exercise in addition of survey data collection.
-                A household listing exercise can be used to construct a sampling frame but is time
-      		consuming and expensive. A listing exercise requires either listing agents that count
-      		every household within the specified boundary and create a list of all eligible
-      		households or a system that calls automatically people (Random Digital Dial) and
-      		gather basic information on them through Interactive Voice Response (IVR) or a Chatbot."
-                        )
-                      ),
                       div(
                         id = ns("target_gather"),
                         checkboxInput(
@@ -263,13 +264,13 @@ street or a public building.
     sampling = "We are not yet able to define the adequate sampling approach"  ,
     ## conditional display
     show_lessthan5000 = FALSE  ,
+    show_budget = TRUE  ,
     show_traceable= TRUE  ,
     show_spread= TRUE  ,
-    show_strata= FALSE  ,
-    show_budget= FALSE  ,
+    show_strata = FALSE  ,
     show_gather = FALSE  ,
-    show_network= FALSE  ,
-    show_expert= FALSE
+    show_network = FALSE  ,
+    show_expert = FALSE
   )
 
   ## Get input into local reactive value

@@ -92,7 +92,7 @@ population without interviewing everyone."),
 		      column(
 		        width = 8,
 		        actionButton(inputId = ns("showplot"),
-		                     label = "Click here to Display Sampling Universe"),
+		                     label = "Click here to Display the Potential Sampling Universe for this country"),
 		        hr(),
 		        plotOutput(outputId = ns("universe"),
 		                   width = "100%",
