@@ -17,11 +17,11 @@ app_server <- function(input, output, session) {
                         label = "A sampling universe refers to the total population \nfrom which a sample is drawn for a survey." ) +
       ggplot2::theme_void(),
 
-    show_ras = NULL,
-    show_sta = NULL,
-    show_ret = NULL,
-    show_idp = NULL,
-    show_ooc = NULL,
+    show_ras = FALSE,
+    show_sta = FALSE,
+    show_ret = FALSE,
+    show_idp = FALSE,
+    show_ooc = FALSE,
 
     ## Sample info for ras
     ras_universe = NULL,

@@ -46,25 +46,33 @@ RMS quality assurance as well as being a tool to decide on most appropriate meth
 		    collapsible = TRUE,
 		    #background = "light-blue",
 		    width = 12,
-	    	tabsetPanel(type = "tabs",
-  		            tabPanel(title= "Pillar-1-Refugee",
-  		                     id = ns("target_ras"),
+		    radioButtons(  inputId = ns("poptype2"),
+		                                label = " Document the screening below for each of the group you need to sample ",
+		                                inline = TRUE ,
+		                                #character(0)
+		                                choices = c(
+		                                  "Pillar-1- Refugee, Asylum Seeker & Other in Need of International Protection" ="RAS",
+		                                  "Pillar-2- Stateless"="STA",
+		                                  "Pillar-3- Returnees"= "RET",
+		                                  "Pillar-4- Internally Displaced Persons"=  "IDP",
+		                                  "Other People with and for whom UNHCR works"= "OOC" )
+		    ),
+	    	tabsetPanel(
+	    	  id = ns("hidden_tabs"),
+	    	  type = "hidden",
+  		            tabPanel(title= "target_RAS",
   		                     mod_screener_ui(ns("screener_ui_1"), thisgroup = "RAS")),
-  		            tabPanel(title= "Pillar-2-Stateless",
-  		                     id = ns("target_sta"),
+  		            tabPanel(title= "target_STA",
 		                     mod_screener_ui(ns("screener_ui_2"), thisgroup = "STA")),
-  		            tabPanel(title= "Pillar-3-Reintegration",
-  		                     id = ns("target_ret"),
+  		            tabPanel(title= "target_RET",
   		                     mod_screener_ui(ns("screener_ui_3"), thisgroup = "RET") ),
-  		            tabPanel(title= "Pillar-4-IDP",
-  		                     id = ns("target_idp"),
+  		            tabPanel(title= "target_IDP",
   		                     mod_screener_ui(ns("screener_ui_4") , thisgroup = "IDP") ),
-		              tabPanel(title= "Other People with and for whom UNHCR works",
-		                       id = ns("target_ooc"),
+		              tabPanel(title= "target_OOC",
 		                     mod_screener_ui(ns("screener_ui_5"), thisgroup = "OOC") )
 		) ## End Tabset
-		)
-	)
+		) # end box
+	) # end fluid row
 
 	)
 }
@@ -78,79 +86,54 @@ RMS quality assurance as well as being a tool to decide on most appropriate meth
 mod_assumptions_server <- function(input, output, session, AppReactiveValue) {
 	ns <- session$ns
 
-
 	callModule(mod_screener_server, "screener_ui_1", AppReactiveValue, thisgroup = "RAS")
 	callModule(mod_screener_server, "screener_ui_2", AppReactiveValue, thisgroup = "STA")
 	callModule(mod_screener_server, "screener_ui_3", AppReactiveValue, thisgroup = "RET")
 	callModule(mod_screener_server, "screener_ui_4", AppReactiveValue, thisgroup = "IDP")
 	callModule(mod_screener_server, "screener_ui_5", AppReactiveValue, thisgroup = "OOC")
 
+
+	 observe({
+	#   ## Update filters for the next steps..
+    req(AppReactiveValue$poptypefilt)
+	  updateRadioButtons(session,
+	                     "poptype2",
+	                     choices = AppReactiveValue$poptypefilt |> dplyr::pull(pop) |>
+	                       purrr::set_names(AppReactiveValue$poptypefilt |> dplyr::pull(lab))
+	  )
+	 })
+
+
+
 	## Display conditionally....
-	observeEvent(AppReactiveValue$show_ras, {
-	  if(isTRUE(AppReactiveValue$show_ras)) {
-	    showTab(inputId = "tabs", target = "Pillar-1-Refugee")
-	 #  golem::invoke_js("show", paste0("#", ns("target_ras")))
-	    # golem::invoke_js("show", paste0("#", ns("screener_ui_1")))
-	  } else {
-	    hideTab(inputId = "tabs", target = "Pillar-1-Refugee")
-	 # golem::invoke_js("hide", paste0("#", ns("target_ras")))
-	    #  golem::invoke_js("hide", paste0("#", ns("screener_ui_1")))
-	  }
+	observeEvent(eventExpr = input$poptype2, {
+
+	  req(input$poptype2)
+	  print(paste0("Selected  : ", input$poptype2))
+	  updateTabsetPanel(session,
+	                    "hidden_tabs",
+	                    selected = paste0("target_", input$poptype2))
 	})
 
-	observeEvent(AppReactiveValue$show_sta, {
-	  if(isTRUE(AppReactiveValue$show_sta)) {
-	    showTab(inputId = "tabs", target = "Pillar-2-Stateless")
-	    #  golem::invoke_js("show", paste0("#", ns("target_sta")))
-	   # golem::invoke_js("show", paste0("#", ns("screener_ui_2")))
-	  } else {
-	    hideTab(inputId = "tabs", target = "Pillar-2-Stateless")
-	    #   golem::invoke_js("hide", paste0("#", ns("target_sta")))
-	    # golem::invoke_js("hide", paste0("#", ns("screener_ui_2")))
-	  }
-	})
+	 # observe({
+	    # We'll use the input$controller variable multiple times, so save it as x
+	    # for convenience.
+	    # x <- input$controller
+	    #
+	    # r_options <- list()
+	    # r_options[[sprintf("option label %d 1", x)]] <- sprintf("option-%d-1", x)
+	    # r_options[[sprintf("option label %d 2", x)]] <- sprintf("option-%d-2", x)
+	    #
+	    # # Change values for input$inRadio
+	    # updateRadioButtons(session, "poptype2", choices = r_options)
 
-
-	observeEvent(AppReactiveValue$show_ret, {
-	  if(isTRUE(AppReactiveValue$show_ret)) {
-	    showTab(inputId = "tabs", target = "Pillar-3-Reintegration")
-	    #  golem::invoke_js("show", paste0("#", ns("target_ret")))
-	    # golem::invoke_js("show", paste0("#", ns("screener_ui_3")))
-	  } else {
-	    hideTab(inputId = "tabs", target = "Pillar-3-Reintegration")
-	    #   golem::invoke_js("show", paste0("#", ns("target_ret")))
-	     #golem::invoke_js("show", paste0("#", ns("screener_ui_3")))
-	  }
-	})
-
-
-	observeEvent(AppReactiveValue$show_idp, {
-	  if(isTRUE(AppReactiveValue$show_idp)) {
-	    showTab(inputId = "tabs", target = "Pillar-4-IDP")
-	    #  golem::invoke_js("show", paste0("#", ns("target_idp")))
-	    #   golem::invoke_js("show", paste0("#", ns("screener_ui_4")))
-	  } else {
-	    hideTab(inputId = "tabs", target = "Pillar-4-IDP")
-	    #  golem::invoke_js("hide", paste0("#", ns("target_idp")))
-	   #  golem::invoke_js("hide", paste0("#", ns("screener_ui_4")))
-	  }
-	})
-
-	observeEvent(AppReactiveValue$show_ooc, {
-	  if(isTRUE(AppReactiveValue$show_ooc)) {
-	    showTab(inputId = "tabs", target = "Other People with and for whom UNHCR works")
-	    #  golem::invoke_js("show", paste0("#", ns("target_ooc")))
-	    # golem::invoke_js("show", paste0("#", ns("screener_ui_5")))
-	  } else {
-	    hideTab(inputId = "tabs", target = "Other People with and for whom UNHCR works")
-	    #  golem::invoke_js("hide", paste0("#", ns("target_ooc")))
-	    # golem::invoke_js("hide", paste0("#", ns("screener_ui_5")))
-	  }
-	})
-
-	##
-
-
+	    # # Can also set the label and select an item
+	    # updateRadioButtons(session, "inRadio2",
+	    #   label = paste("Radio label", x),
+	    #   choices = r_options,
+	    #   selected = sprintf("option-%d-2", x)
+	    # )
+	  #})
 
 
 }

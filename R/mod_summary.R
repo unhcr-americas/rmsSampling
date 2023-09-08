@@ -31,7 +31,7 @@ driver of cost, and a larger population does not necessarily require a higher sa
 
 		fluidRow(
 		  shinydashboard::box(
-		    title = "Sample Parameters - Precision Goals",
+		    title = "Sampling Parameters - Precision Goals in case a probabilistic approach can be used...",
 		    #  status = "primary",
 		    status = "info",
 		    solidHeader = FALSE,
@@ -39,25 +39,30 @@ driver of cost, and a larger population does not necessarily require a higher sa
 		    #background = "light-blue",
 		    width = 12,
 		    fluidRow(
-		      tabsetPanel(type = "tabs",
-		                  tabPanel(title= "Pillar-1-Refugee",
-		                           id = ns("target_ras"),
-		                           mod_estimate_ui(ns("estimate_ui_1"), thisgroup = "RAS")),
-		                  tabPanel(title= "Pillar-2-Stateless",
-		                           id = ns("target_sta"),
-		                           mod_estimate_ui(ns("estimate_ui_2"), thisgroup = "STA")),
-		                  tabPanel(title= "Pillar-3-Reintegration",
-		                           id = ns("target_ret"),
-		                           mod_estimate_ui(ns("estimate_ui_3"), thisgroup = "RET")) ,
-		                  tabPanel(title= "Pillar-4-IDP",
-		                           id = ns("target_idp"),
-		                           mod_estimate_ui(ns("estimate_ui_4") , thisgroup = "IDP") ),
-		                  tabPanel(title= "Other People with and for whom UNHCR works",
-		                           id = ns("target_ooc"),
-		                           mod_estimate_ui(ns("estimate_ui_5"), thisgroup = "OOC") )
+		      radioButtons(  inputId = ns("poptype3"),
+		                     label = " Set up for each of the group you need to sample ",
+		                     inline = TRUE ,
+		                     choices = c(
+		                       "Pillar-1- Refugee, Asylum Seeker & Other in Need of International Protection" ="RAS",
+		                       "Pillar-2- Stateless"="STA",
+		                       "Pillar-3- Returnees"= "RET",
+		                       "Pillar-4- Internally Displaced Persons"=  "IDP",
+		                       "Other People with and for whom UNHCR works"= "OOC" )
+		      ),
+		      tabsetPanel(
+		        id = ns("hidden_tabs2"),
+		        type = "hidden",
+		        tabPanel(title= "target_RAS",
+		                 mod_estimate_ui(ns("estimate_ui_1"), thisgroup = "RAS")),
+		        tabPanel(title= "target_STA",
+		                 mod_estimate_ui(ns("estimate_ui_2"), thisgroup = "STA")),
+		        tabPanel(title= "target_RET",
+		                 mod_estimate_ui(ns("estimate_ui_3"), thisgroup = "RET") ),
+		        tabPanel(title= "target_IDP",
+		                 mod_estimate_ui(ns("estimate_ui_4") , thisgroup = "IDP") ),
+		        tabPanel(title= "target_OOC",
+		                 mod_estimate_ui(ns("estimate_ui_5"), thisgroup = "OOC") )
 		      ) ## End Tabset
-
-
 		    )
 		  )
 		)
@@ -73,12 +78,31 @@ driver of cost, and a larger population does not necessarily require a higher sa
 mod_summary_server <- function(input, output, session, AppReactiveValue) {
 	ns <- session$ns
 
-
 	callModule(mod_estimate_server, "estimate_ui_1", AppReactiveValue, thisgroup = "RAS")
 	callModule(mod_estimate_server, "estimate_ui_1", AppReactiveValue, thisgroup = "STA")
 	callModule(mod_estimate_server, "estimate_ui_4", AppReactiveValue, thisgroup = "RET")
 	callModule(mod_estimate_server, "estimate_ui_2", AppReactiveValue, thisgroup = "IDP")
 	callModule(mod_estimate_server, "estimate_ui_3", AppReactiveValue, thisgroup = "OOC")
+
+	observe({
+	  ## Update filters for the next steps..
+	  req(AppReactiveValue$poptypefilt)
+	  updateRadioButtons(session,
+	                     "poptype3",
+	                     choices = AppReactiveValue$poptypefilt |> dplyr::pull(pop) |>
+	                       purrr::set_names(AppReactiveValue$poptypefilt |> dplyr::pull(lab))
+	  )
+	})
+
+
+	## Display conditionally....
+	observeEvent(eventExpr = input$poptype3, {
+	  req(input$poptype3)
+	  print(paste0("Selected  : ", input$poptype3))
+	  updateTabsetPanel(session,
+	                    "hidden_tabs2",
+	                    selected = paste0("target_", input$poptype3))
+	})
 }
 
 ## copy to body.R
