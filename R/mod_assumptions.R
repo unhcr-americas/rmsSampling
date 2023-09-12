@@ -41,7 +41,7 @@ RMS quality assurance as well as being a tool to decide on most appropriate meth
 		  shinydashboard::box(
 		    title = paste0("Sampling Assessment Questions") ,
 		    #  status = "primary",
-		    status = "info",
+		    status = "warning",
 		    solidHeader = FALSE,
 		    collapsible = TRUE,
 		    #background = "light-blue",
@@ -50,13 +50,15 @@ RMS quality assurance as well as being a tool to decide on most appropriate meth
 		                                label = " Document the screening below for each of the group you need to sample ",
 		                                inline = TRUE ,
 		                                #character(0)
-		                                choices = c(
+		                                choices =
+		                     c(
 		                                  "Pillar-1- Refugee, Asylum Seeker & Other in Need of International Protection" ="RAS",
 		                                  "Pillar-2- Stateless"="STA",
 		                                  "Pillar-3- Returnees"= "RET",
 		                                  "Pillar-4- Internally Displaced Persons"=  "IDP",
 		                                  "Other People with and for whom UNHCR works"= "OOC" )
 		    ),
+		    hr(),
 	    	tabsetPanel(
 	    	  id = ns("hidden_tabs"),
 	    	  type = "hidden",
@@ -95,7 +97,7 @@ mod_assumptions_server <- function(input, output, session, AppReactiveValue) {
 
 	 observe({
 	#   ## Update filters for the next steps..
-    req(AppReactiveValue$poptypefilt)
+    req(AppReactiveValue$poptype)
 	  updateRadioButtons(session,
 	                     "poptype2",
 	                     choices = AppReactiveValue$poptypefilt |> dplyr::pull(pop) |>

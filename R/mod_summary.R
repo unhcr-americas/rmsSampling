@@ -33,7 +33,7 @@ driver of cost, and a larger population does not necessarily require a higher sa
 		  shinydashboard::box(
 		    title = "Sampling Parameters - Precision Goals in case a probabilistic approach can be used...",
 		    #  status = "primary",
-		    status = "info",
+		    status = "warning",
 		    solidHeader = FALSE,
 		    collapsible = TRUE,
 		    #background = "light-blue",
@@ -43,25 +43,27 @@ driver of cost, and a larger population does not necessarily require a higher sa
 		                     label = " Set up for each of the group you need to sample ",
 		                     inline = TRUE ,
 		                     choices = c(
-		                       "Pillar-1- Refugee, Asylum Seeker & Other in Need of International Protection" ="RAS",
-		                       "Pillar-2- Stateless"="STA",
-		                       "Pillar-3- Returnees"= "RET",
-		                       "Pillar-4- Internally Displaced Persons"=  "IDP",
-		                       "Other People with and for whom UNHCR works"= "OOC" )
+		                                  "Pillar-1- Refugee, Asylum Seeker & Other in Need of International Protection" ="RAS",
+		                                  "Pillar-2- Stateless"="STA",
+		                                  "Pillar-3- Returnees"= "RET",
+		                                  "Pillar-4- Internally Displaced Persons"=  "IDP",
+		                                  "Other People with and for whom UNHCR works"= "OOC" )
 		      ),
+		      p("The parameters below are the default ones.",  style = "font-size: 13px"),
+		      hr(),
 		      tabsetPanel(
 		        id = ns("hidden_tabs2"),
 		        type = "hidden",
 		        tabPanel(title= "target_RAS",
-		                 mod_estimate_ui(ns("estimate_ui_1"), thisgroup = "RAS")),
+		                 mod_estimate_ui(ns("estimate_ui_1"), thisgroup2 = "RAS")),
 		        tabPanel(title= "target_STA",
-		                 mod_estimate_ui(ns("estimate_ui_2"), thisgroup = "STA")),
+		                 mod_estimate_ui(ns("estimate_ui_2"), thisgroup2 = "STA")),
 		        tabPanel(title= "target_RET",
-		                 mod_estimate_ui(ns("estimate_ui_3"), thisgroup = "RET") ),
+		                 mod_estimate_ui(ns("estimate_ui_3"), thisgroup2 = "RET") ),
 		        tabPanel(title= "target_IDP",
-		                 mod_estimate_ui(ns("estimate_ui_4") , thisgroup = "IDP") ),
+		                 mod_estimate_ui(ns("estimate_ui_4") , thisgroup2 = "IDP") ),
 		        tabPanel(title= "target_OOC",
-		                 mod_estimate_ui(ns("estimate_ui_5"), thisgroup = "OOC") )
+		                 mod_estimate_ui(ns("estimate_ui_5"), thisgroup2 = "OOC") )
 		      ) ## End Tabset
 		    )
 		  )
@@ -78,15 +80,15 @@ driver of cost, and a larger population does not necessarily require a higher sa
 mod_summary_server <- function(input, output, session, AppReactiveValue) {
 	ns <- session$ns
 
-	callModule(mod_estimate_server, "estimate_ui_1", AppReactiveValue, thisgroup = "RAS")
-	callModule(mod_estimate_server, "estimate_ui_1", AppReactiveValue, thisgroup = "STA")
-	callModule(mod_estimate_server, "estimate_ui_4", AppReactiveValue, thisgroup = "RET")
-	callModule(mod_estimate_server, "estimate_ui_2", AppReactiveValue, thisgroup = "IDP")
-	callModule(mod_estimate_server, "estimate_ui_3", AppReactiveValue, thisgroup = "OOC")
+	callModule(mod_estimate_server, "estimate_ui_1", AppReactiveValue, thisgroup2 = "RAS")
+	callModule(mod_estimate_server, "estimate_ui_2", AppReactiveValue, thisgroup2 = "STA")
+	callModule(mod_estimate_server, "estimate_ui_3", AppReactiveValue, thisgroup2 = "RET")
+	callModule(mod_estimate_server, "estimate_ui_4", AppReactiveValue, thisgroup2 = "IDP")
+	callModule(mod_estimate_server, "estimate_ui_5", AppReactiveValue, thisgroup2 = "OOC")
 
 	observe({
 	  ## Update filters for the next steps..
-	  req(AppReactiveValue$poptypefilt)
+	  req(AppReactiveValue$poptype)
 	  updateRadioButtons(session,
 	                     "poptype3",
 	                     choices = AppReactiveValue$poptypefilt |> dplyr::pull(pop) |>

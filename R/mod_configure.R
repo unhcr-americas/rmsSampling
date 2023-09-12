@@ -8,6 +8,7 @@
 #' @noRd
 #' @import shiny
 #' @import shinydashboard
+#' @import refugees
 #' @importFrom countrycode countrycode
 #' @importFrom dplyr across mutate filter select arrange pull
 #' @importFrom purrr set_names
@@ -102,6 +103,8 @@ population without interviewing everyone."),
 #' @noRd
 #' @import shiny
 #' @import tidyverse
+#' @import refugees
+#' @import unhcrthemes
 #' @keywords internal
 
 mod_configure_server <- function(input, output, session, AppReactiveValue) {
@@ -140,7 +143,8 @@ mod_configure_server <- function(input, output, session, AppReactiveValue) {
 
 
 	  ## get a chart to summarise
-	  AppReactiveValue$universe <- ggplot2::ggplot( data = AppReactiveValue$group,
+	  AppReactiveValue$universe <-
+	    ggplot2::ggplot( data = AppReactiveValue$group,
 	                     ggplot2::aes(value,  name2 )) +
 	    ggplot2::geom_col(fill = unhcrthemes::unhcr_pal(n = 1, "pal_blue"),
 	                      width = 0.8) +
@@ -192,6 +196,33 @@ mod_configure_server <- function(input, output, session, AppReactiveValue) {
 
 	observeEvent(eventExpr = input$poptype, {
 	  AppReactiveValue$poptype <- input$poptype
+
+
+	  if ( "RAS" %in% input$poptype ) {
+	     AppReactiveValue$ras_universe <- AppReactiveValue$group |>
+	         dplyr::filter( name == "RAS") |>
+	         dplyr::pull(value)
+	  }
+	  if ( "STA" %in% input$poptype ) {
+	    AppReactiveValue$sta_universe <- AppReactiveValue$group |>
+	      dplyr::filter( name == "STA") |>
+	      dplyr::pull(value)
+	  }
+	  if ( "RET" %in% input$poptype ) {
+	    AppReactiveValue$ret_universe <- AppReactiveValue$group |>
+	      dplyr::filter( name == "RET") |>
+	      dplyr::pull(value)
+	  }
+	  if ( "IDP" %in% input$poptype ) {
+	    AppReactiveValue$idp_universe <- AppReactiveValue$group |>
+	      dplyr::filter( name == "IDP") |>
+	      dplyr::pull(value)
+	  }
+	  if ( "OOC" %in% input$poptype ) {
+	    AppReactiveValue$ooc_universe <- AppReactiveValue$group |>
+	      dplyr::filter( name == "OOC") |>
+	      dplyr::pull(value)
+	  }
 
 	  lab <- data.frame(
 	    pop = c("RAS" ,

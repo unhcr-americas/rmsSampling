@@ -14,6 +14,9 @@ mod_screener_ui <- function(id, thisgroup) {
   ns <- NS(id)
   golem::activate_js()
   tabItem(tabName = "screener",
+          fluidRow(
+            column(
+              width = 6,
               fluidRow(
                 shinydashboard::box(
                   title = paste0("Initial Check for ", thisgroup,"- Tick to confirm if correct"),
@@ -169,24 +172,45 @@ mod_screener_ui <- function(id, thisgroup) {
                         )
                       )
                     )
-                  ),
-                  shinydashboard::box(
-                    title = paste0("Recommended Sampling Approach for ", thisgroup),
-                    #  status = "primary",
-                    status = "primary",
-                    solidHeader = TRUE,
-                    collapsible = FALSE,
-                    #background = "light-blue",
-                    width = 12,
-                    fluidRow(verbatimTextOutput(
-                      outputId = ns("sampling"),
-                      placeholder = TRUE
-                    ))
                   )
+               )
+              ),
 
+              column(
+                width = 6,
+                shinydashboard::box(
+                  title = paste0("Recommended Sampling Approach for ", thisgroup),
+                  #  status = "primary",
+                  status = "primary",
+                  solidHeader = TRUE,
+                  collapsible = FALSE,
+                  #background = "light-blue",
+                  width = 12,
+                  tags$head(
+                    tags$style(
+                      HTML(
+                        "#shiny-text-output  {
+                          color:white;
+                          font-size:12px;
+                          font-style:italic;
+                          overflow-y:scroll;
+                          max-height: 700px;
+                          background: \"#0072BC\";
+                          }"
+                      )
+                    )
+                  ),
+                  #div(style = "color:white; font-size:12px; font-style:italic; overflow-y:scroll; max-height: 700px; background: \"#0072BC\";",
+                      fluidRow(verbatimTextOutput(
+                        outputId = ns("sampling"),
+                        placeholder = TRUE
+                        )
+                   # )
+                    )
+                ))
             )
+  )
 
-      ) ##End fluid row)
 }
 
 #' Module Server
@@ -197,60 +221,104 @@ mod_screener_ui <- function(id, thisgroup) {
 
 mod_screener_server <- function(input, output, session, AppReactiveValue, thisgroup) {
   ns <- session$ns
-  # Potential sampling approach with description as per the doc ####
-  nonprob <- "Non-probabilistic methods do not use random selection to choose survey participants and therefore suffer from sampling biases.
-	 Indicator estimates derived from such methods will not be statistically representative of the concerned population and should be seen as a last resort to generate indicator data.
+  # Sampling approach description ####
+  nonprob <-
+"Non-probabilistic methods
 
-	 These may include conducting surveys using convenience sampling, quota sampling, or snowball sampling.
+Those do not use random selection to choose survey participants and therefore suffer
+from sampling biases.
+Indicator estimates derived from such methods will not be statistically representative
+of the concerned population and should be seen as a last resort to generate indicator data.
 
-     (a) Convenience sampling requires little or no planning and involves selecting respondents who are readily available. An example of convenience sampling would include interviewing households who are present in the
-street or a public building.
-
-     (b) Quota sampling, as the name suggests, involves determining a certain number of respondents from each study group (i.e., population groups such as refugees and asylum seekers, IDPs) and conveniently interviewing households from each group.
-
-     (c) Snowball sampling involves selecting respondents randomly or purposefully in the beginning and asking for referrals"
+These may include conducting surveys using
 
 
-  srs <- "Simple Random Sampling (SRS) without stratification.
-  SRS gives each population group an equal chance of being selected for the sample."
+  (a) Convenience sampling requires little or no planning and involves selecting respondents
+  who are readily available. An example of convenience sampling would include interviewing
+  households who are present in the street or a public building.
 
-  ppswalk <- "Multiple-Stage Cluster Sampling Probability Proportion to Size (PPS) from random walk if the population is concentrated within clusters and clusters tend to be found in the same	region or geographic area.
+  (b) Quota sampling, as the name suggests, involves determining a certain number of
+  respondents from each study group (i.e., population groups such as refugees and asylum
+  seekers, IDPs) and conveniently interviewing households from each group.
 
-  After selecting clusters based on their population size, enumerators survey every nth household until the required number of households is selected.
-
-  For example, enumerators may visit every third household within the cluster."
-
-  ppsframe <- "Multiple-Stage Cluster Sampling with Probability Proportion to Size (PPS) from sample frame.
-  After selecting clusters based on their population size, Use the sample frame created from the listing exercise to randomly select households."
-
-  srsstrata <- "Simple Random Sampling (SRS) within Strata.
-  SRS gives each group within a stratum an equal chance of being selected for the sample."
+  (c) Snowball sampling involves selecting respondents randomly or purposefully in the
+  beginning and asking for referrals"
 
 
-  acs <- "Adaptive Cluster Sampling  method first divides the population into a grid of plots and randomly selects a few initial plots.
-  The selected plots are reviewed to determine whether the population is present or not – a condition required to select the plot.
+  srs <-
+"Simple Random Sampling (SRS) without stratification.
 
-  If there are a minimum number of households of the population group present in the plot, the research team also reviews any neighbouring plots to ensure the minimum number of households of the population group are present.
+SRS gives each population group an equal chance of being selected for the sample."
 
-  Each plot that has the minimum number of households of the population group is selected until there are no additional neighbouring plots with such households present.
+  ppswalk <-
+"Multiple-Stage Cluster Sampling
+Probability Proportion to Size (PPS) from random walk
 
-  Clusters of plots are then generated where the survey will take place.
+If the population is concentrated within clusters and clusters tend to be found in the same
+region or geographic area.
 
-  This method may be most useful when the population is very concentrated in certain plots, but these plots are widely dispersed."
+After selecting clusters based on their population size, enumerators survey every nth
+household until the required number of households is selected.
 
-  lts <- " Time Location Sampling. Identify times and locations where the population is likely to gather and select the times and locations where the greatest number will be present.
-  Conduct interviews on location."
+For example, enumerators may visit every third household within the cluster."
 
-  rds <- "Use Respondent Driven Sampling (RDS). Identify initial ‘seed’ population who are well connected in their community and can refer additional households of the same population group to the survey.
+  ppsframe <-
+"Multiple-Stage Cluster Sampling
+with Probability Proportion to Size (PPS) from sample frame.
 
-  Respondents will continue to recruit additional households until the desired sample size is reached.
+After selecting clusters based on their population size, Use the sample frame created from
+the listing exercise to randomly select households."
 
-  Additional data protection considerations need to be taken when adopting RDS as seeds will be sharing personal data of other potential survey respondents.
+  srsstrata <-
+"Simple Random Sampling (SRS) within Strata.
 
-  Carryig out a Respondent Driven Sampling (RDS) approach, entails conducting a formative survey to identify seeds and prepare RDS coupons"
+SRS gives each group within a stratum an equal chance of being selected for the sample."
 
 
-  ## reactive value for that sub module...  ####
+  acs <-
+"Adaptive Cluster Sampling
+
+Thismethod first divides the population into a grid of plots and randomly selects a few
+initial plots.
+
+The selected plots are reviewed to determine whether the population is present or not –
+a condition required to select the plot.
+
+If there are a minimum number of households of the population group present in the plot,
+the research team also reviews any neighbouring plots to ensure the minimum number of
+households of the population group are present.
+
+Each plot that has the minimum number of households of the population group is selected
+until there are no additional neighbouring plots with such households present.
+
+Clusters of plots are then generated where the survey will take place. This method may
+be most useful when the population is very concentrated in certain plots, but these plots
+are widely dispersed."
+
+  lts <-
+"Time Location Sampling.
+
+Identify times and locations where the population is likely to gather and select the times
+and locations where the greatest number will be present.
+
+Conduct interviews on location."
+
+  rds <-
+"Respondent Driven Sampling (RDS).
+
+Identify initial ‘seed’ population who are well connected in their community and can refer
+additional households of the same population group to the survey.
+
+Respondents will continue to recruit additional households until the desired sample size is
+reached.
+
+Additional data protection considerations need to be taken when adopting RDS as seeds will
+be sharing personal data of other potential survey respondents.
+
+Carrying out a Respondent Driven Sampling (RDS) approach, entails conducting a formative
+survey to identify seeds and prepare RDS coupons"
+
+
   reactLocal <- reactiveValues(
     availablereg = NULL  ,
     lessthan5000 = NULL  ,
@@ -273,9 +341,10 @@ street or a public building.
     show_expert = FALSE
   )
 
-  ## Get input into local reactive value
 
-  # availablereg ####
+  # Skip logic ####
+
+  ### availablereg ####
   observeEvent(eventExpr = input$availablereg, {
     reactLocal$availablereg <- input$availablereg
     if( reactLocal$availablereg == TRUE) {
@@ -292,7 +361,7 @@ street or a public building.
 
   })
 
-  # lessthan5000 ####
+  ### lessthan5000 ####
   observeEvent(eventExpr = input$lessthan5000, {
     reactLocal$lessthan5000 <- input$lessthan5000
     # if( reactLocal$show_lessthan5000 == TRUE) {
@@ -315,7 +384,7 @@ street or a public building.
     }
   })
 
-  # traceable ####
+  ### traceable ####
   observeEvent(eventExpr = input$traceable, {
     reactLocal$traceable <- input$traceable
     # if( reactLocal$availablereg == TRUE &
@@ -333,7 +402,7 @@ street or a public building.
     }
   })
 
-  # spread ####
+  ### spread ####
   observeEvent(eventExpr = input$spread, {
     reactLocal$spread <- input$spread
     # if( reactLocal$availablereg == TRUE &
@@ -351,7 +420,7 @@ street or a public building.
     }
   })
 
-  # strata ####
+  ### strata ####
   observeEvent(eventExpr = input$strata, {
     reactLocal$strata <- input$strata
   })
@@ -363,7 +432,7 @@ street or a public building.
     }
   })
 
-  # budget ####
+  ### budget ####
   observeEvent(eventExpr = input$budget, {
     reactLocal$budget <- input$budget
   })
@@ -375,7 +444,7 @@ street or a public building.
     }
   })
 
-  # gather ####
+  ### gather ####
   observeEvent(eventExpr = input$gather, {
     reactLocal$gather <- input$gather
     if( reactLocal$gather == FALSE) {
@@ -392,7 +461,7 @@ street or a public building.
     }
   })
 
-  # network ####
+  ### network ####
   observeEvent(eventExpr = input$network, {
     reactLocal$network <- input$network
 
@@ -411,7 +480,7 @@ street or a public building.
     }
   })
 
-  # expert ####
+  ### expert ####
   observeEvent(eventExpr = input$expert, {
     reactLocal$expert <- input$expert
   })
@@ -423,7 +492,7 @@ street or a public building.
     }
   })
 
-  # Adequate Sampling Options #####
+  # Sampling Tree ##############
   output$sampling <- renderText({
 
     validate(
@@ -439,34 +508,107 @@ street or a public building.
       #   reactLocal$show_gather == TRUE  &
       #   reactLocal$show_expert  == TRUE
 
+
     reactLocal$sampling <- dplyr::case_when(
-      # nonprob
-     ( reactLocal$availablereg == FALSE &
-        reactLocal$traceable %in% c("unknown" ) )  ~ nonprob,
-      # srs
+
+      ### nonprob  ########
+     (
+       reactLocal$availablereg == FALSE &
+      # reactLocal$lessthan5000  &
+        reactLocal$traceable %in% c("unknown" )
+       # reactLocal$spread
+       # reactLocal$strata
+       # reactLocal$budget
+       # reactLocal$gather
+       # reactLocal$expert
+                                             )  ~ nonprob,
+      ### srs ########
       (reactLocal$availablereg == TRUE &
          reactLocal$spread %in% c("concentrated") ) ~ srs,
-      # ppswalk
+      ### ppswalk ########
       (reactLocal$budget == TRUE &
          reactLocal$spread %in% c("concentrated")) == TRUE ~ ppswalk,
-      # ppsframe
+      ### ppsframe ########
       reactLocal$traceable %in% c("partknown", "known") ~ ppsframe,
-      # srsstrata
+      ### srsstrata ########
       reactLocal$strata == TRUE ~ srsstrata,
-      # acs
+      ### acs ########
      ( reactLocal$budget == TRUE &
          reactLocal$spread %in% c("scattered")) ~ acs,
-      # lts
+      ### lts  ########
       reactLocal$gather == TRUE ~ lts,
-     # rds
+     ### rds  ########
       reactLocal$expert == TRUE ~ rds,
       TRUE ~ "We are not yet able to define the adequate sampling approach")
+   # browser()
+
+
+    ## Reinject int the app reactive value
+    if( thisgroup == "RAS") {
+      AppReactiveValue$ras_sampling <- reactLocal$sampling
+      AppReactiveValue$ras_availablereg <- reactLocal$availablereg
+      AppReactiveValue$ras_lessthan5000  <- reactLocal$lessthan5000
+      AppReactiveValue$ras_spread  <- reactLocal$spread
+      AppReactiveValue$ras_traceable  <- reactLocal$traceable
+      AppReactiveValue$ras_strata  <- reactLocal$strata
+      AppReactiveValue$ras_budget  <- reactLocal$budget
+      AppReactiveValue$ras_gather  <- reactLocal$gather
+      AppReactiveValue$ras_expert   <- reactLocal$expert
+    }
+    if( thisgroup == "STA") {
+      AppReactiveValue$sta_sampling <- reactLocal$sampling
+      AppReactiveValue$sta_availablereg <- reactLocal$availablereg
+      AppReactiveValue$sta_lessthan5000  <- reactLocal$lessthan5000
+      AppReactiveValue$sta_spread  <- reactLocal$spread
+      AppReactiveValue$sta_traceable  <- reactLocal$traceable
+      AppReactiveValue$sta_strata  <- reactLocal$strata
+      AppReactiveValue$sta_budget  <- reactLocal$budget
+      AppReactiveValue$sta_gather  <- reactLocal$gather
+      AppReactiveValue$sta_expert   <- reactLocal$expert
+    }
+    if( thisgroup == "RET") {
+      AppReactiveValue$ret_sampling <- reactLocal$sampling
+      AppReactiveValue$ret_availablereg <- reactLocal$availablereg
+      AppReactiveValue$ret_lessthan5000  <- reactLocal$lessthan5000
+      AppReactiveValue$ret_spread  <- reactLocal$spread
+      AppReactiveValue$ret_traceable  <- reactLocal$traceable
+      AppReactiveValue$ret_strata  <- reactLocal$strata
+      AppReactiveValue$ret_budget  <- reactLocal$budget
+      AppReactiveValue$ret_gather  <- reactLocal$gather
+      AppReactiveValue$ret_expert   <- reactLocal$expert
+    }
+    if( thisgroup == "IDP") {
+      AppReactiveValue$idp_sampling <- reactLocal$sampling
+      AppReactiveValue$idp_availablereg <- reactLocal$availablereg
+      AppReactiveValue$idp_lessthan5000  <- reactLocal$lessthan5000
+      AppReactiveValue$idp_spread  <- reactLocal$spread
+      AppReactiveValue$idp_traceable  <- reactLocal$traceable
+      AppReactiveValue$idp_strata  <- reactLocal$strata
+      AppReactiveValue$idp_budget  <- reactLocal$budget
+      AppReactiveValue$idp_gather  <- reactLocal$gather
+      AppReactiveValue$idp_expert   <- reactLocal$expert
+    }
+    if( thisgroup == "OOC") {
+      AppReactiveValue$ooc_sampling <- reactLocal$sampling
+      AppReactiveValue$ooc_availablereg <- reactLocal$availablereg
+      AppReactiveValue$ooc_lessthan5000  <- reactLocal$lessthan5000
+      AppReactiveValue$ooc_spread  <- reactLocal$spread
+      AppReactiveValue$ooc_traceable  <- reactLocal$traceable
+      AppReactiveValue$ooc_strata  <- reactLocal$strata
+      AppReactiveValue$ooc_budget  <- reactLocal$budget
+      AppReactiveValue$ooc_gather  <- reactLocal$gather
+      AppReactiveValue$ooc_expert   <- reactLocal$expert
+    }
 
     ## Display it on the GUI
     reactLocal$sampling
     ## get this recorded in the main app reactive value
     # AppReactiveValue$sampling <- list( reactLocal$sampling,
     #                                    thisgroup)
+
+
+
+
 
     })
 }

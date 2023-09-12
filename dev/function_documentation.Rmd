@@ -17,84 +17,20 @@ pkgload::load_all(export_all = FALSE)
 <!--
  For each fo the function you need, add FUSEN chunk through the Rstudio add-in " add {fusen} chunks"
  -->
-# estimate_sample
+
+# get_potential_strata
     
-```{r function-estimate_sample}
-#' estimate_sample
+```{r function-get_potential_strata}
+#' Title
 #' 
-#' A function to estimate sample size for UNHCR Corporate survey
+#' Description
 #' 
-#' The function conveniently:  
-#' 
-#'   * Map the UNHCR statistical category to the sampling universe category to 
-#'        be considered for the survey
-#'        
-#'   * Provides sample size based on simple random sampling approach
-#'   
-#'   * Offer potential approach for stratification based on nationality, gender 
-#'       and age
-#'       
-#'   * Output basic frequency table that can be used for survey 
-#'       post-stratification
-#'     
-#' 
-#' @param country_asylum_iso3c Character value with the ISO-3 character code of the Country of Asylum
-#' @param year Numeric value of the year (for instance 2022). 
-#'             If the data is not yet available for that year 
-#'             (aka still in the mid year reporting stage),
-#'              it will automatically fall back on the previous year
-#' @param pop_type Vector of character values.  Possible population types :
-#' 
-#'            *  RAS  - aka REF+ASY+OIP, Refugees, Asylum-seeker and other in 
-#'              Need of International Protection -  "Pillar-1-Refugee"
-#'              
-#'            * STA: Stateless Persons --  "Pillar-2-Stateless"
-#' 
-#'            * IDP: Internally displaced Persons   -  "Pillar-4-IDP" 
-#' 
-#'            * REP (RET+ROC): Returned Refugees & IDPs - "Pillar-3-Reintegration"    
-#' 
-#'            * OOC: Other of Concerns         
-#' 
-#' @param e is tolerable margin of error (integer or float, e.g. 5, 2.5)
-#' @param ci (optional) is confidence level for establishing a confidence 
-#'            interval using z-score (defaults to 95; restricted to 80, 85,
-#'             90, 95 or 99 as input)
-#' @param p (optional) is anticipated response distribution (defaults to 0.5;
-#'             takes value between 0 and 1 as input)  
-#' @param over (optional) is desired oversampling proportion (defaults to 0; 
-#'               takes value between 0 and 1 as input)
-#' 
-#' 
-#' @importFrom ForcedDisplacementStat
-#' @importFrom sampler rsampcalc
-#' @importFrom stats power.prop.test
-#' @importFrom purrr pmap_dbl pluck
-#' 
-#' @return list with function output
+#' @return
 #' 
 #' @export
-estimate_sample <- function(year ,
-                             country_asylum_iso3c,
-                            e, # margin of error 
-                            ci,  #s confidence level
-                            p , # anticipated response distribution 
-                            over  ## desired oversampling proportion
-                            ){
+get_potential_strata <- function(){
   
-  
-  ctrylabel <- ForcedDisplacementStat::reference |> 
-    dplyr::filter(iso_3 == country_asylum_iso3c ) |> 
-    dplyr::distinct(ctryname) |> 
-    dplyr::pull()
-  
-
-  ## Compiling the full sample universe for that category... 
-  
-  
-  
-  
-  
+   
   
   demographics1 <- ForcedDisplacementStat::demographics |>
     dplyr::left_join( ForcedDisplacementStat::reference |> 
@@ -133,6 +69,79 @@ estimate_sample <- function(year ,
                hasbreak = ifelse(Total - totGen == 0, "yes", "no" ))
     
     }
+    
+}
+```
+  
+```{r example-get_potential_strata}
+get_potential_strata()
+```
+  
+```{r tests-get_potential_strata}
+test_that("get_potential_strata works", {
+  expect_true(inherits(get_potential_strata, "function")) 
+})
+```
+  
+
+# estimate_sample
+    
+```{r function-estimate_sample}
+#' estimate_sample
+#' 
+#' A function to estimate required sample size 
+#' 
+#' The function conveniently:  
+#' 
+#'        
+#'   * Provides sample size based on simple random sampling approach
+#'   
+#'   * Offer potential approach for stratification based on nationality, gender 
+#'       and age
+#'       
+#'   * Output basic frequency table that can be used for survey 
+#'       post-stratification
+#'     
+#' 
+#' @param universe size of population universe       
+#' 
+#' @param e is tolerable margin of error (integer or float, e.g. 5, 2.5)
+#' @param ci (optional) is confidence level for establishing a confidence 
+#'            interval using z-score (defaults to 95; restricted to 80, 85,
+#'             90, 95 or 99 as input)
+#' @param p (optional) is anticipated response distribution (defaults to 0.5;
+#'             takes value between 0 and 1 as input)  
+#' @param over (optional) is desired oversampling proportion (defaults to 0; 
+#'               takes value between 0 and 1 as input)
+#' 
+#'  
+#' @importFrom sampler rsampcalc
+#' @importFrom stats power.prop.test
+#' @importFrom purrr pmap_dbl pluck
+#' 
+#' @return list with function output
+#' 
+#' @export
+estimate_sample <- function(universe,
+                            e, # margin of error 
+                            ci,  #s confidence level
+                            p , # anticipated response distribution 
+                            over  ## desired oversampling proportion
+                            ){
+  
+  
+  ctrylabel <- ForcedDisplacementStat::reference |> 
+    dplyr::filter(iso_3 == country_asylum_iso3c ) |> 
+    dplyr::distinct(ctryname) |> 
+    dplyr::pull()
+  
+
+  ## Compiling the full sample universe for that category... 
+  
+  
+  
+  
+ 
   
    
   
