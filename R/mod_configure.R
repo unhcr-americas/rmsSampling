@@ -87,10 +87,82 @@ population without interviewing everyone."),
 		      ),
 		      column(
 		        width = 4,
+		        shinydashboard::box(
+		          title = "Based on your Indicators Means of Verification table...",
+		          #  status = "primary",
+		          status = "info",
+		          solidHeader = FALSE,
+		          collapsible = TRUE,
+		          #background = "light-blue",
+		          width = 12,
 		        checkboxGroupInput(  inputId = ns("poptype"),
-		                           label = " => Based on your Means of Verification (MoV) table
-		                           and secondary data review, select the Population group(s) you need to sample for the Result Monitoring Survey "
-		                           )
+		          label = "Select the Population group(s) you need to sample
+		          for the Result Monitoring Survey ")
+		        ),
+
+		        shinydashboard::box(
+		          title = "What data collection mode will you implement? ",
+		          #  status = "primary",
+		          status = "info",
+		          solidHeader = FALSE,
+		          collapsible = TRUE,
+		          #background = "light-blue",
+		          width = 12,
+      		        div(
+      		          id = ns("targetm_ras"),
+      		          selectInput(
+      		            inputId = ns("ras_mode"),
+      		            label = "Refugee and Asylum Seekes",
+      		            choices =  c(  "Face to Face inteview - CAPI " = "CAPI",
+      		                           "Telephone Interview - CATI " = "CATI",
+      		                           "Mixed of CAPI & CATI " = "mixed" )
+      		          )
+      		        ),
+		              div(
+      		          id = ns("targetm_sta"),
+      		          selectInput(
+      		            inputId = ns("sta_mode"),
+      		            label = "Stateless",
+      		            choices =  c(  "Face to Face inteview - CAPI " = "CAPI",
+      		                           "Telephone Interview - CATI " = "CATI",
+      		                           "Mixed of CAPI & CATI " = "mixed" )
+      		          )
+      		        ),
+		              div(
+      		          id = ns("targetm_ret"),
+      		          selectInput(
+      		            inputId = ns("ret_mode"),
+      		            label = "Returnees",
+      		            choices =  c(  "Face to Face inteview - CAPI " = "CAPI",
+      		                           "Telephone Interview - CATI " = "CATI",
+      		                           "Mixed of CAPI & CATI " = "mixed" )
+      		          )
+      		        ),
+		              div(
+      		          id = ns("targetm_idp"),
+      		          selectInput(
+      		            inputId = ns("idp_mode"),
+      		            label = "Internally Displaced Persons",
+      		            choices =  c(  "Face to Face inteview - CAPI " = "CAPI",
+      		                           "Telephone Interview - CATI " = "CATI",
+      		                           "Mixed of CAPI & CATI " = "mixed"  )
+      		          )
+      		        ),
+		              div(
+      		          id = ns("targetm_ooc"),
+      		          selectInput(
+      		          #radioButtons(
+      		            inputId = ns("ooc_mode"),
+      		            label = "Other People with and for whom UNHCR works",
+      		            choices =  c(  "Face to Face inteview - CAPI " = "CAPI",
+      		                           "Telephone Interview - CATI " = "CATI",
+      		                           "Mixed of CAPI & CATI " = "mixed" )
+      		          )
+      		        )
+		        ),
+
+
+
 		      )
 		    )
 
@@ -194,35 +266,73 @@ mod_configure_server <- function(input, output, session, AppReactiveValue) {
 
 	})
 
+#	observeEvent(eventExpr = input$AppReactiveValue$targetm_ras1, {
+
+
 	observeEvent(eventExpr = input$poptype, {
 	  AppReactiveValue$poptype <- input$poptype
-
 
 	  if ( "RAS" %in% input$poptype ) {
 	     AppReactiveValue$ras_universe <- AppReactiveValue$group |>
 	         dplyr::filter( name == "RAS") |>
 	         dplyr::pull(value)
+	     AppReactiveValue$targetm_ras1 <- TRUE
 	  }
+
+	  if(isTRUE(AppReactiveValue$targetm_ras1)){
+	    golem::invoke_js("show", paste0("#", ns("targetm_ras")))
+	  }  else {
+	    golem::invoke_js("hide", paste0("#", ns("targetm_ras")))  }
+
+
 	  if ( "STA" %in% input$poptype ) {
 	    AppReactiveValue$sta_universe <- AppReactiveValue$group |>
 	      dplyr::filter( name == "STA") |>
 	      dplyr::pull(value)
+	    AppReactiveValue$targetm_sta1 <- TRUE
 	  }
+
+	  if(isTRUE(AppReactiveValue$targetm_sta1)){
+	    golem::invoke_js("show", paste0("#", ns("targetm_sta")))
+	  }  else {
+	    golem::invoke_js("hide", paste0("#", ns("targetm_sta")))  }
+
 	  if ( "RET" %in% input$poptype ) {
 	    AppReactiveValue$ret_universe <- AppReactiveValue$group |>
 	      dplyr::filter( name == "RET") |>
 	      dplyr::pull(value)
+	    AppReactiveValue$targetm_ret1 <- TRUE
 	  }
+
+	  if(isTRUE(AppReactiveValue$targetm_ret1)){
+	    golem::invoke_js("show", paste0("#", ns("targetm_ret")))
+	  }  else {
+	    golem::invoke_js("hide", paste0("#", ns("targetm_ret")))  }
+
 	  if ( "IDP" %in% input$poptype ) {
 	    AppReactiveValue$idp_universe <- AppReactiveValue$group |>
 	      dplyr::filter( name == "IDP") |>
 	      dplyr::pull(value)
+	    AppReactiveValue$targetm_idp1 <- TRUE
 	  }
+
+	  if(isTRUE(AppReactiveValue$targetm_idp1)){
+	    golem::invoke_js("show", paste0("#", ns("targetm_idp")))
+	  }  else {
+	    golem::invoke_js("hide", paste0("#", ns("targetm_idp")))  }
+
 	  if ( "OOC" %in% input$poptype ) {
 	    AppReactiveValue$ooc_universe <- AppReactiveValue$group |>
 	      dplyr::filter( name == "OOC") |>
 	      dplyr::pull(value)
+	    AppReactiveValue$targetm_ooc1 <- TRUE
 	  }
+
+	  if(isTRUE(AppReactiveValue$targetm_ooc1)){
+	    golem::invoke_js("show", paste0("#", ns("targetm_ooc")))
+	  }  else {
+	    golem::invoke_js("hide", paste0("#", ns("targetm_ooc")))  }
+
 
 	  lab <- data.frame(
 	    pop = c("RAS" ,
@@ -245,6 +355,22 @@ mod_configure_server <- function(input, output, session, AppReactiveValue) {
 
 	})
 
+
+	observeEvent(eventExpr = input$ras_mode, {
+	  AppReactiveValue$ras_mode <- input$ras_mode
+	})
+	observeEvent(eventExpr = input$sta_mode, {
+	  AppReactiveValue$sta_mode <- input$sta_mode
+	})
+	observeEvent(eventExpr = input$ret_mode, {
+	  AppReactiveValue$ret_mode <- input$ret_mode
+	})
+	observeEvent(eventExpr = input$idp_mode, {
+	  AppReactiveValue$idp_mode <- input$idp_mode
+	})
+	observeEvent(eventExpr = input$ooc_mode, {
+	  AppReactiveValue$ooc_mode <- input$ooc_mode
+	})
 
 	output$universe <- renderPlot({
 	  AppReactiveValue$universe

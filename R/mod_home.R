@@ -17,7 +17,7 @@ mod_home_ui <- function(id) {
 		  p(
 		    tags$span("RMS ", style = "font-size: 60px"),
 		    tags$span("Sampling", style = "font-size: 45px"),
-		    tags$span("(-> in dev -not yet working)", style = "font-size: 25px")
+		    tags$span("(Beta)", style = "font-size: 25px")
 		  ),
 		  br(),
 		  ### Then a short explainer
@@ -27,15 +27,15 @@ mod_home_ui <- function(id) {
 		     tags$a(href="https://intranet.unhcr.org/content/dam/unhcr/intranet/staff%20support/common-good-data-initiatives/rms/toolbox-subpage/2-design-and-collect/RMS%20basic%20sampling%20guidance.pdf",
 		            "Sampling Guidance"),", ",
 		     tags$a(href="https://intranet.unhcr.org/content/dam/unhcr/intranet/staff%20support/common-good-data-initiatives/rms/toolbox-subpage/2-design-and-collect/RMS%20sampling%20decision%20tree.pdf",
-		           "Sampling Decision Tree"),". Sample size for a household survey depends on several factors,
-		     including the study design, the  required results disaggregation,
-		     the expected precision goals and the sampling technique. ",
+		           "Sampling Decision Tree"),". The app guides users throught the different decision points to address during the preparation phase,
+		     including study design, adequate sampling technique, expected results disaggregation and indicators precision goals. ",
 		    style = "font-size: 20px"),
 		  br(),
-		  p( "Using information already available from Official Statistics for each country,
-		     based on the confirmation of sampling assumptions, this app will
-		     provide estimates of required sample size and generate a summary report
-		     to inform the preparation of the survey",
+		  p( "Using information already available from UNHCR Official Statistics for each country,
+		     and based on the confirmation of sampling assumptions, this app will
+		     provide estimates of required sample size and generate the required ",
+		     strong("Methodological Approach Documentation  "),
+		            "to inform the preparation of the RMS survey",
 		     style = "font-size: 16px"),
 		  p(tags$i( class = "fa fa-github"),
 		    "App built with ",

@@ -17,7 +17,15 @@ app_server <- function(input, output, session) {
                         label = "A sampling universe refers to the total population \nfrom which a sample is drawn for a survey." ) +
       ggplot2::theme_void(),
 
+    ## flag to display mode
+    targetm_ras1 = FALSE,
+    targetm_sta1 = FALSE,
+    targetm_ret1 = FALSE,
+    targetm_idp1 = FALSE,
+    targetm_oooc1 = FALSE,
+
     ## Sample info for ras
+    ras_mode = NULL,
     ras_universe = NULL,
     ras_sampling = NULL,
     ras_availablereg  = NULL,
@@ -29,6 +37,7 @@ app_server <- function(input, output, session) {
     ras_expert   = NULL,
 
     ## Sample info for sta
+    sta_mode = NULL,
     sta_universe = NULL,
     sta_sampling = NULL,
     sta_availablereg  = NULL,
@@ -40,6 +49,7 @@ app_server <- function(input, output, session) {
     sta_expert   = NULL,
 
     ## Sample info for ret
+    ret_mode = NULL,
     ret_universe = NULL,
     ret_sampling = NULL,
     ret_availablereg  = NULL,
@@ -51,6 +61,7 @@ app_server <- function(input, output, session) {
     ret_expert   = NULL,
 
     ## Sample info for idp
+    idp_mode = NULL,
     idp_universe = NULL,
     idp_sampling = NULL,
     idp_availablereg  = NULL,
@@ -62,6 +73,7 @@ app_server <- function(input, output, session) {
     idp_expert   = NULL,
 
     ## Sample info for ooc
+    ooc_mode = NULL,
     ooc_universe = NULL,
     ooc_sampling = NULL,
     ooc_availablereg  = NULL,

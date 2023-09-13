@@ -1358,7 +1358,7 @@
         "Type": "Package",
         "Package": "dplyr",
         "Title": "A Grammar of Data Manipulation",
-        "Version": "1.1.2",
+        "Version": "1.1.3",
         "Authors@R": "c(\nperson(\"Hadley\", \"Wickham\", , \"hadley@posit.co\", role = c(\"aut\", \"cre\"),\ncomment = c(ORCID = \"0000-0003-4757-117X\")),\nperson(\"Romain\", \"François\", role = \"aut\",\ncomment = c(ORCID = \"0000-0002-2444-4226\")),\nperson(\"Lionel\", \"Henry\", role = \"aut\"),\nperson(\"Kirill\", \"Müller\", role = \"aut\",\ncomment = c(ORCID = \"0000-0002-1416-3412\")),\nperson(\"Davis\", \"Vaughan\", , \"davis@posit.co\", role = \"aut\",\ncomment = c(ORCID = \"0000-0003-4777-038X\")),\nperson(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\"))\n)",
         "Description": "A fast, consistent tool for working with data frame like\nobjects, both in memory and out of memory.",
         "License": "MIT + file LICENSE",
@@ -1374,18 +1374,12 @@
         "LazyData": "true",
         "RoxygenNote": "7.2.3",
         "NeedsCompilation": "yes",
-        "Packaged": "2023-04-19 19:29:34 UTC; hadleywickham",
+        "Packaged": "2023-08-25 22:28:32 UTC; hadleywickham",
         "Author": "Hadley Wickham [aut, cre] (<https://orcid.org/0000-0003-4757-117X>),\nRomain François [aut] (<https://orcid.org/0000-0002-2444-4226>),\nLionel Henry [aut],\nKirill Müller [aut] (<https://orcid.org/0000-0002-1416-3412>),\nDavis Vaughan [aut] (<https://orcid.org/0000-0003-4777-038X>),\nPosit Software, PBC [cph, fnd]",
         "Maintainer": "Hadley Wickham <hadley@posit.co>",
         "Repository": "CRAN",
-        "Date/Publication": "2023-04-20 14:00:03 UTC",
-        "Built": "R 4.3.0; x86_64-pc-linux-gnu; 2023-04-25 14:40:38 UTC; unix",
-        "RemoteType": "standard",
-        "RemotePkgRef": "dplyr",
-        "RemoteRef": "dplyr",
-        "RemoteRepos": "https://cloud.r-project.org",
-        "RemotePkgPlatform": "source",
-        "RemoteSha": "1.1.2"
+        "Date/Publication": "2023-09-03 16:20:02 UTC",
+        "Built": "R 4.3.1; x86_64-pc-linux-gnu; 2023-09-08 21:25:38 UTC; unix"
       }
     },
     "dtplyr": {
@@ -1447,6 +1441,61 @@
         "RemoteRepos": "https://cloud.r-project.org",
         "RemotePkgPlatform": "source",
         "RemoteSha": "0.3.2"
+      }
+    },
+    "emmeans": {
+      "Source": "CRAN",
+      "Repository": "https://cloud.r-project.org",
+      "description": {
+        "Package": "emmeans",
+        "Type": "Package",
+        "Title": "Estimated Marginal Means, aka Least-Squares Means",
+        "Version": "1.8.8",
+        "Date": "2023-08-16",
+        "Authors@R": "c(person(\"Russell V.\", \"Lenth\", role = c(\"aut\", \"cre\", \"cph\"),\nemail = \"russell-lenth@uiowa.edu\"),\nperson(\"Ben\", \"Bolker\", role = \"ctb\"),\nperson(\"Paul\", \"Buerkner\", role = \"ctb\"),\nperson(\"Iago\", \"Giné-Vázquez\", role = \"ctb\"),\nperson(\"Maxime\", \"Herve\", role = \"ctb\"),\nperson(\"Maarten\", \"Jung\", role = \"ctb\"),\nperson(\"Jonathon\", \"Love\", role = \"ctb\"),\nperson(\"Fernando\", \"Miguez\", role = \"ctb\"),\nperson(\"Hannes\", \"Riebl\", role = \"ctb\"),\nperson(\"Henrik\", \"Singmann\", role = \"ctb\"))",
+        "Depends": "R (>= 4.1.0)",
+        "Imports": "estimability (>= 1.4.1), graphics, methods, numDeriv, stats,\nutils, mvtnorm",
+        "Suggests": "bayesplot, bayestestR, biglm, brms, car, coda (>= 0.17),\nggplot2, lattice, logspline, mediation, mgcv, multcomp,\nmultcompView, nlme, ordinal (>= 2014.11-12), pbkrtest (>=\n0.4-1), lme4, lmerTest (>= 2.0.32), MASS, MuMIn, rsm, knitr,\nrmarkdown, sandwich, scales, splines, testthat, xtable (>=\n1.8-2)",
+        "Enhances": "CARBayes, coxme, gee, geepack, MCMCglmm, MCMCpack, mice,\nnnet, pscl, rstanarm, sommer, survival",
+        "URL": "https://github.com/rvlenth/emmeans",
+        "BugReports": "https://github.com/rvlenth/emmeans/issues",
+        "LazyData": "yes",
+        "ByteCompile": "yes",
+        "Description": "Obtain estimated marginal means (EMMs) for many linear, generalized\nlinear, and mixed models. Compute contrasts or linear functions of EMMs,\ntrends, and comparisons of slopes. Plots and other displays.\nLeast-squares means are discussed, and the term \"estimated marginal means\"\nis suggested, in Searle, Speed, and Milliken (1980) Population marginal means\nin the linear model: An alternative to least squares means, The American\nStatistician 34(4), 216-221 <doi:10.1080/00031305.1980.10483031>.",
+        "License": "GPL-2 | GPL-3",
+        "Encoding": "UTF-8",
+        "RoxygenNote": "7.2.3",
+        "VignetteBuilder": "knitr",
+        "NeedsCompilation": "no",
+        "Packaged": "2023-08-16 02:54:03 UTC; rlenth",
+        "Author": "Russell V. Lenth [aut, cre, cph],\nBen Bolker [ctb],\nPaul Buerkner [ctb],\nIago Giné-Vázquez [ctb],\nMaxime Herve [ctb],\nMaarten Jung [ctb],\nJonathon Love [ctb],\nFernando Miguez [ctb],\nHannes Riebl [ctb],\nHenrik Singmann [ctb]",
+        "Maintainer": "Russell V. Lenth <russell-lenth@uiowa.edu>",
+        "Repository": "CRAN",
+        "Date/Publication": "2023-08-17 14:32:42 UTC",
+        "Built": "R 4.3.1; ; 2023-08-17 16:48:09 UTC; unix"
+      }
+    },
+    "estimability": {
+      "Source": "CRAN",
+      "Repository": "https://cloud.r-project.org",
+      "description": {
+        "Package": "estimability",
+        "Type": "Package",
+        "Title": "Tools for Assessing Estimability of Linear Predictions",
+        "Version": "1.4.1",
+        "Date": "2022-08-05",
+        "Authors@R": "c(person(\"Russell\", \"Lenth\", role = c(\"aut\", \"cre\", \"cph\"),\nemail = \"russell-lenth@uiowa.edu\"))",
+        "Depends": "stats",
+        "Description": "Provides tools for determining estimability of linear functions\nof regression coefficients, and 'epredict' methods that handle\nnon-estimable cases correctly. Estimability theory is discussed in\nmany linear-models textbooks including Chapter 3 of Monahan, JF (2008),\n\"A Primer on Linear Models\", Chapman and Hall (ISBN 978-1-4200-6201-4).",
+        "ByteCompile": "yes",
+        "License": "GPL (>= 3)",
+        "NeedsCompilation": "no",
+        "Packaged": "2022-08-04 17:40:33 UTC; rlenth",
+        "Author": "Russell Lenth [aut, cre, cph]",
+        "Maintainer": "Russell Lenth <russell-lenth@uiowa.edu>",
+        "Repository": "CRAN",
+        "Date/Publication": "2022-08-05 15:00:13 UTC",
+        "Built": "R 4.3.1; ; 2023-08-17 16:48:04 UTC; unix"
       }
     },
     "evaluate": {
@@ -2661,8 +2710,8 @@
         "Package": "labeling",
         "Type": "Package",
         "Title": "Axis Labeling",
-        "Version": "0.4.2",
-        "Date": "2020-10-15",
+        "Version": "0.4.3",
+        "Date": "2023-08-29",
         "Author": "Justin Talbot,",
         "Maintainer": "Nuno Sempere <nuno.semperelh@gmail.com>",
         "Description": "Functions which provide a range of axis labeling algorithms.",
@@ -2670,16 +2719,10 @@
         "Collate": "'labeling.R'",
         "NeedsCompilation": "no",
         "Imports": "stats, graphics",
-        "Packaged": "2020-10-18 12:56:46 UTC; nuno",
+        "Packaged": "2023-08-29 21:01:57 UTC; loki",
         "Repository": "CRAN",
-        "Date/Publication": "2020-10-20 07:00:09 UTC",
-        "Built": "R 4.3.0; ; 2023-04-25 15:12:05 UTC; unix",
-        "RemoteType": "standard",
-        "RemotePkgRef": "labeling",
-        "RemoteRef": "labeling",
-        "RemoteRepos": "https://cloud.r-project.org",
-        "RemotePkgPlatform": "source",
-        "RemoteSha": "0.4.2"
+        "Date/Publication": "2023-08-29 22:20:02 UTC",
+        "Built": "R 4.3.1; ; 2023-09-08 21:25:37 UTC; unix"
       }
     },
     "later": {
@@ -2982,6 +3025,49 @@
         "Built": "R 4.3.1; ; 2023-08-15 13:41:57 UTC; unix"
       }
     },
+    "minqa": {
+      "Source": "CRAN",
+      "Repository": "https://cloud.r-project.org",
+      "description": {
+        "Package": "minqa",
+        "Type": "Package",
+        "Title": "Derivative-Free Optimization Algorithms by Quadratic\nApproximation",
+        "Version": "1.2.5",
+        "Author": "Douglas Bates, Katharine M. Mullen, John C. Nash, Ravi Varadhan",
+        "Maintainer": "Katharine M. Mullen <katharine.mullen@stat.ucla.edu>",
+        "Description": "Derivative-free optimization by quadratic approximation\nbased on an interface to Fortran implementations by M. J. D.\nPowell.",
+        "License": "GPL-2",
+        "URL": "http://optimizer.r-forge.r-project.org",
+        "Imports": "Rcpp (>= 0.9.10)",
+        "LinkingTo": "Rcpp",
+        "SystemRequirements": "GNU make",
+        "NeedsCompilation": "yes",
+        "Packaged": "2022-10-19 04:27:20 UTC; kmm-windog",
+        "Repository": "CRAN",
+        "Date/Publication": "2022-10-19 07:32:37 UTC",
+        "Built": "R 4.3.1; x86_64-pc-linux-gnu; 2023-08-17 16:33:18 UTC; unix"
+      }
+    },
+    "mitools": {
+      "Source": "CRAN",
+      "Repository": "https://cloud.r-project.org",
+      "description": {
+        "Package": "mitools",
+        "Title": "Tools for Multiple Imputation of Missing Data",
+        "Version": "2.4",
+        "Author": "Thomas Lumley",
+        "Description": "Tools to perform analyses and combine results from\nmultiple-imputation datasets.",
+        "Maintainer": "Thomas Lumley <t.lumley@auckland.ac.nz>",
+        "Suggests": "RODBC, foreign",
+        "Imports": "DBI, methods, stats",
+        "License": "GPL-2",
+        "NeedsCompilation": "no",
+        "Packaged": "2019-04-25 22:44:21 UTC; tlum005",
+        "Repository": "CRAN",
+        "Date/Publication": "2019-04-26 05:00:03 UTC",
+        "Built": "R 4.3.1; ; 2023-08-28 20:31:44 UTC; unix"
+      }
+    },
     "modelr": {
       "Source": "CRAN",
       "Repository": "https://cloud.r-project.org",
@@ -3040,6 +3126,30 @@
         "RemoteSha": "0.5.0"
       }
     },
+    "mvtnorm": {
+      "Source": "CRAN",
+      "Repository": "https://cloud.r-project.org",
+      "description": {
+        "Package": "mvtnorm",
+        "Title": "Multivariate Normal and t Distributions",
+        "Version": "1.2-3",
+        "Date": "2023-08-17",
+        "Authors@R": "c(person(\"Alan\", \"Genz\", role = \"aut\"),\nperson(\"Frank\", \"Bretz\", role = \"aut\"),\nperson(\"Tetsuhisa\", \"Miwa\", role = \"aut\"),\nperson(\"Xuefei\", \"Mi\", role = \"aut\"),\nperson(\"Friedrich\", \"Leisch\", role = \"ctb\"),\nperson(\"Fabian\", \"Scheipl\", role = \"ctb\"),\nperson(\"Bjoern\", \"Bornkamp\", role = \"ctb\", comment = c(ORCID = \"0000-0002-6294-8185\")),\nperson(\"Martin\", \"Maechler\", role = \"ctb\", comment = c(ORCID = \"0000-0002-8685-9910\")),\nperson(\"Torsten\", \"Hothorn\", role = c(\"aut\", \"cre\"),\nemail = \"Torsten.Hothorn@R-project.org\", comment = c(ORCID = \"0000-0001-8301-0471\")))",
+        "Description": "Computes multivariate normal and t probabilities, quantiles, random deviates,\nand densities. Log-likelihoods for multivariate Gaussian models and Gaussian copulae\nparameterised by Cholesky factors of covariance or precision matrices are implemented\nfor interval-censored and exact data, or a mix thereof. Score functions for these\nlog-likelihoods are available. A class representing multiple lower triangular matrices\nand corresponding methods are part of this package.",
+        "Imports": "stats",
+        "Depends": "R(>= 3.5.0)",
+        "Suggests": "qrng, numDeriv",
+        "License": "GPL-2",
+        "URL": "http://mvtnorm.R-forge.R-project.org",
+        "NeedsCompilation": "yes",
+        "Packaged": "2023-08-17 08:50:49 UTC; hothorn",
+        "Author": "Alan Genz [aut],\nFrank Bretz [aut],\nTetsuhisa Miwa [aut],\nXuefei Mi [aut],\nFriedrich Leisch [ctb],\nFabian Scheipl [ctb],\nBjoern Bornkamp [ctb] (<https://orcid.org/0000-0002-6294-8185>),\nMartin Maechler [ctb] (<https://orcid.org/0000-0002-8685-9910>),\nTorsten Hothorn [aut, cre] (<https://orcid.org/0000-0001-8301-0471>)",
+        "Maintainer": "Torsten Hothorn <Torsten.Hothorn@R-project.org>",
+        "Repository": "CRAN",
+        "Date/Publication": "2023-08-25 14:00:02 UTC",
+        "Built": "R 4.3.1; x86_64-pc-linux-gnu; 2023-09-08 21:25:47 UTC; unix"
+      }
+    },
     "nlme": {
       "Source": "CRAN",
       "Repository": "https://cloud.r-project.org",
@@ -3068,6 +3178,29 @@
         "Repository": "CRAN",
         "Date/Publication": "2023-08-09 11:20:02 UTC",
         "Built": "R 4.3.1; x86_64-pc-linux-gnu; 2023-08-15 13:23:03 UTC; unix"
+      }
+    },
+    "numDeriv": {
+      "Source": "CRAN",
+      "Repository": "https://cloud.r-project.org",
+      "description": {
+        "Package": "numDeriv",
+        "Version": "2016.8-1.1",
+        "Title": "Accurate Numerical Derivatives",
+        "Description": "Methods for calculating (usually) accurate\nnumerical first and second order derivatives. Accurate calculations\nare done using 'Richardson''s' extrapolation or, when applicable, a\ncomplex step derivative is available. A simple difference\nmethod is also provided. Simple difference is (usually) less accurate\nbut is much quicker than 'Richardson''s' extrapolation and provides a\nuseful cross-check.\nMethods are provided for real scalar and vector valued functions.",
+        "Depends": "R (>= 2.11.1)",
+        "LazyLoad": "yes",
+        "ByteCompile": "yes",
+        "License": "GPL-2",
+        "Copyright": "2006-2011, Bank of Canada. 2012-2016, Paul Gilbert",
+        "Author": "Paul Gilbert and Ravi Varadhan",
+        "Maintainer": "Paul Gilbert <pgilbert.ttv9z@ncf.ca>",
+        "URL": "http://optimizer.r-forge.r-project.org/",
+        "NeedsCompilation": "no",
+        "Packaged": "2019-06-04 11:04:44 UTC; hornik",
+        "Repository": "CRAN",
+        "Date/Publication": "2019-06-06 09:51:09 UTC",
+        "Built": "R 4.3.1; ; 2023-08-17 16:32:38 UTC; unix"
       }
     },
     "officedown": {
@@ -4612,6 +4745,72 @@
         "Built": "R 4.3.0; x86_64-pc-linux-gnu; 2023-04-25 05:04:55 UTC; unix"
       }
     },
+    "srvyr": {
+      "Source": "CRAN",
+      "Repository": "https://cloud.r-project.org",
+      "description": {
+        "Package": "srvyr",
+        "Type": "Package",
+        "Title": "'dplyr'-Like Syntax for Summary Statistics of Survey Data",
+        "Description": "Use piping, verbs like 'group_by' and 'summarize', and other\n'dplyr' inspired syntactic style when calculating summary statistics on survey\ndata using functions from the 'survey' package.",
+        "Version": "1.2.0",
+        "Date": "2023-02-20",
+        "Authors@R": "c(person(\"Greg\", \"Freedman Ellis\", email = \"greg.freedman@gmail.com\", role = c(\"aut\", \"cre\")),\nperson(\"Thomas\", \"Lumley\", role = \"ctb\"),\nperson(\"Tomasz\", \"\\u017b\\u00F3\\u0142tak\", role = \"ctb\"),\nperson(\"Ben\", \"Schneider\", role = c(\"aut\", \"ctb\")),\nperson(\"Pavel N.\", \"Krivitsky\", email = \"pavel@statnet.org\", role = c(\"ctb\")))",
+        "URL": "http://gdfe.co/srvyr/, https://github.com/gergness/srvyr/",
+        "BugReports": "https://github.com/gergness/srvyr/issues",
+        "Depends": "R (>= 3.1.2)",
+        "Imports": "dplyr (>= 1.1.0), magrittr, methods, rlang, survey (>= 4.1),\ntibble, tidyr, tidyselect, vctrs (>= 0.3.0)",
+        "License": "GPL-2 | GPL-3",
+        "Suggests": "spelling, convey, DBI, dbplyr, ggplot2, knitr, laeken,\nMatrix, rmarkdown (>= 2.2.2), pander, RSQLite, survival,\ntestthat, covr",
+        "Encoding": "UTF-8",
+        "VignetteBuilder": "knitr",
+        "RoxygenNote": "7.2.3",
+        "Language": "en-US",
+        "NeedsCompilation": "no",
+        "Packaged": "2023-02-21 03:02:13 UTC; gregfreedmanellis",
+        "Author": "Greg Freedman Ellis [aut, cre],\nThomas Lumley [ctb],\nTomasz Żółtak [ctb],\nBen Schneider [aut, ctb],\nPavel N. Krivitsky [ctb]",
+        "Maintainer": "Greg Freedman Ellis <greg.freedman@gmail.com>",
+        "Repository": "CRAN",
+        "Date/Publication": "2023-02-21 04:10:02 UTC",
+        "Built": "R 4.3.1; ; 2023-08-28 20:32:01 UTC; unix"
+      }
+    },
+    "strapgod": {
+      "Source": "github",
+      "Repository": null,
+      "description": {
+        "Package": "strapgod",
+        "Title": "Resampled Data Frames",
+        "Version": "0.0.4.9000",
+        "Authors@R": "person(given = \"Davis\",\nfamily = \"Vaughan\",\nrole = c(\"aut\", \"cre\"),\nemail = \"davis@rstudio.com\")",
+        "Description": "Create data frames with virtual groups that can be used with\n'dplyr' to efficiently compute resampled statistics, generate the data for\nhypothetical outcome plots, and fit multiple models on resampled variations\nof the original data.",
+        "License": "GPL-3",
+        "Encoding": "UTF-8",
+        "Roxygen": "list(markdown = TRUE)",
+        "RoxygenNote": "6.1.1",
+        "Depends": "R (>= 3.2.0)",
+        "Imports": "dplyr (>= 0.8.3), tidyr (>= 1.0.0), rlang, tibble, lifecycle",
+        "Suggests": "broom, testthat, covr, knitr, rmarkdown",
+        "URL": "https://github.com/DavisVaughan/strapgod",
+        "BugReports": "https://github.com/DavisVaughan/strapgod/issues",
+        "VignetteBuilder": "knitr",
+        "RemoteType": "github",
+        "RemoteHost": "api.github.com",
+        "RemoteRepo": "strapgod",
+        "RemoteUsername": "DavisVaughan",
+        "RemoteRef": "HEAD",
+        "RemoteSha": "ea2b1ecfc780a44ffa934c9bc7c2032954f4ffaa",
+        "GithubRepo": "strapgod",
+        "GithubUsername": "DavisVaughan",
+        "GithubRef": "HEAD",
+        "GithubSHA1": "ea2b1ecfc780a44ffa934c9bc7c2032954f4ffaa",
+        "NeedsCompilation": "no",
+        "Packaged": "2023-09-08 21:25:33 UTC; edouard",
+        "Author": "Davis Vaughan [aut, cre]",
+        "Maintainer": "Davis Vaughan <davis@rstudio.com>",
+        "Built": "R 4.3.1; ; 2023-09-08 21:25:33 UTC; unix"
+      }
+    },
     "stringi": {
       "Source": "CRAN",
       "Repository": "https://cloud.r-project.org",
@@ -4675,6 +4874,55 @@
         "Repository": "CRAN",
         "Date/Publication": "2022-12-02 10:20:02 UTC",
         "Built": "R 4.3.0; ; 2023-04-25 05:12:04 UTC; unix"
+      }
+    },
+    "survey": {
+      "Source": "CRAN",
+      "Repository": "https://cloud.r-project.org",
+      "description": {
+        "Package": "survey",
+        "Title": "Analysis of Complex Survey Samples",
+        "Description": "Summary statistics, two-sample tests, rank tests, generalised linear models, cumulative link models, Cox models, loglinear models, and general maximum pseudolikelihood estimation for multistage stratified, cluster-sampled, unequally weighted survey samples. Variances by Taylor series linearisation or replicate weights. Post-stratification, calibration, and raking. Two-phase subsampling designs. Graphics. PPS sampling without replacement.",
+        "Version": "4.2-1",
+        "Author": "Thomas Lumley",
+        "Maintainer": "\"Thomas Lumley\" <t.lumley@auckland.ac.nz>",
+        "License": "GPL-2 | GPL-3",
+        "Depends": "R (>= 3.5.0), grid, methods, Matrix, survival",
+        "Imports": "stats, graphics, splines, lattice, minqa, numDeriv, mitools\n(>= 2.4)",
+        "Suggests": "foreign, MASS, KernSmooth, hexbin, RSQLite, quantreg,\nparallel, CompQuadForm, DBI, AER",
+        "URL": "http://r-survey.r-forge.r-project.org/survey/",
+        "NeedsCompilation": "no",
+        "Packaged": "2023-05-02 22:56:29 UTC; tlum005",
+        "Repository": "CRAN",
+        "Date/Publication": "2023-05-03 08:10:02 UTC",
+        "Built": "R 4.3.1; ; 2023-08-28 20:31:46 UTC; unix"
+      }
+    },
+    "survival": {
+      "Source": "CRAN",
+      "Repository": "https://cloud.r-project.org",
+      "description": {
+        "Title": "Survival Analysis",
+        "Priority": "recommended",
+        "Package": "survival",
+        "Version": "3.5-7",
+        "Date": "2023-08-12",
+        "Depends": "R (>= 3.5.0)",
+        "Imports": "graphics, Matrix, methods, splines, stats, utils",
+        "LazyData": "Yes",
+        "LazyDataCompression": "xz",
+        "ByteCompile": "Yes",
+        "Authors@R": "c(person(c(\"Terry\", \"M\"), \"Therneau\",\nemail=\"therneau.terry@mayo.edu\",\nrole=c(\"aut\", \"cre\")),\nperson(\"Thomas\", \"Lumley\", role=c(\"ctb\", \"trl\"),\ncomment=\"original S->R port and R maintainer until 2009\"),\nperson(\"Atkinson\", \"Elizabeth\", role=\"ctb\"),\nperson(\"Crowson\", \"Cynthia\", role=\"ctb\"))",
+        "Description": "Contains the core survival analysis routines, including\ndefinition of Surv objects,\nKaplan-Meier and Aalen-Johansen (multi-state) curves, Cox models,\nand parametric accelerated failure time models.",
+        "License": "LGPL (>= 2)",
+        "URL": "https://github.com/therneau/survival",
+        "NeedsCompilation": "yes",
+        "Packaged": "2023-08-13 13:14:48 UTC; therneau",
+        "Author": "Terry M Therneau [aut, cre],\nThomas Lumley [ctb, trl] (original S->R port and R maintainer until\n2009),\nAtkinson Elizabeth [ctb],\nCrowson Cynthia [ctb]",
+        "Maintainer": "Terry M Therneau <therneau.terry@mayo.edu>",
+        "Repository": "CRAN",
+        "Date/Publication": "2023-08-14 07:10:03 UTC",
+        "Built": "R 4.3.1; x86_64-pc-linux-gnu; 2023-08-17 16:32:49 UTC; unix"
       }
     },
     "sys": {
@@ -5075,6 +5323,43 @@
         "Repository": "CRAN",
         "Date/Publication": "2023-05-12 23:00:02 UTC",
         "Built": "R 4.3.1; x86_64-pc-linux-gnu; 2023-08-15 13:31:48 UTC; unix"
+      }
+    },
+    "ungeviz": {
+      "Source": "github",
+      "Repository": null,
+      "description": {
+        "Package": "ungeviz",
+        "Type": "Package",
+        "Title": "Tools for visualizing uncertainty with ggplot2",
+        "Version": "0.1.0",
+        "Authors@R": "c(\nperson(\"Claus O.\", \"Wilke\", , \"wilke@austin.utexas.edu\", c(\"cre\", \"aut\")))",
+        "Description": "This package provides add-on functionality for ggplot2 to make\nit easier to visualize uncertainty (which is called Ungewissheit in German).",
+        "URL": "https://github.com/wilkelab/ungeviz",
+        "Depends": "R (>= 3.1.0)",
+        "Imports": "ggplot2, dplyr (>= 0.7.99.9000), mvtnorm, mgcv, purrr,\nstrapgod, tidyr, tibble, rlang, withr",
+        "License": "GPL-2",
+        "LazyData": "true",
+        "Suggests": "cowplot, broom, emmeans, forcats, gganimate, transformr,\nggridges, glue, knitr, rmarkdown, Stat2Data, testthat, vdiffr",
+        "VignetteBuilder": "knitr",
+        "Remotes": "DavisVaughan/strapgod",
+        "RoxygenNote": "6.1.0",
+        "Roxygen": "list(markdown = TRUE)",
+        "RemoteType": "github",
+        "RemoteHost": "api.github.com",
+        "RemoteRepo": "ungeviz",
+        "RemoteUsername": "wilkelab",
+        "RemoteRef": "HEAD",
+        "RemoteSha": "aeae12b014c718dcd01343548f2221b58ece63f6",
+        "GithubRepo": "ungeviz",
+        "GithubUsername": "wilkelab",
+        "GithubRef": "HEAD",
+        "GithubSHA1": "aeae12b014c718dcd01343548f2221b58ece63f6",
+        "NeedsCompilation": "no",
+        "Packaged": "2023-09-08 21:25:51 UTC; edouard",
+        "Author": "Claus O. Wilke [cre, aut]",
+        "Maintainer": "Claus O. Wilke <wilke@austin.utexas.edu>",
+        "Built": "R 4.3.1; ; 2023-09-08 21:25:51 UTC; unix"
       }
     },
     "unhcrdesign": {
@@ -5787,7 +6072,7 @@
       "checksum": "7446f39309f1b2a01cce9c3fd3b66432"
     },
     ".RData": {
-      "checksum": "4473a955a829cbbad217af998508fa50"
+      "checksum": "b71224d9d44bf622e97f8a3c863c3f3e"
     },
     "app.R": {
       "checksum": "d02a4feeb3ce4382f3a637a776010d52"
@@ -5798,6 +6083,9 @@
     "dev/01_dev.R": {
       "checksum": "71288ae02c004e8bdb90bec91d669e83"
     },
+    "dev/app.R": {
+      "checksum": "e840e0e25f18a43873cb8d8d427fce76"
+    },
     "dev/config_attachment.yaml": {
       "checksum": "a7efc9ea3e81f3b8936c1353cdbbf252"
     },
@@ -5805,13 +6093,22 @@
       "checksum": "b82e2c6e48eacc2cbe0373e5688ed560"
     },
     "dev/function_documentation.Rmd": {
-      "checksum": "242ef0d69f2339a2db38296374fcb55c"
+      "checksum": "da8e5f782d93a291d6c57db96403b5ee"
     },
     "dev/githublink.R": {
       "checksum": "fb6e4c8077f235811d12fe4c6dc469e3"
     },
     "dev/run_dev.R": {
       "checksum": "88c602f1cf2c942d8d094db2e1e37a16"
+    },
+    "dev/smple_chart.R": {
+      "checksum": "0ec26ebeeae787115e18232f4006c71c"
+    },
+    "dev/smple_chart1.R": {
+      "checksum": "d8c79c9c99c0601c392d5047969ed2e6"
+    },
+    "dev/test.R": {
+      "checksum": "79944f46d6e0df34ad6d9976e0dfb69b"
     },
     "docs/404.html": {
       "checksum": "765661782804bb0519ccfcda768cc190"
@@ -5868,7 +6165,7 @@
       "checksum": "9c627b6b2c41322b8f362fac07a2ae5a"
     },
     "docs/pkgdown.yml": {
-      "checksum": "97cce3d4cffc37f2fae159d5d78b6038"
+      "checksum": "8f68baf06f807ff2c840a1d34f86e637"
     },
     "docs/reference/figures/README-pressure-1.png": {
       "checksum": "4f581a7b27557b49e652da5e346475ff"
@@ -5892,7 +6189,7 @@
       "checksum": "d1c4c300661e5a2273062fd263f29b12"
     },
     "inst/rmarkdown/templates/sample_design_report/skeleton/skeleton.Rmd": {
-      "checksum": "fae2d59f022f16cf47c4cc39eeeea72f"
+      "checksum": "b10da3da07c61309587c50cf3bebe0f5"
     },
     "inst/rmarkdown/templates/sample_design_report/template.yaml": {
       "checksum": "a760eeac276e42ccdaa8fd06501f4d3f"
@@ -5907,13 +6204,13 @@
       "checksum": "db153f001c7c98594f4a6e64193fbf8a"
     },
     "NAMESPACE": {
-      "checksum": "dbaf476eb28ca37323ffb039ba69c843"
+      "checksum": "a9445ce304e9188881a58d36ff625669"
     },
     "R/app_config.R": {
       "checksum": "59e140f90cdd374e1451cf475a114158"
     },
     "R/app_server.R": {
-      "checksum": "2a7a6782e66d29f53c20416269308f41"
+      "checksum": "34968340caff476d4c72fe2c420145f7"
     },
     "R/app_ui.R": {
       "checksum": "44d070d17a136392e8fc5889ae337b76"
@@ -5928,25 +6225,25 @@
       "checksum": "289be7bd6b2afb3ef8bdd7525e01f162"
     },
     "R/mod_assumptions.R": {
-      "checksum": "86c7b467d4c869b3d33a91d7183ce229"
+      "checksum": "ef7ff710d99530785b9bea92aa2d9959"
     },
     "R/mod_configure.R": {
-      "checksum": "ef2ffb74ebb7978cf89920546a44d479"
+      "checksum": "bbc119cee02a7412523d3e748a2f4e95"
     },
     "R/mod_estimate.R": {
-      "checksum": "ac2fd6639732a680d414731f117612a5"
+      "checksum": "f143a595881f4004ddca10e0e7c226c0"
     },
     "R/mod_home.R": {
       "checksum": "8b8282a737ccc69a4e856d24e36a5a77"
     },
     "R/mod_report.R": {
-      "checksum": "b48b666d0660d0f4669b660ba491b95a"
+      "checksum": "ae7fd33a3d856af5b436026732a672ca"
     },
     "R/mod_screener.R": {
-      "checksum": "70ab28654cea31801902b2e20094c630"
+      "checksum": "eba9b75cd4c2518db11b49e59c91c202"
     },
     "R/mod_summary.R": {
-      "checksum": "57abcd57a72c5eb15720633e9810fd6c"
+      "checksum": "b6ae2467be8b35070308cc8561a1938a"
     },
     "R/run_app.R": {
       "checksum": "fd38fc337ac1f8193961122646581804"

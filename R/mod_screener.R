@@ -181,7 +181,7 @@ mod_screener_ui <- function(id, thisgroup) {
                 shinydashboard::box(
                   title = paste0("Recommended Sampling Approach for ", thisgroup),
                   #  status = "primary",
-                  status = "primary",
+                  status = "warning",
                   solidHeader = TRUE,
                   collapsible = FALSE,
                   #background = "light-blue",
@@ -602,13 +602,6 @@ survey to identify seeds and prepare RDS coupons"
 
     ## Display it on the GUI
     reactLocal$sampling
-    ## get this recorded in the main app reactive value
-    # AppReactiveValue$sampling <- list( reactLocal$sampling,
-    #                                    thisgroup)
-
-
-
-
 
     })
 }

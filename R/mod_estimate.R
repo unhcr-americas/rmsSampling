@@ -215,6 +215,18 @@ mod_estimate_server <- function(input, output, session, AppReactiveValue, thisgr
                                       ci = as.numeric(input$ci) * 100,
                                       p = input$p,
                                       over = input$over)
+
+    if( thisgroup2 == "RAS") {
+      AppReactiveValue$ras_samplesize  <-  reactLocal$samplesize}
+    if( thisgroup2 == "STA") {
+      AppReactiveValue$sta_samplesize  <-  reactLocal$samplesize }
+    if( thisgroup2 == "RET") {
+      AppReactiveValue$ret_samplesize  <-  reactLocal$samplesize }
+    if( thisgroup2 == "IDP") {
+      AppReactiveValue$idp_samplesize  <-  reactLocal$samplesize }
+    if( thisgroup2 == "OOC") {
+      AppReactiveValue$ooc_samplesize  <-  reactLocal$samplesize }
+
     #browser()
     set.seed(345)
 
@@ -248,6 +260,7 @@ mod_estimate_server <- function(input, output, session, AppReactiveValue, thisgr
       # Use `survey_prop` calculate the proportion in each group
       srvyr::group_by(employed) |>
       srvyr::summarise(pct = srvyr::survey_prop(na.rm = TRUE,
+                                                proportion = TRUE,
                                                 level = as.numeric(input$ci),
                                                 vartype = c("se", "ci", "var", "cv")))
 

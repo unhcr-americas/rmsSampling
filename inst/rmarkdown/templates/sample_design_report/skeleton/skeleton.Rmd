@@ -1,98 +1,237 @@
 ---
-title: "Sample Design Report"
+subtitle: "Methodological Approach Documentation" 
 date: "`r format(Sys.Date(),  '%d %B %Y')`"
 output:
   unhcrdown::docx_simple
+params:
+  country: "PAN" 
+  poptype: TRUE 
+  ## Sample info for ras 
+  ras_mode: TRUE 
+  ras_universe: TRUE 
+  ras_sampling: TRUE 
+  ras_availablereg: TRUE 
+  ras_lessthan5000: TRUE 
+  ras_spread: TRUE 
+  ras_traceable: TRUE 
+  ras_strata: TRUE 
+  ras_budget: TRUE 
+  ras_gather: TRUE 
+  ras_expert: TRUE 
+  ras_samplesize: TRUE 
+  ras_ci: TRUE 
+  ras_moe: TRUE 
+  ras_p: TRUE 
+  ras_power: TRUE 
+  ras_over: TRUE 
+  ## Sample info for sta: TRUE 
+  sta_mode: TRUE 
+  sta_universe: TRUE 
+  sta_sampling: TRUE 
+  sta_availablereg: TRUE 
+  sta_lessthan5000: TRUE 
+  sta_spread: TRUE 
+  sta_traceable: TRUE 
+  sta_strata: TRUE 
+  sta_budget: TRUE 
+  sta_gather: TRUE 
+  sta_expert: TRUE 
+  sta_samplesize: TRUE 
+  sta_ci: TRUE 
+  sta_moe: TRUE 
+  sta_p: TRUE 
+  sta_power: TRUE 
+  sta_over: TRUE 
+   ## Sample info for ret 
+  ret_mode: TRUE 
+  ret_universe: TRUE 
+  ret_sampling: TRUE 
+  ret_availablereg: TRUE 
+  ret_lessthan5000: TRUE 
+  ret_spread: TRUE 
+  ret_traceable: TRUE 
+  ret_strata: TRUE 
+  ret_budget: TRUE 
+  ret_gather: TRUE 
+  ret_expert: TRUE 
+  ret_samplesize: TRUE 
+  ret_ci: TRUE 
+  ret_moe: TRUE 
+  ret_p: TRUE 
+  ret_power: TRUE 
+  ret_over: TRUE 
+  ## Sample info for idp 
+  idp_mode: TRUE 
+  idp_universe: TRUE 
+  idp_sampling: TRUE 
+  idp_availablereg: TRUE 
+  idp_lessthan5000: TRUE 
+  idp_spread: TRUE 
+  idp_traceable: TRUE 
+  idp_strata: TRUE 
+  idp_budget: TRUE 
+  idp_gather: TRUE 
+  idp_expert: TRUE 
+  idp_samplesize: TRUE 
+  idp_ci: TRUE 
+  idp_moe: TRUE 
+  idp_p: TRUE 
+  idp_power: TRUE 
+  idp_over: TRUE 
+  ## Sample info for ooc: TRUE 
+  ooc_mode: TRUE 
+  ooc_universe: TRUE 
+  ooc_sampling: TRUE 
+  ooc_availablereg: TRUE 
+  ooc_lessthan5000: TRUE 
+  ooc_spread: TRUE 
+  ooc_traceable: TRUE 
+  ooc_strata: TRUE 
+  ooc_budget: TRUE 
+  ooc_gather: TRUE 
+  ooc_expert: TRUE 
+  ooc_samplesize: TRUE 
+  ooc_ci: TRUE 
+  ooc_moe: TRUE 
+  ooc_p: TRUE 
+  ooc_power: TRUE 
+  ooc_over: TRUE 
+title: "UNHCR Results Monitoring Surveys (RMS) for `r countrycode::countrycode(params$country,origin = 'unhcr', destination = 'country.name')` "  
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, fig.cap = TRUE, fig.width = 6.27)
+
+# 
+
+knitr::opts_chunk$set(echo = FALSE, fig.cap = TRUE, fig.width = 6.27)
 library(officedown)
 library(officer)
-```
-
-# Title 1
-
-Delest, nonserspis est, **aditae de versped iscipsandunt** fuga. On plia arum quo beation sequatio eosaecestrum earumquatem rempor rest, optas non rem est, estrupt aecus, quaepro blanimusdam, que nis es arum eiusandandae quo vollore eos am quiatet ma cuscimus dit aspernatque volesed exerum eossimus, conseri utem fugitatur aceaquos.
-
-Caecum fugiam re ligendae nos as es ut min cusa ex et pa dolupta as abore ea verum rem anda dunt ium id moluptat eum rerore volore comnim volesti umquae moloria ndendam fugit estiatiatur? Natusam, si inihil ma solorerferum rem dolor a desequos est venem. Accuptatecae nimus que pelita doloribus ende deliqua ecerum sint, solorume.
-
-## Custom styles
-
-Some custom styles can be applied using fenced div or direct inline styling: [This text will be blue]{custom-style="Blue"}.
-
-Example of a **quote**:
-
-::: {custom-style="Quote"}
-
-"It is further proof that refugee movements and the broader issue of migration of populations ... is a global challenge that cannot be confined to a few countries."
-
-:::
-
-**Filippo Grandi**
-
-Footnotes are also included and will be added automatically to the bottom of the page like the following ones. This is a footnote^[Text of the footnote], it can include anything and can also be stylize UNHCR^[The **United Nations** High Commissioner for Refugees <https://www.unhcr.org/>]
-
-Example of **list**:
-
-Lists also are automatic but they will need extra manual tweaking if you want to apply a more adapted paragraph style with less spacing. This apply for both ordered and unordered lists.
-
-* item 1
-* item 2
-* item 3
-
-## Tables
-
-Tables will come with a default style. More advanced layout can be achieved using the [flextable](https://ardata-fr.github.io/flextable-book/index.html) package. Like the lists there is a built-in paragraph style if you want to improve the look and feel of your tables.
-
-```{r, echo=FALSE, message=FALSE, warning=FALSE, tab.cap="Example of an Iris table"}
-tail(iris, 8)
-```
-
-<br>
-
-Finally, be sure to remove this message! This is a good place to demonstrate special features that your template provides. Ideally it [should knit out-of-the-box](https://www.unhcr.org/), or at least contain clear instructions as to what needs changing.
-
-\newpage
-
-# Plots
-
-This is a good place to demonstrate special features that your template provides. Ideally it should knit out-of-the-box, or at least contain clear instructions as to what needs changing.
-
-```{r single-bar, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Plot caption"}
 library(ggplot2)
-library(unhcrthemes)
-ggplot(data = mtcars, aes(factor(cyl))) +
-  geom_bar(fill = unhcr_pal(n = 1, name = "pal_unhcr")) +
-  scale_y_continuous(expand = expansion(mult = c(0, 0.1))) +
-  labs(x = "Number of Cylinders",
-       y = "Count", title = "Bar chart example",
-       subtitle = "Simple plot to showcase theme_unhcr default style",
-       caption = "Data from mtcars") +
-  theme_unhcr(grid = "Y")
+library(tidyverse)
+
+## Get all parameters within a frame for easy rendering
+conf <- data.frame( 
+  pop = c("RAS","STA","RET","IDP","OOC"),
+  poptype = c("Pillar-1- Refugee, Asylum Seeker & Other in Need of International Protection" ,
+		          "Pillar-2- Stateless",
+		          "Pillar-3- Returnees",
+		          "Pillar-4- Internally Displaced Persons",
+		          "Other People with and for whom UNHCR works" ),
+  mode = c( params$ras_mode, params$sta_mode, params$ret_mode, params$idp_mode, params$ooc_mode),
+  universe = c( params$ras_universe, params$sta_universe, params$ret_universe, params$idp_universe, params$ooc_universe),
+  sampling = c( params$ras_sampling, params$sta_sampling, params$ret_sampling, params$idp_sampling, params$ooc_sampling),
+  availablereg = c( params$ras_availablereg, params$sta_availablereg, params$ret_availablereg, params$idp_availablereg, params$ooc_availablereg),
+  lessthan5000 = c( params$ras_lessthan5000, params$sta_lessthan5000, params$ret_lessthan5000, params$idp_lessthan5000, params$ooc_lessthan5000),
+  spread = c( params$ras_spread, params$sta_spread, params$ret_spread, params$idp_spread, params$ooc_spread),
+  traceable = c( params$ras_traceable, params$sta_traceable, params$ret_traceable, params$idp_traceable, params$ooc_traceable),
+  strata = c( params$ras_strata, params$sta_strata, params$ret_strata, params$idp_strata, params$ooc_strata),
+  budget = c( params$ras_budget, params$sta_budget, params$ret_budget, params$idp_budget, params$ooc_budget),
+  gather = c( params$ras_gather, params$sta_gather, params$ret_gather, params$idp_gather, params$ooc_gather),
+  expert = c( params$ras_expert, params$sta_expert, params$ret_expert, params$idp_expert, params$ooc_expert),
+  samplesize = c( params$ras_samplesize, params$sta_samplesize, params$ret_samplesize, params$idp_samplesize, params$ooc_samplesize),
+  ci = c( params$ras_ci, params$sta_ci, params$ret_ci, params$idp_ci, params$ooc_ci),
+  moe = c( params$ras_moe, params$sta_moe, params$ret_moe, params$idp_moe, params$ooc_moe),
+  p = c( params$ras_p, params$sta_p, params$ret_p, params$idp_p, params$ooc_p),
+  power = c( params$ras_power, params$sta_power, params$ret_power, params$idp_power, params$ooc_power),
+  over = c( params$ras_over, params$sta_over, params$ret_over, params$idp_over, params$ooc_over)
+)
+
+
 ```
 
-# And now part 3 {-}
+# Introduction
 
-This file is what a user will see when they select your template. Make sure that you update the fields in the yaml header. In particular you will want to update the `output` field to whatever format your template requires.
+```{r}
+group <- as.data.frame( refugees::population |>
+	    dplyr::filter(year == 2022 &
+	                    coa ==  params$country ) |>
+	    dplyr::mutate(
+	      ras = rowSums(
+	        dplyr::across(c("refugees","asylum_seekers","oip")), na.rm=TRUE), #refugees + asylum_seekers + oip,
+	      ret = rowSums(
+	        dplyr::across(c("returned_refugees","returned_idps")), na.rm=TRUE) ) |> #returned_refugees + returned_idps)
+	    dplyr::summarise(RAS = sum(ras, na.rm = TRUE),
+	                     STA = sum(stateless, na.rm = TRUE),
+	                     RET = sum(ret, na.rm = TRUE),
+	                     IDP = sum(idps, na.rm = TRUE),
+	                     OOC = sum(ooc, na.rm = TRUE), .by = coa)  |>
+	    tidyr::pivot_longer(cols =  c(RAS, STA, RET, IDP, OOC )) |>
+	    dplyr::mutate(name2 = dplyr::recode( name,
+	                                         "RAS" = "Pillar-1- Refugee, Asylum Seeker & Other in Need of International Protection" ,
+	                                         "STA" = "Pillar-2- Stateless",
+	                                         "RET" = "Pillar-3- Returnees",
+	                                         "IDP" = "Pillar-4- Internally Displaced Persons",
+	                                         "OOC" = "Other People with and for whom UNHCR works"
+	    )  ) |>
+	    dplyr::mutate(name2 = factor(name2, levels = c(
+	      "Other People with and for whom UNHCR works",
+	      "Pillar-4- Internally Displaced Persons",
+	      "Pillar-3- Returnees" ,
+	      "Pillar-2- Stateless",
+	      "Pillar-1- Refugee, Asylum Seeker & Other in Need of International Protection")))  )
 
-## Second level {-}
+
+	  ## get a chart to summarise
+	    ggplot2::ggplot( data = group,
+	                     ggplot2::aes(value,  name2 )) +
+	    ggplot2::geom_col(fill = unhcrthemes::unhcr_pal(n = 1, "pal_blue"),
+	                      width = 0.8) +
+	    ## Position label differently in the bar in white - outside bar in black
+	    ggplot2::geom_text(
+	      data = subset(group, value < max(value) / 1.5),
+	      ggplot2::aes( x = value, y = name2,
+	        label =   scales::label_comma()(value)),
+	      hjust = -0.1 ,  vjust = 0.5,  colour = "black", size = 6	    ) +
+	    ggplot2::geom_text(
+	      data = subset(group, value >= max(value) / 1.5),
+	      ggplot2::aes( x = value, y = name2,
+	        label =   scales::label_comma()(value)),
+	      hjust = 1.1 , vjust = 0.5,  colour = "white"   ) +
+	    ggplot2::scale_y_discrete(labels = function(x) stringr::str_wrap(x, width = 30)) +
+	    ggplot2::scale_x_continuous(expand =
+	                                  ggplot2::expansion(mult = c(0, 0.1))) +
+	    ggplot2::labs(title = "Potential Sampling Universe for Result Monitoring Survey",
+	                  subtitle = paste0( countrycode::countrycode(
+	                    params$country,
+	                    origin = 'unhcr',
+	                    destination = 'country.name')
+	                    , " | 2022"),
+	                  caption = "Source: UNHCR Refugee Data Finder") +
+	    unhcrthemes::theme_unhcr(font_size = 11, rel_small = 6/9,
+	                             grid = FALSE,axis = FALSE,
+	                             axis_title = FALSE, axis_text = "y")
+```
 
 
-This is a good place to demonstrate special features that your template provides. Ideally it should knit out-of-the-box, or at least contain clear instructions as to what needs changing.
-
-Finally, be sure to remove this message!
 
 
-This file is what a user will see when they select your template. Make sure that you update the fields in the yaml header. In particular you will want to update the `output` field to whatever format your template requires.
-This is a good place to demonstrate special features that your template provides. Ideally it should knit out-of-the-box, or at least contain clear instructions as to what needs changing.This is a good place to demonstrate special features that your template provides. Ideally it should knit out-of-the-box, or at least contain clear instructions as to what needs changing.
-Finally, be sure to remove this message!
-This file is what a user will see when they select your template. Make sure that you update the fields in the yaml header. In particular you will want to update the `output` field to whatever format your template requires.
+```{r renderers}
+## Looping around the relevant population group
+render_poptype <- function(data, .poptype) {
+  cat(glue::glue("# {.poptype}"), sep = "\n")
+  data <- data |>  filter(poptype == .poptype)
+  purrr::walk(levels(fct_drop(data$section)), ~render_section(data, .))
+}
+## Looking around the 3 section  Modality + Approach + Size
+render_section <- function(data, .section) {
+  cat(glue::glue("### {.section}"), sep = "\n")
+  data <- data |>  filter(section == .section)
+  cat(data$narrative, sep = "\n")
+  cat("\n")
+}
+```
 
-This is a good place to demonstrate special features that your template provides. Ideally it should knit out-of-the-box, or at least contain clear instructions as to what needs changing.
+```{r pipeline, results='asis'}
+#purrr::walk(levels(fct_drop(data$poptype)), ~render_poptype(data, .))
+```
 
-This file is what a user will see when they select your template. Make sure that you update the fields in the yaml header. In particular you will want to update the `output` field to whatever format your template requires.
 
-This is a good place to demonstrate special features that your template provides. Ideally it should knit out-of-the-box, or at least contain clear instructions as to what needs changing.
+# Population Group
 
-This is a good place to demonstrate special features that your template provides. Ideally it should knit out-of-the-box, or at least contain clear instructions as to what needs changing.
+## Survey modality
+
+## Sampling approaches 
+ 
+## Expected sample size 
+
+ 
