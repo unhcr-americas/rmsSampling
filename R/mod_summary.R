@@ -42,12 +42,14 @@ driver of cost, and a larger population does not necessarily require a higher sa
 		      radioButtons(  inputId = ns("poptype3"),
 		                     label = " Set up for each of the group you need to sample ",
 		                     inline = TRUE ,
-		                     choices = c(
-		                                  "Pillar-1- Refugee, Asylum Seeker & Other in Need of International Protection" ="RAS",
-		                                  "Pillar-2- Stateless"="STA",
-		                                  "Pillar-3- Returnees"= "RET",
-		                                  "Pillar-4- Internally Displaced Persons"=  "IDP",
-		                                  "Other People with and for whom UNHCR works"= "OOC" )
+		                     choices = c("Please - first select the population group to sample in the previous page - Configure Country"="NA"
+		                                  #
+		                                  # "Pillar-1- Refugee, Asylum Seeker & Other in Need of International Protection" ="RAS",
+		                                  # "Pillar-2- Stateless"="STA",
+		                                  # "Pillar-3- Returnees"= "RET",
+		                                  # "Pillar-4- Internally Displaced Persons"=  "IDP",
+		                                  # "Other People with and for whom UNHCR works"= "OOC"
+		                                  )
 		      ),
 		      p("The parameters below are the default ones.",  style = "font-size: 13px"),
 		      hr(),

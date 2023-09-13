@@ -113,8 +113,8 @@ population without interviewing everyone."),
       		          selectInput(
       		            inputId = ns("ras_mode"),
       		            label = "Refugee and Asylum Seekes",
-      		            choices =  c(  "Face to Face inteview - CAPI " = "CAPI",
-      		                           "Telephone Interview - CATI " = "CATI",
+      		            choices =  c(  "Telephone Interview - CATI " = "CATI",
+      		                           "Face to Face inteview - CAPI " = "CAPI",
       		                           "Mixed of CAPI & CATI " = "mixed" )
       		          )
       		        ),
@@ -123,8 +123,8 @@ population without interviewing everyone."),
       		          selectInput(
       		            inputId = ns("sta_mode"),
       		            label = "Stateless",
-      		            choices =  c(  "Face to Face inteview - CAPI " = "CAPI",
-      		                           "Telephone Interview - CATI " = "CATI",
+      		            choices =  c(  "Telephone Interview - CATI " = "CATI",
+      		                           "Face to Face inteview - CAPI " = "CAPI",
       		                           "Mixed of CAPI & CATI " = "mixed" )
       		          )
       		        ),
@@ -133,8 +133,8 @@ population without interviewing everyone."),
       		          selectInput(
       		            inputId = ns("ret_mode"),
       		            label = "Returnees",
-      		            choices =  c(  "Face to Face inteview - CAPI " = "CAPI",
-      		                           "Telephone Interview - CATI " = "CATI",
+      		            choices =  c( "Telephone Interview - CATI " = "CATI",
+      		                          "Face to Face inteview - CAPI " = "CAPI",
       		                           "Mixed of CAPI & CATI " = "mixed" )
       		          )
       		        ),
@@ -143,8 +143,8 @@ population without interviewing everyone."),
       		          selectInput(
       		            inputId = ns("idp_mode"),
       		            label = "Internally Displaced Persons",
-      		            choices =  c(  "Face to Face inteview - CAPI " = "CAPI",
-      		                           "Telephone Interview - CATI " = "CATI",
+      		            choices =  c(   "Telephone Interview - CATI " = "CATI",
+      		                            "Face to Face inteview - CAPI " = "CAPI",
       		                           "Mixed of CAPI & CATI " = "mixed"  )
       		          )
       		        ),
@@ -154,8 +154,8 @@ population without interviewing everyone."),
       		          #radioButtons(
       		            inputId = ns("ooc_mode"),
       		            label = "Other People with and for whom UNHCR works",
-      		            choices =  c(  "Face to Face inteview - CAPI " = "CAPI",
-      		                           "Telephone Interview - CATI " = "CATI",
+      		            choices =  c(  "Telephone Interview - CATI " = "CATI",
+      		                           "Face to Face inteview - CAPI " = "CAPI",
       		                           "Mixed of CAPI & CATI " = "mixed" )
       		          )
       		        )
@@ -247,7 +247,7 @@ mod_configure_server <- function(input, output, session, AppReactiveValue) {
 
 
 	  AppReactiveValue$group2 <- AppReactiveValue$group   |>
-	    dplyr::filter(value > 0)
+	    dplyr::filter(value > 50)
 
 	  AppReactiveValue$groupName <- AppReactiveValue$group2  |>
 	    dplyr::pull(name) |>
@@ -276,6 +276,11 @@ mod_configure_server <- function(input, output, session, AppReactiveValue) {
 	     AppReactiveValue$ras_universe <- AppReactiveValue$group |>
 	         dplyr::filter( name == "RAS") |>
 	         dplyr::pull(value)
+
+	     if(AppReactiveValue$ras_universe < 5000) {
+	       AppReactiveValue$ras_islessthan5000 <- TRUE
+	       }
+
 	     AppReactiveValue$targetm_ras1 <- TRUE
 	  }
 
@@ -289,6 +294,11 @@ mod_configure_server <- function(input, output, session, AppReactiveValue) {
 	    AppReactiveValue$sta_universe <- AppReactiveValue$group |>
 	      dplyr::filter( name == "STA") |>
 	      dplyr::pull(value)
+
+	    if(AppReactiveValue$sta_universe < 5000) {
+	      AppReactiveValue$sta_islessthan5000 <- TRUE
+	    }
+
 	    AppReactiveValue$targetm_sta1 <- TRUE
 	  }
 
@@ -301,6 +311,11 @@ mod_configure_server <- function(input, output, session, AppReactiveValue) {
 	    AppReactiveValue$ret_universe <- AppReactiveValue$group |>
 	      dplyr::filter( name == "RET") |>
 	      dplyr::pull(value)
+
+	    if(AppReactiveValue$ret_universe < 5000) {
+	      AppReactiveValue$ret_islessthan5000 <- TRUE
+	    }
+
 	    AppReactiveValue$targetm_ret1 <- TRUE
 	  }
 
@@ -313,6 +328,11 @@ mod_configure_server <- function(input, output, session, AppReactiveValue) {
 	    AppReactiveValue$idp_universe <- AppReactiveValue$group |>
 	      dplyr::filter( name == "IDP") |>
 	      dplyr::pull(value)
+
+	    if(AppReactiveValue$idp_universe < 5000) {
+	      AppReactiveValue$idp_islessthan5000 <- TRUE
+	    }
+
 	    AppReactiveValue$targetm_idp1 <- TRUE
 	  }
 
@@ -325,6 +345,11 @@ mod_configure_server <- function(input, output, session, AppReactiveValue) {
 	    AppReactiveValue$ooc_universe <- AppReactiveValue$group |>
 	      dplyr::filter( name == "OOC") |>
 	      dplyr::pull(value)
+
+	    if(AppReactiveValue$ooc_universe < 5000) {
+	      AppReactiveValue$ooc_islessthan5000 <- TRUE
+	    }
+
 	    AppReactiveValue$targetm_ooc1 <- TRUE
 	  }
 

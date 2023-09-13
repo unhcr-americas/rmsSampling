@@ -51,12 +51,13 @@ RMS quality assurance as well as being a tool to decide on most appropriate meth
 		                                inline = TRUE ,
 		                                #character(0)
 		                                choices =
-		                     c(
-		                                  "Pillar-1- Refugee, Asylum Seeker & Other in Need of International Protection" ="RAS",
-		                                  "Pillar-2- Stateless"="STA",
-		                                  "Pillar-3- Returnees"= "RET",
-		                                  "Pillar-4- Internally Displaced Persons"=  "IDP",
-		                                  "Other People with and for whom UNHCR works"= "OOC" )
+		                     c("Please - first select the population group to sample in the previous page - Configure Country"="NA"
+		                                  # "Pillar-1- Refugee, Asylum Seeker & Other in Need of International Protection" ="RAS",
+		                                  # "Pillar-2- Stateless"="STA",
+		                                  # "Pillar-3- Returnees"= "RET",
+		                                  # "Pillar-4- Internally Displaced Persons"=  "IDP",
+		                                  # "Other People with and for whom UNHCR works"= "OOC"
+		                                  )
 		    ),
 		    hr(),
 	    	tabsetPanel(

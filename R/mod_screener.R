@@ -52,7 +52,7 @@ mod_screener_ui <- function(id, thisgroup) {
                     checkboxInput(
                       inputId = ns("budget"),
                       label = "There is specific budget and time available to conduct a
-                  listing exercise in addition of survey data collection.
+                  listing exercise IN ADDITION of actual survey data collection.
                   A household listing exercise can be used to construct a sampling frame but is time
         		consuming and expensive. A listing exercise requires either listing agents that count
         		every household within the specified boundary and create a list of all eligible
@@ -79,9 +79,9 @@ mod_screener_ui <- function(id, thisgroup) {
         		  Traceable refers to population groups whose homes can be located or who can be
         		reached via telephone",
                       choices =  c(
-                        "Unknown" = "unknown"   ,
-                        "Known (in camps or with regular registration verification)" = "known",
-                        "Only Partially known (less than 80% of Population Group)" = "partknown")
+                        "Unknown" = "unknown" ,
+                        "Only Partially known (less than 80% of Population Group)" = "partknown"  ,
+                        "Known (in camps or with regular registration verification)" = "known")
                     )
                   ),
                   div(
@@ -90,8 +90,7 @@ mod_screener_ui <- function(id, thisgroup) {
                       inputId = ns("spread"),
                       label = "What is Geographic distribution (i.e. concentration) of that population group in the country?",
                       choices =  c(
-
-                        "Scattered - spread out within the country" = "scattered",
+                        "Scattered - all spread out within the country" = "scattered",
 
                         "Found only within a small area (for instance only a few
                         villages, cities, or camps easily accessible by
@@ -102,9 +101,8 @@ mod_screener_ui <- function(id, thisgroup) {
         		neighbourhoods, settlements, camps or other geographic areas for which specific
         		boundaries can be clearly identified by a field team" = "concentrated",
 
-
-                        "Both - some area of known concentration together with
-                        more scaterred situation" = "both"
+                        "Both - some areas of known concentration together with
+                        more scaterred situations" = "both"
                       )
                     )
                   ))
@@ -225,13 +223,12 @@ mod_screener_server <- function(input, output, session, AppReactiveValue, thisgr
   nonprob <-
 "Non-probabilistic methods
 
-Those do not use random selection to choose survey participants and therefore suffer
+Those methods do not use random selection to choose survey participants and therefore suffer
 from sampling biases.
-Indicator estimates derived from such methods will not be statistically representative
+Indicator estimates derived from such methods will NOT be statistically representative
 of the concerned population and should be seen as a last resort to generate indicator data.
 
 These may include conducting surveys using
-
 
   (a) Convenience sampling requires little or no planning and involves selecting respondents
   who are readily available. An example of convenience sampling would include interviewing
@@ -320,27 +317,26 @@ survey to identify seeds and prepare RDS coupons"
 
 
   reactLocal <- reactiveValues(
-    availablereg = NULL  ,
-    lessthan5000 = NULL  ,
+    availablereg = FALSE  ,
+    budget = FALSE  ,
+    lessthan5000 = FALSE  ,
     traceable = NULL  ,
     spread = NULL  ,
     strata = NULL  ,
-    budget = NULL  ,
     gather = NULL  ,
     network = NULL  ,
     expert = NULL  ,
     sampling = "We are not yet able to define the adequate sampling approach"  ,
     ## conditional display
     show_lessthan5000 = FALSE  ,
-    show_budget = TRUE  ,
-    show_traceable= TRUE  ,
-    show_spread= TRUE  ,
-    show_strata = FALSE  ,
+    show_budget = TRUE  ,  ## always on
+    show_traceable= TRUE  , ## always on
+    show_spread = TRUE  , ## always on
+    show_strata = FALSE  , # Dilay only if Reg or Budget is TRUE
     show_gather = FALSE  ,
     show_network = FALSE  ,
     show_expert = FALSE
   )
-
 
   # Skip logic ####
 
@@ -348,34 +344,34 @@ survey to identify seeds and prepare RDS coupons"
   observeEvent(eventExpr = input$availablereg, {
     reactLocal$availablereg <- input$availablereg
     if( reactLocal$availablereg == TRUE) {
-     # reactLocal$show_lessthan5000 <- TRUE
-      # reactLocal$show_traceable <- TRUE
-      # reactLocal$show_spread <- TRUE
        reactLocal$show_strata <- TRUE
     } else if( reactLocal$availablereg == FALSE) {
-      #reactLocal$show_traceable <- FALSE
-      #reactLocal$show_spread <- FALSE
-      reactLocal$show_strata <- FALSE
+      reactLocal$show_strata <- FALSE    }
 
-    }
-
+  })
+  ### budget ####
+  observeEvent(eventExpr = input$budget, {
+    reactLocal$budget <- input$budget
+    if( reactLocal$budget == TRUE) {
+      reactLocal$show_strata <- TRUE
+    } else if( reactLocal$availablereg == FALSE) {
+      reactLocal$show_strata <- FALSE    }
   })
 
   ### lessthan5000 ####
-  observeEvent(eventExpr = input$lessthan5000, {
-    reactLocal$lessthan5000 <- input$lessthan5000
-    # if( reactLocal$show_lessthan5000 == TRUE) {
-    #   reactLocal$show_traceable <- TRUE
-    #   reactLocal$show_spread <- TRUE
-    #   # reactLocal$show_strata <- TRUE
-    #   # reactLocal$show_budget <- TRUE
-    #   # reactLocal$show_gather <- TRUE
-    #   # reactLocal$show_network <- TRUE
-    #   # reactLocal$show_expert <- TRUE
-    # }
-  })
-
+  ## This tobe displayed only if the population is actually less
+  ## Reinject int the app reactive value
   observeEvent(reactLocal$show_lessthan5000, {
+  if( all(thisgroup == "RAS" & isTRUE(AppReactiveValue$ras_islessthan5000)))  {
+    reactLocal$show_lessthan5000 <- TRUE  }
+    if( all( thisgroup == "STA" & isTRUE(AppReactiveValue$sta_islessthan5000)))  {
+    reactLocal$show_lessthan5000 <- TRUE  }
+    if( all( thisgroup == "RET" & isTRUE(AppReactiveValue$ret_islessthan5000 )))  {
+    reactLocal$show_lessthan5000 <- TRUE  }
+    if( all( thisgroup == "IDP"& isTRUE(AppReactiveValue$idp_islessthan5000 )))  {
+    reactLocal$show_lessthan5000 <- TRUE  }
+    if( all(thisgroup == "OOC"& isTRUE(AppReactiveValue$ooc_islessthan5000 )))  {
+    reactLocal$show_lessthan5000 <- TRUE  }
     #browser()
     if(isTRUE(reactLocal$show_lessthan5000)) {
       golem::invoke_js("show", paste0("#", ns("target_lessthan5000")))
@@ -383,47 +379,39 @@ survey to identify seeds and prepare RDS coupons"
       golem::invoke_js("hide", paste0("#", ns("target_lessthan5000")))
     }
   })
+  observeEvent(eventExpr = input$lessthan5000, {
+    reactLocal$lessthan5000 <- input$lessthan5000
+  })
+
 
   ### traceable ####
   observeEvent(eventExpr = input$traceable, {
     reactLocal$traceable <- input$traceable
-    # if( reactLocal$availablereg == TRUE &
-    #     !(reactLocal$spread =="small") &
-    #     input$traceable == "unknown") {
-    #   # reactLocal$show_lessthan5000 <- TRUE
-    #   reactLocal$show_gather <- TRUE
-    # }
+
+    ## define path for quasi-probablity sampling -
+    if( all( reactLocal$availablereg == FALSE &
+             !(reactLocal$spread =="small") &
+             input$traceable %in% c("unknown","partknown" )) )  {
+      reactLocal$show_gather <- TRUE
+    } else {  reactLocal$show_gather <- FALSE}
+
   })
-  observeEvent(reactLocal$show_traceable, {
-    if(isTRUE(reactLocal$show_traceable)) {
-      golem::invoke_js("show", paste0("#", ns("target_traceable")))
-    } else {
-      golem::invoke_js("hide", paste0("#", ns("target_traceable")))
-    }
-  })
+
 
   ### spread ####
   observeEvent(eventExpr = input$spread, {
     reactLocal$spread <- input$spread
-    # if( reactLocal$availablereg == TRUE &
-    #     !(reactLocal$spread =="small")  &
-    #     input$traceable == "unknown") {
-    #   # reactLocal$show_lessthan5000 <- TRUE
-    #   reactLocal$show_gather <- TRUE
-    # }
-  })
-  observeEvent(reactLocal$show_spread, {
-    if(isTRUE(reactLocal$show_spread)) {
-      golem::invoke_js("show", paste0("#", ns("target_spread")))
-    } else {
-      golem::invoke_js("hide", paste0("#", ns("target_spread")))
-    }
+    ## define path for quasi-probablity sampling -
+    if( all( reactLocal$availablereg == FALSE &
+        !(reactLocal$spread =="small") &
+        input$traceable %in% c("unknown","partknown" )) )  {
+      reactLocal$show_gather <- TRUE
+    } else {  reactLocal$show_gather <- FALSE}
+
   })
 
   ### strata ####
-  observeEvent(eventExpr = input$strata, {
-    reactLocal$strata <- input$strata
-  })
+  ## Displayed only an initial Reg is available...
   observeEvent(reactLocal$show_strata, {
     if(isTRUE(reactLocal$show_strata)) {
       golem::invoke_js("show", paste0("#", ns("target_strata")))
@@ -431,20 +419,12 @@ survey to identify seeds and prepare RDS coupons"
       golem::invoke_js("hide", paste0("#", ns("target_strata")))
     }
   })
-
-  ### budget ####
-  observeEvent(eventExpr = input$budget, {
-    reactLocal$budget <- input$budget
-  })
-  observeEvent(reactLocal$show_budget, {
-    if(isTRUE(reactLocal$show_budget)) {
-      golem::invoke_js("show", paste0("#", ns("target_budget")))
-    } else {
-      golem::invoke_js("hide", paste0("#", ns("target_budget")))
-    }
+  observeEvent(eventExpr = input$strata, {
+    reactLocal$strata <- input$strata
   })
 
   ### gather ####
+  ## Beginning of quasi probability...
   observeEvent(eventExpr = input$gather, {
     reactLocal$gather <- input$gather
     if( reactLocal$gather == FALSE) {
@@ -462,6 +442,13 @@ survey to identify seeds and prepare RDS coupons"
   })
 
   ### network ####
+  observeEvent(reactLocal$show_network, {
+    if(isTRUE(reactLocal$show_network)) {
+      golem::invoke_js("show", paste0("#", ns("target_network")))
+    } else {
+      golem::invoke_js("hide", paste0("#", ns("target_network")))
+    }
+  })
   observeEvent(eventExpr = input$network, {
     reactLocal$network <- input$network
 
@@ -472,24 +459,17 @@ survey to identify seeds and prepare RDS coupons"
     }
 
   })
-  observeEvent(reactLocal$show_network, {
-    if(isTRUE(reactLocal$show_network)) {
-      golem::invoke_js("show", paste0("#", ns("target_network")))
-    } else {
-      golem::invoke_js("hide", paste0("#", ns("target_network")))
-    }
-  })
 
   ### expert ####
-  observeEvent(eventExpr = input$expert, {
-    reactLocal$expert <- input$expert
-  })
   observeEvent(reactLocal$show_expert, {
     if(isTRUE(reactLocal$show_expert)) {
       golem::invoke_js("show", paste0("#", ns("target_expert")))
     } else {
       golem::invoke_js("hide", paste0("#", ns("target_expert")))
     }
+  })
+  observeEvent(eventExpr = input$expert, {
+    reactLocal$expert <- input$expert
   })
 
   # Sampling Tree ##############
@@ -511,35 +491,53 @@ survey to identify seeds and prepare RDS coupons"
 
     reactLocal$sampling <- dplyr::case_when(
 
-      ### nonprob  ########
+      ##  1 - nonprob  ########
      (
        reactLocal$availablereg == FALSE &
-      # reactLocal$lessthan5000  &
-        reactLocal$traceable %in% c("unknown" )
-       # reactLocal$spread
+        reactLocal$traceable %in% c("unknown","partknown" )  #  "unknown" , "partknown"  ,  "known"
+       # reactLocal$spread   #  "scattered",  "small",  "concentrated",  "both"
        # reactLocal$strata
        # reactLocal$budget
        # reactLocal$gather
        # reactLocal$expert
                                              )  ~ nonprob,
+     ## 2 - Quasiprob  ########
+     ### lts  ########
+     reactLocal$availablereg == FALSE &
+       !(reactLocal$spread == "small") &
+       reactLocal$traceable %in% c("unknown","partknown" ) &
+       reactLocal$gather == TRUE ~ lts,
+
+     ### rds  ########
+     reactLocal$availablereg == FALSE &
+       !(reactLocal$spread == "small") &
+       reactLocal$traceable %in% c("unknown","partknown" ) &
+       reactLocal$gather == FALSE &
+       reactLocal$expert == TRUE ~ rds,
+
+     ## 3- Prob  ########
+
       ### srs ########
       (reactLocal$availablereg == TRUE &
-         reactLocal$spread %in% c("concentrated") ) ~ srs,
+         reactLocal$traceable %in% c("known" ) &
+         reactLocal$spread %in% c("concentrated")   ) ~ srs,
+
       ### ppswalk ########
       (reactLocal$budget == TRUE &
          reactLocal$spread %in% c("concentrated")) == TRUE ~ ppswalk,
       ### ppsframe ########
       reactLocal$traceable %in% c("partknown", "known") ~ ppsframe,
+
       ### srsstrata ########
       reactLocal$strata == TRUE ~ srsstrata,
+
       ### acs ########
      ( reactLocal$budget == TRUE &
          reactLocal$spread %in% c("scattered")) ~ acs,
-      ### lts  ########
-      reactLocal$gather == TRUE ~ lts,
-     ### rds  ########
-      reactLocal$expert == TRUE ~ rds,
-      TRUE ~ "We are not yet able to define the adequate sampling approach")
+
+
+     ## caramba...
+      TRUE ~ "Ay caramba!... We are not yet able to define the adequate sampling approach")
    # browser()
 
 

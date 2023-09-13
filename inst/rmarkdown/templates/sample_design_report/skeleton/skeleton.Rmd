@@ -4,8 +4,7 @@ date: "`r format(Sys.Date(),  '%d %B %Y')`"
 output:
   unhcrdown::docx_simple
 params:
-  country: "PAN" 
-  poptype: TRUE 
+  country: "PAN"
   ## Sample info for ras 
   ras_mode: TRUE 
   ras_universe: TRUE 
@@ -110,31 +109,31 @@ library(ggplot2)
 library(tidyverse)
 
 ## Get all parameters within a frame for easy rendering
-conf <- data.frame( 
-  pop = c("RAS","STA","RET","IDP","OOC"),
-  poptype = c("Pillar-1- Refugee, Asylum Seeker & Other in Need of International Protection" ,
-		          "Pillar-2- Stateless",
-		          "Pillar-3- Returnees",
-		          "Pillar-4- Internally Displaced Persons",
-		          "Other People with and for whom UNHCR works" ),
-  mode = c( params$ras_mode, params$sta_mode, params$ret_mode, params$idp_mode, params$ooc_mode),
-  universe = c( params$ras_universe, params$sta_universe, params$ret_universe, params$idp_universe, params$ooc_universe),
-  sampling = c( params$ras_sampling, params$sta_sampling, params$ret_sampling, params$idp_sampling, params$ooc_sampling),
-  availablereg = c( params$ras_availablereg, params$sta_availablereg, params$ret_availablereg, params$idp_availablereg, params$ooc_availablereg),
-  lessthan5000 = c( params$ras_lessthan5000, params$sta_lessthan5000, params$ret_lessthan5000, params$idp_lessthan5000, params$ooc_lessthan5000),
-  spread = c( params$ras_spread, params$sta_spread, params$ret_spread, params$idp_spread, params$ooc_spread),
-  traceable = c( params$ras_traceable, params$sta_traceable, params$ret_traceable, params$idp_traceable, params$ooc_traceable),
-  strata = c( params$ras_strata, params$sta_strata, params$ret_strata, params$idp_strata, params$ooc_strata),
-  budget = c( params$ras_budget, params$sta_budget, params$ret_budget, params$idp_budget, params$ooc_budget),
-  gather = c( params$ras_gather, params$sta_gather, params$ret_gather, params$idp_gather, params$ooc_gather),
-  expert = c( params$ras_expert, params$sta_expert, params$ret_expert, params$idp_expert, params$ooc_expert),
-  samplesize = c( params$ras_samplesize, params$sta_samplesize, params$ret_samplesize, params$idp_samplesize, params$ooc_samplesize),
-  ci = c( params$ras_ci, params$sta_ci, params$ret_ci, params$idp_ci, params$ooc_ci),
-  moe = c( params$ras_moe, params$sta_moe, params$ret_moe, params$idp_moe, params$ooc_moe),
-  p = c( params$ras_p, params$sta_p, params$ret_p, params$idp_p, params$ooc_p),
-  power = c( params$ras_power, params$sta_power, params$ret_power, params$idp_power, params$ooc_power),
-  over = c( params$ras_over, params$sta_over, params$ret_over, params$idp_over, params$ooc_over)
-)
+# conf <- data.frame( 
+#   pop = c("RAS","STA","RET","IDP","OOC"),
+#   poptype = c("Pillar-1- Refugee, Asylum Seeker & Other in Need of International Protection" ,
+# 		          "Pillar-2- Stateless",
+# 		          "Pillar-3- Returnees",
+# 		          "Pillar-4- Internally Displaced Persons",
+# 		          "Other People with and for whom UNHCR works" ),
+#   mode = c( params$ras_mode, params$sta_mode, params$ret_mode, params$idp_mode, params$ooc_mode),
+#   universe = c( params$ras_universe, params$sta_universe, params$ret_universe, params$idp_universe, params$ooc_universe),
+#   sampling = c( params$ras_sampling, params$sta_sampling, params$ret_sampling, params$idp_sampling, params$ooc_sampling),
+#   availablereg = c( params$ras_availablereg, params$sta_availablereg, params$ret_availablereg, params$idp_availablereg, params$ooc_availablereg),
+#   lessthan5000 = c( params$ras_lessthan5000, params$sta_lessthan5000, params$ret_lessthan5000, params$idp_lessthan5000, params$ooc_lessthan5000),
+#   spread = c( params$ras_spread, params$sta_spread, params$ret_spread, params$idp_spread, params$ooc_spread),
+#   traceable = c( params$ras_traceable, params$sta_traceable, params$ret_traceable, params$idp_traceable, params$ooc_traceable),
+#   strata = c( params$ras_strata, params$sta_strata, params$ret_strata, params$idp_strata, params$ooc_strata),
+#   budget = c( params$ras_budget, params$sta_budget, params$ret_budget, params$idp_budget, params$ooc_budget),
+#   gather = c( params$ras_gather, params$sta_gather, params$ret_gather, params$idp_gather, params$ooc_gather),
+#   expert = c( params$ras_expert, params$sta_expert, params$ret_expert, params$idp_expert, params$ooc_expert),
+#   samplesize = c( params$ras_samplesize, params$sta_samplesize, params$ret_samplesize, params$idp_samplesize, params$ooc_samplesize),
+#   ci = c( params$ras_ci, params$sta_ci, params$ret_ci, params$idp_ci, params$ooc_ci),
+#   moe = c( params$ras_moe, params$sta_moe, params$ret_moe, params$idp_moe, params$ooc_moe),
+#   p = c( params$ras_p, params$sta_p, params$ret_p, params$idp_p, params$ooc_p),
+#   power = c( params$ras_power, params$sta_power, params$ret_power, params$idp_power, params$ooc_power),
+#   over = c( params$ras_over, params$sta_over, params$ret_over, params$idp_over, params$ooc_over)
+# )
 
 
 ```
@@ -202,8 +201,9 @@ group <- as.data.frame( refugees::population |>
 	                             axis_title = FALSE, axis_text = "y")
 ```
 
+This report only covers Population group(s) that were identified as relevant for a Result Monitoring Survey following the review of the Means of Verification (MoV) table. 
 
-
+`r  params$poptype`
 
 ```{r renderers}
 ## Looping around the relevant population group
@@ -227,6 +227,41 @@ render_section <- function(data, .section) {
 
 
 # Population Group
+
+Test...
+mode: `r  params$ras_mode`
+
+universe:`r  params$ras_universe`
+
+sampling:`r  params$ras_sampling`
+
+avaialblereg: `r  params$ras_availablereg`
+
+lessthan500: `r  params$ras_lessthan5000`
+
+spread: `r  params$ras_spread`
+
+traceable: `r  params$ras_traceable`
+
+strata: `r  params$ras_strata`
+
+budget: `r  params$ras_budget`
+
+gather: `r  params$ras_gather`
+
+expert: `r  params$ras_expert`
+
+samplesize `r  params$ras_samplesize`
+
+Confidence Interval `r  params$ras_ci`
+
+moe: `r  params$ras_moe`
+
+prb: `r  params$ras_p`
+
+power: `r  params$ras_power`
+
+over: `r  params$ras_over` 
 
 ## Survey modality
 

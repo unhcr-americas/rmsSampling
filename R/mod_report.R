@@ -66,10 +66,11 @@ mod_report_ui <- function(id) {
 mod_report_server <- function(input, output, session, AppReactiveValue) {
 	ns <- session$ns
 
-
 	output$showreport <- downloadHandler(
 	  # For PDF output, change this to "report.pdf"
-	  filename = "sample_design_report.docx",
+	 # filename = "sample_design_report.docx",
+	  filename =  function() {paste0("RMS_Methodological_Approach_",AppReactiveValue$country,"_",
+	                                 format(Sys.Date(), '%Y'),".docx")},
 	  content = function(file) {
 	    # Copy the report file to a temporary directory before processing it, in
 	    # case we don't have write permissions to the current working dir (which
@@ -79,19 +80,13 @@ mod_report_server <- function(input, output, session, AppReactiveValue) {
 	                          package = "rmsSampling"),
 	              tempReport, overwrite = TRUE)
 
+	    #browser()
 	    # Set up parameters to pass to Rmd document
 	    params = list(
 	      country = AppReactiveValue$country,
-	      poptype = AppReactiveValue$country,
-
-	      # Data collection mode
-
-	      ras_mode = AppReactiveValue$ras_mode,
-	      sta_mode = AppReactiveValue$sta_mode,
-	      ret_mode = AppReactiveValue$ret_mode,
-	      idp_mode = AppReactiveValue$idp_mode,
-	      ooc_mode = AppReactiveValue$ooc_mode,
+	     # poptype = AppReactiveValue$country,
 	      ## Sample info for ras
+	      ras_mode = AppReactiveValue$ras_mode,
 	      ras_universe = AppReactiveValue$ras_universe,
 	      ras_sampling = AppReactiveValue$ras_sampling,
 	      ras_availablereg  = AppReactiveValue$ras_availablereg,
@@ -110,6 +105,7 @@ mod_report_server <- function(input, output, session, AppReactiveValue) {
 	      ras_over   = AppReactiveValue$ras_over,
 
 	      ## Sample info for sta
+	      sta_mode = AppReactiveValue$sta_mode,
 	      sta_universe = AppReactiveValue$sta_universe,
 	      sta_sampling = AppReactiveValue$sta_sampling,
 	      sta_availablereg  = AppReactiveValue$sta_availablereg,
@@ -128,6 +124,7 @@ mod_report_server <- function(input, output, session, AppReactiveValue) {
 	      sta_over   = AppReactiveValue$sta_over,
 
 	      ## Sample info for ret
+	      ret_mode = AppReactiveValue$ret_mode,
 	      ret_universe = AppReactiveValue$ret_universe,
 	      ret_sampling = AppReactiveValue$ret_sampling,
 	      ret_availablereg  = AppReactiveValue$ret_availablereg,
@@ -146,6 +143,7 @@ mod_report_server <- function(input, output, session, AppReactiveValue) {
 	      ret_over   = AppReactiveValue$ret_over,
 
 	      ## Sample info for idp
+	      idp_mode = AppReactiveValue$idp_mode,
 	      idp_universe = AppReactiveValue$idp_universe,
 	      idp_sampling = AppReactiveValue$idp_sampling,
 	      idp_availablereg  = AppReactiveValue$idp_availablereg,
@@ -164,6 +162,7 @@ mod_report_server <- function(input, output, session, AppReactiveValue) {
 	      idp_over   = AppReactiveValue$idp_over,
 
 	      ## Sample info for ooc
+	      ooc_mode = AppReactiveValue$ooc_mode,
 	      ooc_universe = AppReactiveValue$ooc_universe,
 	      ooc_sampling = AppReactiveValue$ooc_sampling,
 	      ooc_availablereg  = AppReactiveValue$ooc_availablereg,
@@ -181,15 +180,12 @@ mod_report_server <- function(input, output, session, AppReactiveValue) {
 	      ooc_power   = AppReactiveValue$ooc_power,
 	      ooc_over   = AppReactiveValue$ooc_over
 	       )
-
-
 	    id <- showNotification(
 	      "Rendering report...",
 	      duration = NULL,
 	      closeButton = FALSE
 	    )
 	    on.exit(removeNotification(id), add = TRUE)
-
 	    # Knit the document, passing in the `params` list, and eval it in a
 	    # child of the global environment (this isolates the code in the document
 	    # from the code in this app).
