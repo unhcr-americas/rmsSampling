@@ -247,7 +247,7 @@ mod_configure_server <- function(input, output, session, AppReactiveValue) {
 
 
 	  AppReactiveValue$group2 <- AppReactiveValue$group   |>
-	    dplyr::filter(value > 50)
+	    dplyr::filter(value > 0)
 
 	  AppReactiveValue$groupName <- AppReactiveValue$group2  |>
 	    dplyr::pull(name) |>
@@ -374,7 +374,7 @@ mod_configure_server <- function(input, output, session, AppReactiveValue) {
 	  )
 
 	 AppReactiveValue$poptypefilt <- data.frame( pop = AppReactiveValue$poptype) |>
-	    dplyr::left_join(lab )
+	    dplyr::left_join(lab, by = c("pop") )
 
 	  #browser()
 

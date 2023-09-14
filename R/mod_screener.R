@@ -27,15 +27,6 @@ mod_screener_ui <- function(id, thisgroup) {
                   #background = "light-blue",
                   width = 12,
                   fluidRow(
-                    checkboxInput(
-                      inputId = ns("availablereg"),
-                      label = "I confirm that there is an up to date and complete registration list of the population group available.
-          		    -Up to date- refers to a database which reflects the current population in the
-          		  country. If the size or demographic composition of the population group has
-          		  changed more than 10% since the last registration, it cannot be considered up to
-          		  date.  -Complete- refers to a database which contains registration information for 80% or
-          		  more of the total population group."),
-
                 ## using div so that we can use invoke_js to display conditionally
                     div(
                       id = ns("target_lessthan5000"),
@@ -46,6 +37,17 @@ mod_screener_ui <- function(id, thisgroup) {
               		  the resource, boh in terms of budget and time  to proceed with a
                     probabilistic approach for this population group")
                     ),
+
+
+                    checkboxInput(
+                      inputId = ns("availablereg"),
+                      label = "I confirm that there is an up to date and complete registration list of the population group available.
+          		    -Up to date- refers to a database which reflects the current population in the
+          		  country. If the size or demographic composition of the population group has
+          		  changed more than 10% since the last registration, it cannot be considered up to
+          		  date.  -Complete- refers to a database which contains registration information for 80% or
+          		  more of the total population group."),
+
                 ## Chec budget
                   div(
                     id = ns("target_budget"),
@@ -320,12 +322,12 @@ survey to identify seeds and prepare RDS coupons"
     availablereg = FALSE  ,
     budget = FALSE  ,
     lessthan5000 = FALSE  ,
-    traceable = NULL  ,
-    spread = NULL  ,
-    strata = NULL  ,
-    gather = NULL  ,
-    network = NULL  ,
-    expert = NULL  ,
+    traceable = "unknown"  ,
+    spread = "scattered"  ,
+    strata = FALSE  ,
+    gather = FALSE  ,
+    network = FALSE  ,
+    expert = FALSE  ,
     sampling = "We are not yet able to define the adequate sampling approach"  ,
     ## conditional display
     show_lessthan5000 = FALSE  ,
@@ -350,6 +352,15 @@ survey to identify seeds and prepare RDS coupons"
 
   })
   ### budget ####
+  ## No need to show budget if the population is reg and trceable is know
+  observeEvent(reactLocal$show_budget, {
+    if(isTRUE(reactLocal$show_budget)) {
+      golem::invoke_js("show", paste0("#", ns("target_budget")))
+    } else {
+      golem::invoke_js("hide", paste0("#", ns("target_budget")))
+    }
+  })
+
   observeEvent(eventExpr = input$budget, {
     reactLocal$budget <- input$budget
     if( reactLocal$budget == TRUE) {
@@ -359,26 +370,38 @@ survey to identify seeds and prepare RDS coupons"
   })
 
   ### lessthan5000 ####
-  ## This tobe displayed only if the population is actually less
-  ## Reinject int the app reactive value
-  observeEvent(reactLocal$show_lessthan5000, {
-  if( all(thisgroup == "RAS" & isTRUE(AppReactiveValue$ras_islessthan5000)))  {
-    reactLocal$show_lessthan5000 <- TRUE  }
-    if( all( thisgroup == "STA" & isTRUE(AppReactiveValue$sta_islessthan5000)))  {
-    reactLocal$show_lessthan5000 <- TRUE  }
-    if( all( thisgroup == "RET" & isTRUE(AppReactiveValue$ret_islessthan5000 )))  {
-    reactLocal$show_lessthan5000 <- TRUE  }
-    if( all( thisgroup == "IDP"& isTRUE(AppReactiveValue$idp_islessthan5000 )))  {
-    reactLocal$show_lessthan5000 <- TRUE  }
-    if( all(thisgroup == "OOC"& isTRUE(AppReactiveValue$ooc_islessthan5000 )))  {
-    reactLocal$show_lessthan5000 <- TRUE  }
-    #browser()
-    if(isTRUE(reactLocal$show_lessthan5000)) {
-      golem::invoke_js("show", paste0("#", ns("target_lessthan5000")))
-    } else {
-      golem::invoke_js("hide", paste0("#", ns("target_lessthan5000")))
+    observe({
+      ## This tobe displayed only if the population is actually less
+      ## Reinject int the app reactive value
+      if( all( input$lessthan5000 == FALSE &
+               thisgroup == "RAS" &
+               isTRUE(AppReactiveValue$ras_islessthan5000)))  {
+        reactLocal$show_lessthan5000 <- TRUE  }
+      if( all( input$lessthan5000 == FALSE &
+               thisgroup == "STA" &
+               isTRUE(AppReactiveValue$sta_islessthan5000)))  {
+        reactLocal$show_lessthan5000 <- TRUE  }
+      if( all(input$lessthan5000 == FALSE &
+              thisgroup == "RET" &
+              isTRUE(AppReactiveValue$ret_islessthan5000 )))  {
+        reactLocal$show_lessthan5000 <- TRUE  }
+      if( all( input$lessthan5000 == FALSE &
+               thisgroup == "IDP"&
+               isTRUE(AppReactiveValue$idp_islessthan5000 )))  {
+        reactLocal$show_lessthan5000 <- TRUE  }
+      if( all(input$lessthan5000 == FALSE &
+              thisgroup == "OOC"&
+              isTRUE(AppReactiveValue$ooc_islessthan5000 )))  {
+        reactLocal$show_lessthan5000 <- TRUE  }
+      #browser()
+      if(isTRUE(reactLocal$show_lessthan5000)) {
+        golem::invoke_js("show", paste0("#", ns("target_lessthan5000")))
+      } else {
+        golem::invoke_js("hide", paste0("#", ns("target_lessthan5000")))
+      }
     }
-  })
+
+  )
   observeEvent(eventExpr = input$lessthan5000, {
     reactLocal$lessthan5000 <- input$lessthan5000
   })
@@ -394,6 +417,12 @@ survey to identify seeds and prepare RDS coupons"
              input$traceable %in% c("unknown","partknown" )) )  {
       reactLocal$show_gather <- TRUE
     } else {  reactLocal$show_gather <- FALSE}
+
+    ## Do not display enumeration buget is population is known
+    if( all( reactLocal$availablereg == TRUE &
+             input$traceable %in% c("known" )) )  {
+      reactLocal$show_budget <- FALSE
+    } else {  reactLocal$show_budget <- TRUE }
 
   })
 
@@ -475,69 +504,198 @@ survey to identify seeds and prepare RDS coupons"
   # Sampling Tree ##############
   output$sampling <- renderText({
 
+    #browser()
+
+    ### Print #####
+    print(paste0( "thisgroup", thisgroup,
+                  " --  availablereg: ",  reactLocal$availablereg ,
+                  " --  lessthan5000: ", reactLocal$lessthan5000 ,
+                  " --  budget: ", reactLocal$budget ,
+                  " --  traceable: ", reactLocal$traceable ,
+                  " --  spread : ", reactLocal$spread ,
+                  " --  strata: ",  reactLocal$strata,
+                  " --  gather: ",  reactLocal$gather,
+                  " --  network: ",  reactLocal$network ,
+                  " --  expert: ", reactLocal$expert))
     validate(
       need(isTruthy( reactLocal$sampling),
            message = "We are not yet able to define the adequate sampling approach")
     )
 
-    # based on decision tree
-      #  reactLocal$lessthan5000 == TRUE  &
-      #   reactLocal$spread  %in% c("unknown" ) *
-      #   reactLocal$strata == TRUE  &
-      #   reactLocal$show_budget == TRUE  &
-      #   reactLocal$show_gather == TRUE  &
-      #   reactLocal$show_expert  == TRUE
-
-
     reactLocal$sampling <- dplyr::case_when(
-
       ##  1 - nonprob  ########
-     (
-       reactLocal$availablereg == FALSE &
-        reactLocal$traceable %in% c("unknown","partknown" )  #  "unknown" , "partknown"  ,  "known"
-       # reactLocal$spread   #  "scattered",  "small",  "concentrated",  "both"
-       # reactLocal$strata
-       # reactLocal$budget
-       # reactLocal$gather
-       # reactLocal$expert
-                                             )  ~ nonprob,
-     ## 2 - Quasiprob  ########
-     ### lts  ########
-     reactLocal$availablereg == FALSE &
-       !(reactLocal$spread == "small") &
-       reactLocal$traceable %in% c("unknown","partknown" ) &
-       reactLocal$gather == TRUE ~ lts,
-
-     ### rds  ########
-     reactLocal$availablereg == FALSE &
-       !(reactLocal$spread == "small") &
-       reactLocal$traceable %in% c("unknown","partknown" ) &
-       reactLocal$gather == FALSE &
-       reactLocal$expert == TRUE ~ rds,
-
-     ## 3- Prob  ########
-
-      ### srs ########
-      (reactLocal$availablereg == TRUE &
-         reactLocal$traceable %in% c("known" ) &
-         reactLocal$spread %in% c("concentrated")   ) ~ srs,
-
-      ### ppswalk ########
-      (reactLocal$budget == TRUE &
-         reactLocal$spread %in% c("concentrated")) == TRUE ~ ppswalk,
-      ### ppsframe ########
-      reactLocal$traceable %in% c("partknown", "known") ~ ppsframe,
-
-      ### srsstrata ########
-      reactLocal$strata == TRUE ~ srsstrata,
+      (
+        reactLocal$availablereg == "FALSE" &
+          reactLocal$lessthan5000 == "FALSE" &
+          reactLocal$budget == "FALSE" &
+          reactLocal$traceable %in% c("unknown" , "partknown"   )  &  # %in% c("unknown" , "partknown"  ,  "known") ,
+          reactLocal$spread  %in% c("scattered",    "concentrated",  "both") # %in% c("scattered",  "small",  "concentrated",  "both") ,
+      )   ~ nonprob,
+      (
+        reactLocal$availablereg == "FALSE" &
+          reactLocal$lessthan5000 == "TRUE" &
+          reactLocal$budget == "FALSE" &
+          reactLocal$traceable %in% c("unknown" , "partknown"   )  &  # %in% c("unknown" , "partknown"  ,  "known") ,
+          reactLocal$spread  %in% c("scattered",    "concentrated",  "both") # %in% c("scattered",  "small",  "concentrated",  "both") ,
+      )   ~ nonprob,
+      (
+        reactLocal$availablereg == "FALSE" &
+          reactLocal$lessthan5000 == "FALSE" &
+          reactLocal$budget == "FALSE" &
+          reactLocal$traceable %in% c("unknown" , "partknown"   )  &  # %in% c("unknown" , "partknown"  ,  "known") ,
+          reactLocal$spread  %in% c("scattered",    "concentrated",  "both") # %in% c("scattered",  "small",  "concentrated",  "both") ,
+      )   ~ nonprob,
+      ## 2 - Quasiprob  ########
+      ### lts  ########
+      (
+        reactLocal$availablereg == "FALSE" &
+          reactLocal$lessthan5000 == "TRUE" &
+          reactLocal$budget == "FALSE" &
+          reactLocal$traceable %in% c("unknown" , "partknown"   )  &  # %in% c("unknown" , "partknown"  ,  "known") ,
+          reactLocal$spread  %in% c("scattered",    "concentrated",  "both") & # %in% c("scattered",  "small",  "concentrated",  "both") ,
+         # reactLocal$strata == "TRUE" &
+          reactLocal$gather == "TRUE"# &
+         # reactLocal$network == "TRUE" & reactLocal$expert == "TRUE"
+      )   ~ lts,
+      (
+        reactLocal$availablereg == "TRUE" &
+          reactLocal$lessthan5000 == "TRUE" &
+          reactLocal$budget == "FALSE" &
+          reactLocal$traceable %in% c("unknown" , "partknown"   )  &  # %in% c("unknown" , "partknown"  ,  "known") ,
+          reactLocal$spread  %in% c("scattered",    "concentrated",  "both") & # %in% c("scattered",  "small",  "concentrated",  "both") ,
+         # reactLocal$strata == "TRUE" &
+          reactLocal$gather == "TRUE"#&
+         # reactLocal$network == "FALSE" & reactLocal$expert == "TRUE"
+      )   ~ lts,
+      ### rds  ########
+      (
+        reactLocal$availablereg == "TRUE" &
+          reactLocal$lessthan5000 == "TRUE" &
+          reactLocal$budget == "FALSE" &
+          reactLocal$traceable %in% c("unknown" , "partknown"   )  &  # %in% c("unknown" , "partknown"  ,  "known") ,
+          reactLocal$spread  %in% c("scattered",    "concentrated",  "both") & # %in% c("scattered",  "small",  "concentrated",  "both") ,
+       #   reactLocal$strata == "FALSE" &
+          reactLocal$gather == "FALSE" &
+          reactLocal$network == "TRUE" & reactLocal$expert == "TRUE"
+      )   ~ rds,
+      (
+        reactLocal$availablereg == "FALSE" &
+          reactLocal$lessthan5000 == "FALSE" &
+          reactLocal$budget == "FALSE" &
+          reactLocal$traceable %in% c("unknown" , "partknown"   )  &  # %in% c("unknown" , "partknown"  ,  "known") ,
+          reactLocal$spread  %in% c("scattered",    "concentrated",  "both") & # %in% c("scattered",  "small",  "concentrated",  "both") ,
+        #  reactLocal$strata == "FALSE" &
+          reactLocal$gather == "FALSE" &
+          reactLocal$network == "TRUE" & reactLocal$expert == "TRUE"
+      )   ~ rds,
+      ## 3- Prob  ########
 
       ### acs ########
-     ( reactLocal$budget == TRUE &
-         reactLocal$spread %in% c("scattered")) ~ acs,
-
-
-     ## caramba...
-      TRUE ~ "Ay caramba!... We are not yet able to define the adequate sampling approach")
+      (
+        reactLocal$availablereg == "FALSE" &
+          reactLocal$lessthan5000 == "FALSE" &
+          reactLocal$budget == "TRUE" &
+          reactLocal$traceable %in% c("unknown" , "partknown"   )  &  # %in% c("unknown" , "partknown"  ,  "known") ,
+          reactLocal$spread  %in% c("scattered",    "concentrated",  "both") #& # %in% c("scattered",  "small",  "concentrated",  "both") ,
+      )   ~ acs,
+      (
+        reactLocal$availablereg == "TRUE" &
+          reactLocal$lessthan5000 == "FALSE" &
+          reactLocal$budget == "TRUE" &
+          reactLocal$traceable %in% c("unknown" , "partknown"   )  &  # %in% c("unknown" , "partknown"  ,  "known") ,
+          reactLocal$spread  %in% c("scattered",    "concentrated",  "both")# & # %in% c("scattered",  "small",  "concentrated",  "both") ,
+      )   ~ acs,
+      ### ppsframe ########
+      (
+        reactLocal$availablereg == "TRUE" &
+          reactLocal$lessthan5000 == "TRUE" &
+          reactLocal$budget == "TRUE" &
+          reactLocal$traceable == "partknown" &
+          reactLocal$spread == "concentrated" &
+          reactLocal$strata == "FALSE" #&
+        #  reactLocal$gather == "FALSE" &
+        #  reactLocal$network == "FALSE" &
+        #  reactLocal$expert == "TRUE"
+      )   ~ ppsframe,
+      (
+        reactLocal$availablereg == "FALSE" &
+          reactLocal$lessthan5000 == "TRUE" &
+          reactLocal$budget == "TRUE" &
+          reactLocal$traceable == "unknown" &
+          reactLocal$spread == "concentrated" &
+          reactLocal$strata == "TRUE"# &
+        #  reactLocal$gather == "FALSE" &
+        #  reactLocal$network == "TRUE" &
+        #  reactLocal$expert == "FALSE"
+      )   ~ ppsframe,
+      ### ppswalk ########
+      (
+        reactLocal$availablereg == "TRUE" &
+          reactLocal$lessthan5000 == "FALSE" &
+          reactLocal$budget == "TRUE" &
+          reactLocal$traceable == "partknown" &
+          reactLocal$spread == "both" #&
+         # reactLocal$strata == "TRUE" &
+         # reactLocal$gather == "FALSE" &
+         # reactLocal$network == "TRUE" &
+         # reactLocal$expert == "FALSE"
+      )   ~ ppswalk,
+      ### srs ########
+      (
+        reactLocal$availablereg == "TRUE" &
+          reactLocal$lessthan5000 == "FALSE" &
+          reactLocal$budget == "TRUE" &
+          reactLocal$traceable == "known" &
+          reactLocal$spread == "small" &
+          reactLocal$strata == "FALSE"# &
+        #  reactLocal$gather == "TRUE" &
+        #  reactLocal$network == "FALSE" & reactLocal$expert == "TRUE"
+      )   ~ srs,
+      (
+        reactLocal$availablereg == "TRUE" &
+          reactLocal$lessthan5000 == "TRUE" &
+          reactLocal$budget == "FALSE" &
+          reactLocal$traceable == "known" &
+          reactLocal$spread == "scattered" &
+          reactLocal$strata == "FALSE" #&
+        #  reactLocal$gather == "FALSE" &
+        #  reactLocal$network == "FALSE" & reactLocal$expert == "TRUE"
+      )   ~ srs,
+      (
+        reactLocal$availablereg == "TRUE" &
+          reactLocal$lessthan5000 == "TRUE" &
+          reactLocal$budget == "FALSE" &
+          reactLocal$traceable == "known" &
+          reactLocal$spread == "small" &
+          reactLocal$strata == "FALSE"# &
+        #  reactLocal$gather == "FALSE" &
+        #  reactLocal$network == "TRUE" & reactLocal$expert == "FALSE"
+      )   ~ srs,
+      ### srsstrata ########
+      (
+        reactLocal$availablereg == "TRUE" &
+          reactLocal$lessthan5000 == "TRUE" &
+          reactLocal$budget == "FALSE" &
+          reactLocal$traceable == "partknown" &
+          reactLocal$spread == "concentrated" &
+          reactLocal$strata == "TRUE"# &
+         # reactLocal$gather == "TRUE" &
+         # reactLocal$network == "FALSE" &
+        #  reactLocal$expert == "FALSE"
+      )   ~ srsstrata,
+      (
+        reactLocal$availablereg == "FALSE" &
+          reactLocal$lessthan5000 == "TRUE" &
+          reactLocal$budget == "TRUE" &
+          reactLocal$traceable == "known" &
+          reactLocal$spread == "both" &
+          reactLocal$strata == "TRUE" #&
+        #  reactLocal$gather == "TRUE" &
+        #  reactLocal$network == "FALSE" &
+        #  reactLocal$expert == "FALSE"
+      )   ~ srsstrata    ,
+     ## caramba... #####
+      TRUE ~ "Ay! Caramba!... We are not yet able to define the adequate sampling approach")
    # browser()
 
 
