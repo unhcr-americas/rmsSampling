@@ -8,6 +8,7 @@
 #' @noRd
 #' @import shiny
 #' @import shinydashboard
+#' @importFrom DiagrammeR grVizOutput
 #' @keywords internal
 
 mod_report_ui <- function(id) {
@@ -49,7 +50,11 @@ mod_report_ui <- function(id) {
 		      downloadButton(outputId = ns("showreport"),
 		                     label = "Download your RMS Methodological Approach Documentation",
 		                     width =  "400px")  ,
-		      hr()
+		      hr(),
+
+		      DiagrammeR::grVizOutput( outputId = ns("step_by_step"),
+		                               width = "100%",
+		                               height = "800px")
 		    )
 		  )
 
@@ -61,6 +66,7 @@ mod_report_ui <- function(id) {
 #' @noRd
 #' @import shiny
 #' @import tidyverse
+#' @importFrom DiagrammeR renderGrViz grViz
 #' @keywords internal
 
 mod_report_server <- function(input, output, session, AppReactiveValue) {
@@ -196,7 +202,93 @@ mod_report_server <- function(input, output, session, AppReactiveValue) {
 	    )
 	  }
 	)
+
+
+	output$step_by_step <- DiagrammeR::renderGrViz({
+
+	  ## Nice tutorial here - https://sketchviz.com/flowcharts-in-graphviz
+	  DiagrammeR::grViz(
+	    "digraph flowchart {
+
+node [fontname = Lato];
+  edge [fontname = Lato];
+
+  draw [
+    label = 'Draw a picture';
+    shape = rect;
+  ];
+  win [
+    label = 'You win!';
+    shape = oval;
+  ];
+  guess [
+    label = 'Did they\nguess it?';
+    shape = diamond;
+  ];
+  point [
+    label = 'Point repeatedly\nto the same picture.';
+    shape = rect;
+  ];
+
+  draw -> guess;
+  win -> guess [ label = 'Yes'; dir=back ];
+  point:s -> guess:s;
+  guess -> point [ label = 'No' ];
+  {
+    rank=same;
+    guess; point; win;
+  }
+} ")
+	})
+
+
 }
+
+
+
+# # node type 1: starting and ending node
+# node [fontname = Lato, shape = oval]
+# start [label = '@@1']
+# node [fontname = Lato, shape = oval]
+# pro2 [label = '@@6']
+#
+# # node type 2: decision
+# node [fontname = Lato, shape = diamond]
+# dec1 [label = '@@2']
+# dec2 [label = '@@3']
+# node [fontname = Lato, shape = diamond]
+# dec3 [label = '@@4']
+#
+# # node type 3: process
+# node [fontname = Lato, shape = rectangle]
+# pro1 [label = '@@5']
+# node [fontname = Lato, shape = rectangle]
+# pro3 [label = '@@7']
+#
+# # specify which nodes are of the same 'rank' so that they'll be drawn at the same level
+# {rank = same; dec2 pro3}
+# {rank = same; pro1 dec3}
+#
+# # edge definitions with the node IDs
+# edge[tailclip = true, headclip = true];
+# start -> dec1
+# dec1 -> dec2 [fontname = Lato, label = '', headport = 'n', tailport = 's']
+# dec1 -> pro3 [fontname = Lato, label = '', headport = 'n', tailport = 'e']
+# dec2 -> pro1 [fontname = Lato, label = '', tailport = 's']
+# dec2 -> pro3 [fontname = Lato, label = '']
+# pro3 -> dec3 [fontname = Lato, label = '', headport = 'n']
+# dec3 -> pro2 [fontname = Lato, label = '', headport = 'n', tailport = 's']
+# dec3 -> pro3 [fontname = Lato, label = '', headport = 'e', tailport = 'e']
+# pro1 -> dec1 [fontname = Lato, label = '', headport = 'w']
+# }
+#
+# [1]: 'START'
+# [2]: 'Data Collection Mode'
+# [3]: 'Assessment of Sampling Frame'
+# [4]: 'Assessment of Population Spatial Dispersion'
+# [5]: 'process 1'
+# [6]: 'END'
+# [7]: 'process 3'
 
 ## copy to body.R
 # mod_report_ui("report_ui_1")
