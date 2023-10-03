@@ -210,34 +210,183 @@ mod_report_server <- function(input, output, session, AppReactiveValue) {
 	  DiagrammeR::grViz(
 	    "digraph flowchart {
 
-node [fontname = Lato];
+  /* graphviz to charts is what latex is to documents,
+ * sometimes you'll have to fight it.
+ * This is typically done by defining levels and connection points that
+ * don't really have anything to do with your graph, but are used to
+ * force the graph to appear in a certain way.
+ * See also - https://rich-iannone.github.io/DiagrammeR/articles/graphviz-mermaid.html
+ * https://stackoverflow.com/questions/7115870/creating-straight-edges-in-graphviz/12869546
+ */
+
+  # node attributes
+  node [fontname = Lato];
   edge [fontname = Lato];
 
-  draw [
-    label = 'Draw a picture';
-    shape = rect;
-  ];
-  win [
-    label = 'You win!';
-    shape = oval;
-  ];
-  guess [
-    label = 'Did they\nguess it?';
+
+ # Decision Points  #########
+ facecondition [
+    label = 'Q: There is possibility to do \n face to face interview';
     shape = diamond;
-  ];
-  point [
-    label = 'Point repeatedly\nto the same picture.';
-    shape = rect;
+    color = '#FAEB00';
+    style = rounded;
   ];
 
-  draw -> guess;
-  win -> guess [ label = 'Yes'; dir=back ];
-  point:s -> guess:s;
-  guess -> point [ label = 'No' ];
-  {
-    rank=same;
-    guess; point; win;
-  }
+ lessthan5000 [
+    label = 'Q: The population group is \n smaller than 5,000 individuals';
+    shape = diamond;
+    color = '#FAEB00';
+  ];
+
+  availablereg [
+    label = 'Q: Up to date and \n complete registration list';
+	  shape = diamond;
+    color = '#FAEB00';
+	    ];
+
+  budget [
+    label = 'Q: Specific budget and time available \nto conduct a listing exercise ';
+    shape = diamond;
+    color = '#FAEB00';
+   ];
+
+	traceable [
+    label = 'Q: Population group traceable';
+	  shape = diamond;
+    color = '#FAEB00';
+	  ];
+
+  spread [
+    label = 'Q: Geographic distribution \n of that population group in the country ';
+    shape = diamond;
+    color = '#FAEB00';
+   ];
+
+  cluster [
+    label = 'Q: Do we have already  \n population size breakdown by area within the country? ';
+    shape = diamond;
+    color = '#FAEB00';
+   ];
+
+   strata [
+    label = 'Q: Operation need \nfrom statistically reliable disaggregation ';
+	  shape = diamond;
+    color = '#FAEB00';
+	 ];
+
+	gather [
+    label = 'Q: Population tend to gather at \n a certain location on a specific day/time ';
+    shape = diamond;
+    color = '#FAEB00';
+   ];
+
+  network [
+    label = 'Q: Population is a well-connected community,\n where people tend to know each others ';
+    shape = diamond;
+    color = '#FAEB00';
+   ];
+
+   expert [
+    label = 'Q: Adequate time and expertise to \ncarry out Respondent Driven Sampling';
+    shape = diamond;
+    color = '#FAEB00';
+  ];
+
+
+  # Method Statement #########
+  nonprob [
+    label = 'Non-probabilistic methods';
+    shape = rect;
+    color = '#99c7e4';
+  ];
+
+  srs [
+    label = 'Simple Random Sampling \n(SRS) without stratification';
+    shape = rect;
+    color = '#338ec9';
+  ];
+
+
+
+  ppsframe  [
+    label = 'Multiple-Stage \nCluster Sampling\n with Frame';
+    shape = rect;
+    color = '#338ec9';
+  ];
+
+  srsstrata  [
+    label = 'Simple Random Sampling\n (SRS) within Strata';
+    shape = rect;
+    color = '#338ec9';
+  ];
+
+  acs [
+    label = 'Adaptive Cluster Sampling';
+    shape = rect;
+    color = '#338ec9';
+  ];
+
+  lts [
+    label = 'Time Location Sampling';
+    shape = rect;
+    color = '#66aad7';
+  ];
+
+  rds [
+    label = 'Respondent Driven Sampling\n (RDS)';
+    shape = rect;
+    color = '#66aad7';
+  ];
+
+
+/*
+ * tricky part:
+ * since nodes in a digrap go either from top to bottom or left to right, we
+ * can usually not connect (->) two nodes and have them appear on the same
+ * level unless the connection is specified within a block that has the
+ * parameter `rank' set to `same'
+ * See also - https://sketchviz.com/flowcharts-in-graphviz
+ */
+
+
+  # edge statements  #########
+  lessthan5000 -> facecondition;
+  lessthan5000 -> nonprob[ label = 'Yes' ];
+  facecondition ->  availablereg;
+
+  availablereg -> traceable[ label = 'Yes' ];
+
+
+
+  traceable -> budget[ label = 'No' ];
+  traceable -> spread[ label = 'Yes' ];
+
+
+  budget -> nonprob[ label = 'No' ];
+  budget -> strata[ label = 'Yes' ];
+
+  spread -> srs[ label = 'Concentrated' ];
+  spread -> budget[ label = 'Scattered' ];
+
+  strata ->  srsstrata[ label = 'Yes' ];
+
+  strata ->  cluster[ label = 'No' ];
+  cluster ->  acs[ label = 'No' ];
+  cluster ->  ppsframe[ label = 'Yes' ];
+
+
+
+  # edge statements -- Pseudo Probabilistic  #########
+	availablereg ->  gather[ label = 'No' ];
+	gather -> lts[ label = 'Yes' ];
+
+  gather -> network[ label = 'No' ];
+
+  network -> expert[ label = 'Yes' ];
+  network -> nonprob[ label = 'No' ];
+  expert -> rds[ label = 'Yes' ];
+  expert -> nonprob[ label = 'No' ];
+
 } ")
 	})
 
