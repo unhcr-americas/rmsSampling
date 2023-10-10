@@ -99,15 +99,15 @@ title: "UNHCR Results Monitoring Surveys (RMS) for `r countrycode::countrycode(p
 ---
 
 ```{r setup, include=FALSE}
-
-# 
-
 knitr::opts_chunk$set(echo = FALSE, fig.cap = TRUE, fig.width = 6.27)
 library(officedown)
 library(officer)
 library(ggplot2)
 library(tidyverse)
+```
 
+
+```{r setup2, include=FALSE}
 ## Get all parameters within a frame for easy rendering
 # conf <- data.frame( 
 #   pop = c("RAS","STA","RET","IDP","OOC"),

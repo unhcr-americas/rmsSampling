@@ -7,7 +7,23 @@
 <!-- badges: end -->
 
 The goal of {rmsSampling} is to ease the implementation of the RMS
-Sampling guidance
+(Results Monitoring Survey) Sampling guidance, with a perpective of
+streamlining as many assumptions as possible.
+
+Building a sampling plan is not a mechanical process and needs back and
+forth review in order to be optimal. Using information already available
+from UNHCR Official Statistics for each country, and based on the
+confirmation of sampling assumptions, this companion app will help
+operations building an initial Methodological Approach Documentation
+that can then be reviewed by regional DIMA in order to inform the
+preparation of an RMS survey.
+
+The companion app should help disseminating knowledge on sampling for a
+non-expert audience (*typically UNHCR Information Management officer in
+the field*).
+
+This App is still under development - the work in progress version is
+available here: <https://rstudio.unhcr.org/rmsSampling/>
 
 ## A guided workflow
 
@@ -64,11 +80,6 @@ method can apply:
 
 As an output they can generate a report to document the appropriate
 sampling approach by country.
-
-## Usage
-
-This App is still under development - the work in progress version is
-available here: <https://rstudio.unhcr.org/rmsSampling/>
 
 ## Installation
 
