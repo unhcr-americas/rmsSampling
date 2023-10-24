@@ -39,7 +39,7 @@ mod_home_ui <- function(id) {
 		     style = "font-size: 16px"),
 		  br(),
 		  p("This app is part of a ",tags$span("comprehensive app toolkit", style = "color:#00B398"),
-		    " to enhance the process of survey implementation through Kobotoolbox. It includes: ",
+		    " to mainstream knowledge & enhance the process of survey implementation through Kobotoolbox. It includes: ",
 		    tags$a(href="https://rstudio.unhcr.org/rmsSampling/", "rmsSampling"), " to help designing sampling strategies, ",
 		    tags$a(href="https://rstudio.unhcr.org/Survey_Designer", "SurveyDesigner"), " to help integrating annual survey needs, ",
 		    tags$a(href="https://rstudio.unhcr.org/XlsFormUtil/", "XlsFormUtil"), " to help reviewing form contextualisation, ",
