@@ -17,7 +17,7 @@ mod_home_ui <- function(id) {
 		  p(
 		    tags$span("RMS ", style = "font-size: 60px"),
 		    tags$span("Sampling", style = "font-size: 45px"),
-		    tags$span("(Beta)", style = "font-size: 25px")
+		    tags$span("Alpha-version", style = "font-size: 25px")
 		  ),
 		  br(),
 		  ### Then a short explainer
@@ -38,13 +38,15 @@ mod_home_ui <- function(id) {
 		            "that can then be reviewed by regional DIMA in order to inform the preparation of an RMS survey.",
 		     style = "font-size: 16px"),
 		  br(),
-		  p("This app is part of a ",tags$span("comprehensive app toolkit", style = "color:#00B398"),
-		    " to mainstream knowledge & enhance the process of survey implementation through Kobotoolbox. It includes: ",
+		  p("This app is part of a ",tags$span("companion app toolkit", style = "color:#00B398"),
+		    "designed to mainstream knowledge, automate processes and facilitate standardised documentation of survey implementation. It includes: ",
 		    tags$a(href="https://rstudio.unhcr.org/rmsSampling/", "rmsSampling"), " to help designing sampling strategies, ",
 		    tags$a(href="https://rstudio.unhcr.org/Survey_Designer", "SurveyDesigner"), " to help integrating annual survey needs, ",
 		    tags$a(href="https://rstudio.unhcr.org/XlsFormUtil/", "XlsFormUtil"), " to help reviewing form contextualisation, ",
 		    tags$a(href="https://rstudio.unhcr.org/HighFrequencyChecks/", "HighFrequencyChecks"), " to monitor data collection quality, ",
-		    tags$a(href="https://rstudio.unhcr.org/kobocruncher/", "KoboCruncher"), " to perform rapid data exploration and compile indicators.",
+		    tags$a(href="https://rstudio.unhcr.org/kobocruncher/", "KoboCruncher"), " to perform rapid data exploration and",
+		    tags$a(href="https://rstudio.unhcr.org/IndicatorCalc", "IndicatorCalc"), " to compile indicators.
+		       Each App has different maturity level from Alpha Version, Beta version till Candidate Release",
 		    style = "font-size: 12px"),
 		  p(tags$i( class = "fa fa-github"),
 		    "App built with ",
